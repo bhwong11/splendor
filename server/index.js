@@ -18,11 +18,20 @@ import cors from "cors";
 import "express-async-errors";
 import posts from "./routes/posts.js";
 import dotenv from "dotenv";
+import http from "http";
+import { Server } from "socket.io"
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5050;
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 
 app.use(cors());
 app.use(express.json());
@@ -36,7 +45,16 @@ app.use((err, _req, res, next) => {
   res.status(500).send("Uh oh! An unexpected error occured.")
 })
 
+//connection websocket
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on("send-message",(obj)=>{
+    socket.emit('recieve-message',obj)
+  })
+});
+
+
 // start the Express server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
 });

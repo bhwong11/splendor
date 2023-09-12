@@ -1,6 +1,7 @@
 import styles from './page.module.css'
 import CreatePost from './posts/[id]/createPost'
 
+
 const getLastestPostData = async ()=>{
   const res = await fetch(
     'http://localhost:5050/posts/latest',
@@ -15,13 +16,12 @@ export default async function Home() {
   return (
     <main className={styles.main}>
       <h1 className={styles.test}>test</h1>
-      <div className={styles.description}>
+      <div>
         {latestPostData?.map(post=>(
           <p>{post.title}</p>
         ))}
       </div>
-
-        <CreatePost/>
+      <CreatePost/>
     </main>
   )
 }

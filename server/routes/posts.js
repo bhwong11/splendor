@@ -37,11 +37,10 @@ router.get("/:id", async (req, res) => {
 
 // Add a new document to the collection
 router.post("/", async (req, res) => {
-  let collection = await db.collection("posts");
+  let collection = db.collection("posts");
   let newDocument = req.body;
   newDocument.date = new Date();
   let result = await collection.insertOne(newDocument);
-  console.log('RESULT!',result)
   res.send(result).status(204);
 });
 
@@ -52,7 +51,7 @@ router.patch("/comment/:id", async (req, res) => {
     $push: { comments: req.body }
   };
 
-  let collection = await db.collection("posts");
+  let collection = db.collection("posts");
   let result = await collection.updateOne(query, updates);
 
   res.send(result).status(200);
