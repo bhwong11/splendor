@@ -41,6 +41,7 @@ router.post("/", async (req, res) => {
   let newDocument = req.body;
   newDocument.date = new Date();
   let result = await collection.insertOne(newDocument);
+  console.log('RESULT!',result)
   res.send(result).status(204);
 });
 
