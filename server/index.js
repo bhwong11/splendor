@@ -20,6 +20,7 @@ import posts from "./routes/posts.js";
 import dotenv from "dotenv";
 import http from "http";
 import { Server } from "socket.io"
+import db from "./db/conn.js";
 
 dotenv.config();
 
@@ -46,11 +47,30 @@ app.use((err, _req, res, next) => {
 })
 
 //connection websocket
-io.on('connection', (socket) => {
+const rooms =[]
+io.on('connection', async (socket) => {
   console.log('a user connected');
+
+  //test
+  let collection = db.collection("posts");
+  let results = await collection.aggregate([
+    {"$project": {"author": 1, "title": 1, "tags": 1, "date": 1}},
+    {"$sort": {"date": -1}},
+    {"$limit": 3}
+  ]).toArray();
+  // console.log('res',results)
+  //dynamically generate room value
+  socket.on('join-room',(obj)=>{
+    console.log('join room')
+    if(obj?.room){
+      socket.join(obj?.room)
+    }
+  })
   socket.on("send-message",(obj)=>{
     console.log('send',obj)
-    io.emit('receive-message',obj)
+    // io.emit('receive-message',obj)
+    io.sockets.in('room-1').emit('receive-message',obj)
+    // socket.to("room-1").emit('receive-message',obj)
   })
 });
 

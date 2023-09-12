@@ -20,7 +20,11 @@ export default function CreatePost(){
   const socketInitializer = async () =>{
     // await fetch("")
     socket = io("http://localhost:5050")
-    socket.emit()
+    console.log('init')
+    socket.emit('join-room',{
+      room:'room-1',
+      username:''
+    })
   }
   useEffect(()=>{
     socketInitializer()
