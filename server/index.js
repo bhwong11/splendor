@@ -49,7 +49,8 @@ app.use((err, _req, res, next) => {
 io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on("send-message",(obj)=>{
-    socket.emit('recieve-message',obj)
+    console.log('send',obj)
+    io.emit('receive-message',obj)
   })
 });
 

@@ -25,6 +25,7 @@ export default function CreatePost(){
   useEffect(()=>{
     socketInitializer()
     socket.on("receive-message", (data) => {
+      console.log('recive',data)
       setAllMessages((pre) => [...pre, data]);
     });
     return () => {
@@ -41,6 +42,7 @@ export default function CreatePost(){
     comments=[],
     refresh=()=>{}
   }={})=>{
+    //put this in helper func
     await fetch('http://localhost:5050/posts/',{
       method: 'POST',
       headers: {
@@ -112,8 +114,17 @@ export default function CreatePost(){
       create
     </button>
     </form>
-
-    <form onSubmit={()=>{
+    {allMessages?.map(m=>(
+      <>
+        <div>
+          {m.username}
+        </div>
+        <div>
+          {m.message}
+        </div>
+      </>
+    ))}
+    <form onSubmit={(e)=>{
       e.preventDefault();
 
       console.log("emitted");
