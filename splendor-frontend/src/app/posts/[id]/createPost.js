@@ -60,7 +60,7 @@ export default function CreatePost(){
 
   const createUser = async ({
     username='',
-    rooms = [],
+    roomNumber,
     refresh=()=>{}
   }={})=>{
     if(!username) return
@@ -73,7 +73,7 @@ export default function CreatePost(){
       },
       body: JSON.stringify({
         username,
-        rooms
+        roomNumber
       })
     })
     console.log('new User',newUser)

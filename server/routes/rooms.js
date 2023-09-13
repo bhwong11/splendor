@@ -12,7 +12,7 @@ router.post('/create', async (req, res) => {
 
   try {
       const room = await newRoom.save();
-      res.status(200).json(room.populate({path:'user_id'}))
+      res.status(200).json(room)
   }
   catch (error) {
       res.status(400).json({message: error.message})
@@ -33,8 +33,9 @@ router.get('/getAll', async (req, res) => {
 //Get by ID Method
 router.get('/getOne/:id', async (req, res) => {
   try{
-    const roomData = await RoomModel.findById(req.params.id);
-    res.json(roomData)
+    const roomData = await RoomModel.findById(req.params.id).populate("users");
+    if(!roomData) return res.status(400).json({message: 'no room found'})
+    res.json(roomData._doc)
   }
   catch(error){
     res.status(500).json({message: error.message})

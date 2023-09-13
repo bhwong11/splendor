@@ -12,18 +12,25 @@ router.post('/create', async (req, res) => {
         { $set: { roomNumber: req.body.roomNumber } },
         { upsert: true, new:true  }
       )
-
-      console.log('ROOM!',room)
     
       const newUser = await UserModel.findOneAndUpdate(
         {username:req.body.username},
         {
           $set: { username: req.body.username },
-          $push: { rooms: room._id }
+          $addToSet: { rooms: room._id }
         },
         { upsert: true, new:true  }
       )
       console.log('newUSER',newUser)
+
+      await RoomModel.findByIdAndUpdate(
+        room._id,
+        { 
+          $set: { roomNumber: req.body.roomNumber },
+          $addToSet: { users: newUser._id } 
+        },
+        { upsert: true, new:true  }
+      )
 
       res.status(200).json(newUser)
   }
@@ -36,7 +43,7 @@ router.post('/create', async (req, res) => {
 router.get('/getAll', async (req, res) => {
   try{
       const usersData = await UserModel.find();
-      res.json(usersData)
+      res.status(200).json(usersData)
   }
   catch(error){
       res.status(500).json({message: error.message})
@@ -46,14 +53,10 @@ router.get('/getAll', async (req, res) => {
 //Get by ID Method
 router.get('/getOne/:id', async (req, res) => {
   try{
-    const userData = await UserModel.findById(req.params.id);
-    const allUserRooms= await RoomModel.find({
-      user:userData._id
-    })
-    res.json({
-      ...userData._doc,
-      rooms:allUserRooms
-    })
+    const userData = await UserModel.findById(req.params.id).populate("rooms")
+    console.log('userData',userData)
+    if(!userData) return res.status(400).json({message: 'no user found'})
+    res.json(userData._doc)
   }
   catch(error){
     res.status(500).json({message: error.message})
