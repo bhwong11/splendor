@@ -1,28 +1,26 @@
-import PostComment from '../../(components)/comment'
+import UserInfo from '../../(components)/userInfo'
 
-const getPostData = async (id)=>{
+const getRoomData = async (id)=>{
     const res = await fetch(
-      `http://localhost:5050/posts/${id}`,
+      `http://localhost:5050/api/rooms/${id}`,
       {cache:'no-store'}
     )
-    const postData = await res.json()
-    return postData
+    const roomData = await res.json()
+    return roomData
 }
 
-const postPage = async ({params})=>{
-    const postData = await getPostData(params.id)
+const RoomPage = async ({params})=>{
+    const roomData = await getRoomData(params.id)
 
     return (
         <div>
             <h1>note page</h1>
             hello
-            <h3>{postData.title}</h3>
-            <p>{postData.body}</p>
-            {postData.comments?.map(commentData=>(
-              <PostComment
-                author={commentData.author}
-                email={commentData.email}
-                body={commentData.body}
+            <h3>{roomData.title}</h3>
+            <p>{roomData.body}</p>
+            {roomData.users?.map(userData=>(
+              <UserInfo
+                name={userData.name}
               />
             ))}
 
@@ -30,4 +28,4 @@ const postPage = async ({params})=>{
     )
 }
 
-export default postPage
+export default RoomPage

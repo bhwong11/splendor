@@ -2,23 +2,23 @@ import styles from './page.module.css'
 import CreatePost from './posts/[id]/createPost'
 
 
-const getLastestPostData = async ()=>{
+const getAllRooms = async ()=>{
   const res = await fetch(
-    'http://localhost:5050/posts/latest',
+    'http://localhost:5050/api/rooms/getAll',
     {cache:'no-store'}
   )
-  const latestPostData = await res.json()
-  return latestPostData
+  const allRooms = await res.json()
+  return allRooms
 }
 
 export default async function Home() {
-  const latestPostData = await getLastestPostData()
+  const allRooms = await getAllRooms()
   return (
     <main className={styles.main}>
       <h1 className={styles.test}>test</h1>
       <div>
-        {latestPostData?.map(post=>(
-          <p>{post.title}</p>
+        {allRooms?.map(room=>(
+          <p>room number{room.roomNumber}</p>
         ))}
       </div>
       <CreatePost/>
