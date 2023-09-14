@@ -16,8 +16,7 @@ export default function CreatePost(){
   const router = useRouter()
 
   const socketInitializer = async () =>{
-    // await fetch("")
-    socket = io("http://localhost:5050")
+    socket = io(process.env.NEXT_PUBLIC_API_URL)
     console.log('init')
     socket.emit('join-room',{
       room:'room-1',
@@ -42,16 +41,17 @@ export default function CreatePost(){
   }={})=>{
     //put this in helper func
     if(!roomNumber && !roomNumber===0) return
-    const newRoom = await fetch('http://localhost:5050/api/rooms/create',{
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        roomNumber,
-        users
-      })
+    const newRoom = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/rooms/create`,{
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          roomNumber,
+          users
+        })
     })
     console.log('new room',newRoom)
     setRoomNumber('')
@@ -65,7 +65,7 @@ export default function CreatePost(){
   }={})=>{
     if(!username) return
     //put this in helper func
-    const newUser = await fetch('http://localhost:5050/api/users/create',{
+    const newUser = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/create`,{
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -81,7 +81,7 @@ export default function CreatePost(){
   }
   
   const getRandomRoom = async ()=>{
-    const res = await fetch('http://localhost:5050/api/rooms/getAll')
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/rooms/getAll`)
     const latestRooms = await res.json()
     const randomNum02 = Math.floor(Math.random()*3)
     setRandomRoomNumber(latestRooms[randomNum02]?.roomNumber)

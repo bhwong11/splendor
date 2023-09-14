@@ -2,7 +2,7 @@ import UserInfo from '../../(components)/userInfo'
 
 const getRoomData = async (id)=>{
     const res = await fetch(
-      `http://localhost:5050/api/rooms/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/rooms/${id}`,
       {cache:'no-store'}
     )
     const roomData = await res.json()

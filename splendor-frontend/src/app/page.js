@@ -4,7 +4,7 @@ import CreatePost from './posts/[id]/createPost'
 
 const getAllRooms = async ()=>{
   const res = await fetch(
-    'http://localhost:5050/api/rooms/getAll',
+    `${process.env.NEXT_PUBLIC_API_URL}/api/rooms/getAll`,
     {cache:'no-store'}
   )
   const allRooms = await res.json()
