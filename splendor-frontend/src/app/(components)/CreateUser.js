@@ -28,12 +28,12 @@ export default function CreateUser({
   }
   useEffect(()=>{
     // socketInitializer()
-    socket.on("receive-message", (data) => {
-      console.log('recive',data)
-    });
-    return () => {
-      socket.disconnect();
-    };
+    // socket.on("receive-message", (data) => {
+    //   console.log('recive',data)
+    // });
+    // return () => {
+    //   socket.disconnect();
+    // };
   },[])
 
 
@@ -49,7 +49,7 @@ export default function CreateUser({
           roomNumber,
           refresh:()=>router.refresh()
         })
-        router.push(`/rooms/${roomNumber}/play`)
+        // router.push(`/rooms/${roomNumber}/play`)
         socketInitializer(roomNumber)
       }}>
         <label for="username">new user: username</label>
@@ -59,13 +59,16 @@ export default function CreateUser({
           value={username}
           onChange={e=>setUsername(e.target.value)}
         />
-        <label for="roomNumber">roomNumber</label>
-        <input 
-          name="roomNumber"
-          type="text"
-          value={roomNumber}
-          onChange={e=>setRoomNumber(e.target.value)}
-        />
+        {!existingRoomNumber &&
+        <>
+          <label for="roomNumber">roomNumber</label>
+          <input 
+            name="roomNumber"
+            type="text"
+            value={roomNumber}
+            onChange={e=>setRoomNumber(e.target.value)}
+          />
+        </>}
         <button type="submit">
           Enter Room
         </button>

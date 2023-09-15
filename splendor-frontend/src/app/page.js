@@ -1,5 +1,7 @@
 import styles from './page.module.css'
 import CreatePost from './posts/[id]/createPost'
+import CreateRoom from './(components)/CreateRoom'
+import EnterRoom from './(components)/EnterRoom'
 
 
 const getAllRooms = async ()=>{
@@ -22,6 +24,8 @@ export default async function Home() {
         ))}
       </div>
       <CreatePost/>
+      <CreateRoom/>
+      <EnterRoom/>
     </main>
   )
 }

@@ -9,7 +9,7 @@ const getRoomData = async (id)=>{
     return roomData
 }
 
-const RoomPage = async ({params})=>{
+const RoomPages = async ({params})=>{
     const roomData = await getRoomData(params.id)
 
     return (
@@ -28,4 +28,4 @@ const RoomPage = async ({params})=>{
     )
 }
 
-export default RoomPage
+export default RoomPages

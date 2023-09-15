@@ -1,3 +1,4 @@
+'use client';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from 'react'
@@ -37,6 +38,7 @@ export default function CreateRoom(){
 
   return(
     <div>
+      <h2>Create Room</h2>
       <form onSubmit={async (e)=>{
         e.preventDefault()
         console.log('create room')
@@ -44,6 +46,7 @@ export default function CreateRoom(){
           roomNumber,
           refresh:()=>router.refresh()
         })
+        
         router.push(`/rooms/${newRoom.roomNumber}`)
       }}>
       <div>

@@ -5,7 +5,7 @@ const createRoom = async ({
 }={})=>{
   //put this in helper func
   if(!roomNumber && !roomNumber===0) return
-  const newRoom = await fetch(
+  const res = await fetch(
   `${process.env.NEXT_PUBLIC_API_URL}/api/rooms/create`,{
       method: 'POST',
       headers: {
@@ -17,8 +17,9 @@ const createRoom = async ({
         users
       })
   })
-  console.log('new room',newRoom)
   refresh()
+  const newRoom = res.json()
+  console.log('new room',newRoom)
   return newRoom
 }
 
@@ -30,7 +31,7 @@ const createUser = async ({
 }={})=>{
   if(!username) return
   //put this in helper func
-  const newUser = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/create`,{
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/create`,{
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -41,8 +42,9 @@ const createUser = async ({
       roomNumber
     })
   })
-  console.log('new User',newUser)
   refresh()
+  const newUser = res.json()
+  console.log('new User',newUser)
   return newUser
 }
 
@@ -53,7 +55,7 @@ const updateUser = async ({
 }={})=>{
   if(!userId) return
   //put this in helper func
-  const updatedUser = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/update/${userId}}`,{
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/update/${userId}}`,{
     method: 'PATCH',
     headers: {
       'Accept': 'application/json',
@@ -64,8 +66,9 @@ const updateUser = async ({
       roomNumbers
     })
   })
-  console.log('new User',updatedUser)
   refresh()
+  const updatedUser = res.json()
+  console.log('new User',updatedUser)
   return updatedUser
 }
 

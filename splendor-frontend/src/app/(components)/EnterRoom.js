@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useEffect } from 'react'
 import { io } from "socket.io-client";
 import { createUser, updateUser } from "@/api";
+import CreateUser from "./CreateUser";
+import UpdateUser from "./UpdateUser"
 
 let socket;
 
@@ -28,19 +30,22 @@ export default function EnterRoom({
   }
   useEffect(()=>{
     socketInitializer()
-    socket.on("receive-message", (data) => {
-      console.log('recive',data)
-      setAllMessages((pre) => [...pre, data]);
-    });
-    return () => {
-      socket.disconnect();
-    };
+    // socket.on("receive-message", (data) => {
+    //   console.log('recive',data)
+    //   setAllMessages((pre) => [...pre, data]);
+    // });
+    // return () => {
+    //   socket.disconnect();
+    // };
   },[])
 
 
   return(
     <div>
-      <h3>create user</h3>
+      <h2>Enter</h2>
+      <CreateUser existingRoomNumber={existingRoomNumber}/>
+      <UpdateUser existingRoomNumber={existingRoomNumber}/>
+      {/* <h3>create user</h3>
       <form onSubmit={async (e)=>{
         e.preventDefault();
         console.log('creating user and added to room')
@@ -101,7 +106,7 @@ export default function EnterRoom({
         <button type="submit">
           Enter Room
         </button>
-      </form>
+      </form> */}
     </div>
   )
 };

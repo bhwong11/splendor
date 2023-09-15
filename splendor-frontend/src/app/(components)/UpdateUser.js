@@ -27,13 +27,13 @@ export default function EnterRoom({
     })
   }
   useEffect(()=>{
-    socketInitializer()
-    socket.on("receive-message", (data) => {
-      console.log('recive',data)
-    });
-    return () => {
-      socket.disconnect();
-    };
+    // socketInitializer()
+    // socket.on("receive-message", (data) => {
+    //   console.log('recive',data)
+    // });
+    // return () => {
+    //   socket.disconnect();
+    // };
   },[])
 
 
@@ -51,7 +51,8 @@ export default function EnterRoom({
           roomNumber,
           refresh:()=>router.refresh()
         })
-        router.push(`/rooms/${roomNumber}/play`)
+        // router.push(`/rooms/${roomNumber}/play`)
+        socketInitializer(roomNumber)
       }}>
         <label for="username">update user: username</label>
         <input 
@@ -60,15 +61,18 @@ export default function EnterRoom({
           value={username}
           onChange={e=>setUsername(e.target.value)}
         />
-        <label for="roomNumber">roomNumber</label>
-        <input 
-          name="roomNumber"
-          type="text"
-          value={roomNumber}
-          onChange={e=>setRoomNumber(e.target.value)}
-        />
+        {!existingRoomNumber &&
+        <>
+          <label for="roomNumber">roomNumber</label>
+          <input 
+            name="roomNumber"
+            type="text"
+            value={roomNumber}
+            onChange={e=>setRoomNumber(e.target.value)}
+          />
+        </>}
         <button type="submit">
-          Enter Room
+          Enter Room update
         </button>
       </form>
     </div>
