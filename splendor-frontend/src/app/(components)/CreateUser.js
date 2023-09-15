@@ -9,9 +9,6 @@ export default function CreateUser({
 }){
   const [roomNumber,setRoomNumber] = useState('')
   const [username,setUsername] = useState('')
-  const [message,setMessage] = useState('')
-  const [allMessages,setAllMessages] = useState([])
-  const [randomRoomNumber,setRandomRoomNumber] = useState('')
   const router = useRouter()
   const updateUserName = useUserStore(state=>state.setUsername)
 
