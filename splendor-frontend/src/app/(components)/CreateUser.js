@@ -1,13 +1,16 @@
+'use client';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from 'react'
 import { io } from "socket.io-client";
-import { createRoom } from "@/api";
+import { createUser } from "@/api";
 
 let socket;
 
 
-export default function CreateRoom(){
+export default function CreateUser({
+  existingRoomNumber
+}){
   const [roomNumber,setRoomNumber] = useState('')
   const [username,setUsername] = useState('')
   const [message,setMessage] = useState('')
@@ -15,49 +18,57 @@ export default function CreateRoom(){
   const [randomRoomNumber,setRandomRoomNumber] = useState('')
   const router = useRouter()
 
-  const socketInitializer = async () =>{
+  const socketInitializer = async (room) =>{
     socket = io(process.env.NEXT_PUBLIC_API_URL)
     console.log('init')
     socket.emit('join-room',{
-      room:'room-1',
+      room,
       username:''
     })
   }
   useEffect(()=>{
     // socketInitializer()
-    // socket.on("receive-message", (data) => {
-    //   console.log('recive',data)
-    //   setAllMessages((pre) => [...pre, data]);
-    // });
-    // return () => {
-    //   socket.disconnect();
-    // };
+    socket.on("receive-message", (data) => {
+      console.log('recive',data)
+    });
+    return () => {
+      socket.disconnect();
+    };
   },[])
 
 
   return(
     <div>
+      <h3>create user</h3>
       <form onSubmit={async (e)=>{
-        e.preventDefault()
-        console.log('create room')
-        const newRoom = await createRoom({
+        e.preventDefault();
+        console.log('creating user and added to room')
+
+        await createUser({
+          username,
           roomNumber,
           refresh:()=>router.refresh()
         })
-        router.push(`/rooms/${newRoom.roomNumber}`)
+        router.push(`/rooms/${roomNumber}/play`)
+        socketInitializer(roomNumber)
       }}>
-      <div>
-        <label for="number">room number</label>
+        <label for="username">new user: username</label>
         <input 
-          name="number"
+          name="username"
+          type="text"
+          value={username}
+          onChange={e=>setUsername(e.target.value)}
+        />
+        <label for="roomNumber">roomNumber</label>
+        <input 
+          name="roomNumber"
           type="text"
           value={roomNumber}
           onChange={e=>setRoomNumber(e.target.value)}
         />
-      </div>
-      <button type="submit">
-        create
-      </button>
+        <button type="submit">
+          Enter Room
+        </button>
       </form>
     </div>
   )

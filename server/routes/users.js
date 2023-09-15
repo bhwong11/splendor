@@ -7,20 +7,21 @@ const router = express.Router();
 router.post('/create', async (req, res) => {
 
   try {
-      const room = await RoomModel.findOneAndUpdate(
-        {roomNumber:req.body.roomNumber },
-        { $set: { roomNumber: req.body.roomNumber } },
-        { upsert: true, new:true  }
+      const room = await RoomModel.findOne(
+        {roomNumber:req.body.roomNumber }
       )
+
+      if(!room){
+        return res.status(400).json({message: 'room not found'})
+      }
+
+      const newUser = new UserModel({
+        username:req.body.username,
+        rooms: [room._id]
+      })
+
+      await newUser.save()
     
-      const newUser = await UserModel.findOneAndUpdate(
-        {username:req.body.username},
-        {
-          $set: { username: req.body.username },
-          $addToSet: { rooms: room._id }
-        },
-        { upsert: true, new:true  }
-      )
       console.log('newUSER',newUser)
 
       await RoomModel.findByIdAndUpdate(
@@ -29,13 +30,13 @@ router.post('/create', async (req, res) => {
           $set: { roomNumber: req.body.roomNumber },
           $addToSet: { users: newUser._id } 
         },
-        { upsert: true, new:true  }
+        { new:true  }
       )
 
       res.status(200).json(newUser)
   }
   catch (error) {
-      res.status(400).json({message: error.message})
+      res.status(500).json({message: error.message})
   }
 })
 
@@ -71,7 +72,10 @@ router.patch('/update/:id', async (req, res) => {
     const options = { new: true };
 
     const result = await UserModel.findByIdAndUpdate(
-        id, updatedData, options
+        id, {
+          $set:updatedData,
+          ...(req.body?.roomNumber?{$addToSet: { rooms: req.body?.roomNumber } }:{})
+        }, options
     )
 
     res.status(200).json(result)

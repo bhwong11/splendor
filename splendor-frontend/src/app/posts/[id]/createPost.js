@@ -133,6 +133,7 @@ export default function CreatePost(){
 
       createUser({
         username,
+        roomNumber,
         refresh:()=>router.refresh()
       })
     }}>
