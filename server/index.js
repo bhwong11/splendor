@@ -9,6 +9,7 @@ import http from "http";
 import { Server } from "socket.io"
 import db from "./db/conn.js";
 import mongoose from "mongoose";
+import RoomModel from "./models/RoomModel.js";
 
 dotenv.config();
 
@@ -50,16 +51,38 @@ app.use((err, _req, res, next) => {
 })
 
 //connection websocket
+const activeRooms = {}
 io.on('connection', async (socket) => {
   console.log('a user connected');
 
   // console.log('res',results)
   //dynamically generate room value
-  socket.on('join-room',(obj)=>{
-    console.log('join room')
+  socket.on('join-room',async (obj)=>{
+    console.log('join room user',socket.id)
+    let roomInDB
+    try{
+      roomInDB = await RoomModel.findOne({roomNumber:obj?.room})
+    }catch(err){
+      console.log('error in room',err)
+    }
+    if(!roomInDB){
+      socket.broadcast.to(socket.id).emit('no-room',{
+        message:'room not found'
+      })
+    }
     if(obj?.room){
       socket.join(obj?.room)
+      if(activeRooms[obj?.room]){
+        activeRooms[obj?.room].push({
+          username:obj?.username,
+          socketId:socket.id
+        })
+      }else{
+        activeRooms[obj?.room] = []
+      }
+      io.sockets.in(obj?.room).emit('user-joined',activeRooms[obj?.room])
     }
+    console.log('rooms',socket.rooms)
   })
     //test
   let collection = db.collection("posts");
@@ -74,6 +97,15 @@ io.on('connection', async (socket) => {
     io.sockets.in('room-1').emit('receive-message',obj)
     // socket.to("room-1").emit('receive-message',obj)
   })
+  socket.on('disconnecting', () => {
+    console.log('disconnecting',socket.id);
+    console.log('disconnecting room',socket.rooms);
+    console.log(socket.rooms); // the Set contains at least the socket ID
+  });
+  socket.on('disconnect', () => {
+    console.log('disconnecting ID',socket.id);
+    // io.sockets.in(obj?.room).emit('user-joined',obj)
+  });
 });
 
 

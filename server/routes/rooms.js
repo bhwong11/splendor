@@ -31,7 +31,7 @@ router.get('/getAll', async (req, res) => {
 })
 
 //Get by ID Method
-router.get('/getOne/:id', async (req, res) => {
+router.get('/getOne-id/:id', async (req, res) => {
   try{
     const roomData = await RoomModel.findById(req.params.id).populate("users");
     if(!roomData) return res.status(400).json({message: 'no room found'})
@@ -43,14 +43,14 @@ router.get('/getOne/:id', async (req, res) => {
 })
 
 //Update by ID Method
-router.patch('/update/:roomNumber', async (req, res) => {
+router.patch('/update-id/:id', async (req, res) => {
   try {
-    const roomNumber = req.params.roomNumber;
+    const id = req.params.id;
     const updatedData = req.body;
     const options = { new: true };
 
     const result = await RoomModel.findOneAndUpdate(
-        {roomNumber}, updatedData, options
+        {_id: id}, updatedData, options
     )
 
     res.status(200).json(result)
@@ -76,14 +76,14 @@ router.get('/getOne/:roomNumber', async (req, res) => {
 })
 
 //Update by roomNumber Method
-router.patch('/update/:id', async (req, res) => {
+router.patch('/update/:roomNumber', async (req, res) => {
   try {
-    const id = req.params.id;
+    const roomNumber = req.params.roomNumber;
     const updatedData = req.body;
     const options = { new: true };
 
     const result = await RoomModel.findOneAndUpdate(
-        {_id: id}, updatedData, options
+        {roomNumber}, updatedData, options
     )
 
     res.status(200).json(result)
@@ -92,6 +92,7 @@ router.patch('/update/:id', async (req, res) => {
       res.status(400).json({ message: error.message })
   }
 })
+
 
 router.delete('/delete/:id', async (req, res) => {
   try {

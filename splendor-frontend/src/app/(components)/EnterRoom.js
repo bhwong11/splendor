@@ -6,6 +6,7 @@ import { io } from "socket.io-client";
 import { createUser, updateUser } from "@/api";
 import CreateUser from "./CreateUser";
 import UpdateUser from "./UpdateUser"
+import { socketInitializeRoom } from "@/socket";
 
 let socket;
 
@@ -29,7 +30,7 @@ export default function EnterRoom({
     })
   }
   useEffect(()=>{
-    socketInitializer()
+    // socketInitializer()
     // socket.on("receive-message", (data) => {
     //   console.log('recive',data)
     //   setAllMessages((pre) => [...pre, data]);

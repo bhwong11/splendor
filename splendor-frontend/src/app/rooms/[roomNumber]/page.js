@@ -9,8 +9,10 @@ const RoomPage = async ({params})=>{
 
   return (
       <div>
-          <h1>Room</h1>
+          <h1>New Room</h1>
           <h3>{room.roomNumber}</h3>
+          <CreateUser existingRoomNumber={room.roomNumber}/>
+          <UpdateUser existingRoomNumber={room.roomNumber}/>
       </div>
   )
 }

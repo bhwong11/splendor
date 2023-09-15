@@ -1,12 +1,8 @@
 'use client';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect } from 'react'
-import { io } from "socket.io-client";
 import { createUser } from "@/api";
-
-let socket;
-
+import { useUserStore } from "@/zustand";
 
 export default function CreateUser({
   existingRoomNumber
@@ -17,25 +13,7 @@ export default function CreateUser({
   const [allMessages,setAllMessages] = useState([])
   const [randomRoomNumber,setRandomRoomNumber] = useState('')
   const router = useRouter()
-
-  const socketInitializer = async (room) =>{
-    socket = io(process.env.NEXT_PUBLIC_API_URL)
-    console.log('init')
-    socket.emit('join-room',{
-      room,
-      username:''
-    })
-  }
-  useEffect(()=>{
-    // socketInitializer()
-    // socket.on("receive-message", (data) => {
-    //   console.log('recive',data)
-    // });
-    // return () => {
-    //   socket.disconnect();
-    // };
-  },[])
-
+  const updateUserName = useUserStore(state=>state.setUsername)
 
   return(
     <div>
@@ -44,13 +22,17 @@ export default function CreateUser({
         e.preventDefault();
         console.log('creating user and added to room')
 
-        await createUser({
+        const newUser = await createUser({
           username,
           roomNumber,
           refresh:()=>router.refresh()
         })
-        // router.push(`/rooms/${roomNumber}/play`)
-        socketInitializer(roomNumber)
+        if(newUser.status!==200){
+          console.log(newUser.message)
+          return
+        }
+        updateUserName(newUser.username)
+        router.push(`/rooms/${roomNumber}/play`)
       }}>
         <label for="username">new user: username</label>
         <input 

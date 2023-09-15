@@ -24,14 +24,14 @@ export default function CreatePost(){
     })
   }
   useEffect(()=>{
-    socketInitializer()
-    socket.on("receive-message", (data) => {
-      console.log('recive',data)
-      setAllMessages((pre) => [...pre, data]);
-    });
-    return () => {
-      socket.disconnect();
-    };
+    // socketInitializer()
+    // socket.on("receive-message", (data) => {
+    //   console.log('recive',data)
+    //   setAllMessages((pre) => [...pre, data]);
+    // });
+    // return () => {
+    //   socket.disconnect();
+    // };
   },[])
 
   const createRoom = async ({

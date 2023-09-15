@@ -18,9 +18,12 @@ const createRoom = async ({
       })
   })
   refresh()
-  const newRoom = res.json()
+  const newRoom = await res.json()
   console.log('new room',newRoom)
-  return newRoom
+  return {
+    status:res.status,
+    ...newRoom
+  }
 }
 
 const getRoom = async ({
@@ -33,9 +36,12 @@ const getRoom = async ({
   `${process.env.NEXT_PUBLIC_API_URL}/api/rooms/getOne`
   )
   refresh()
-  const newRoom = res.json()
+  const newRoom = await res.json()
   console.log('new room',newRoom)
-  return newRoom
+  return {
+    status:res.status,
+    ...newRoom
+  }
 }
 
 const createUser = async ({
@@ -57,22 +63,26 @@ const createUser = async ({
     })
   })
   refresh()
-  const newUser = res.json()
+  const newUser = await res.json()
   console.log('new User',newUser)
-  return newUser
+  return {
+    status:res.status,
+    ...newUser
+  }
 }
 
 const updateUser = async ({
   userId='',
   username,
-  roomNumbers=[],
+  roomNumbers,
+  roomNumber,
   refresh=()=>{}
 }={})=>{
   if(!userId && !username) return
   //put this in helper func
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/update/${
     userId || username
-  }}`,{
+  }`,{
     method: 'PATCH',
     headers: {
       'Accept': 'application/json',
@@ -80,13 +90,18 @@ const updateUser = async ({
     },
     body: JSON.stringify({
       username,
-      roomNumbers
+      ...(roomNumbers?{roomNumbers}:{}),
+      roomNumber
     })
   })
+  console.log('res',res)
   refresh()
-  const updatedUser = res.json()
-  console.log('new User',updatedUser)
-  return updatedUser
+  const updatedUser = await res.json()
+  console.log('update User!!',updatedUser)
+  return {
+    status:res.status,
+    ...updatedUser
+  }
 }
 
 export {

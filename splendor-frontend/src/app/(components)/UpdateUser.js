@@ -4,8 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from 'react'
 import { io } from "socket.io-client";
 import { updateUser } from "@/api";
-
-let socket;
+import { useUserStore } from "@/zustand";
 
 
 export default function EnterRoom({
@@ -17,15 +16,8 @@ export default function EnterRoom({
   const [allMessages,setAllMessages] = useState([])
   const [randomRoomNumber,setRandomRoomNumber] = useState('')
   const router = useRouter()
+  const updateUserName = useUserStore(state=>state.setUsername)
 
-  const socketInitializer = async () =>{
-    socket = io(process.env.NEXT_PUBLIC_API_URL)
-    console.log('init')
-    socket.emit('join-room',{
-      room:'room-1',
-      username:''
-    })
-  }
   useEffect(()=>{
     // socketInitializer()
     // socket.on("receive-message", (data) => {
@@ -46,13 +38,18 @@ export default function EnterRoom({
         console.log('updating user and added to room')
 
         //will it not set room number?
-        await updateUser({
+        const updatedUser = await updateUser({
           username,
           roomNumber,
           refresh:()=>router.refresh()
         })
-        // router.push(`/rooms/${roomNumber}/play`)
-        socketInitializer(roomNumber)
+        if(updatedUser.status!==200){
+          console.log(updatedUser.message)
+          return
+        }
+        console.log('updated user',updatedUser)
+        updateUserName(updatedUser.username)
+        router.push(`/rooms/${roomNumber}/play`)
       }}>
         <label for="username">update user: username</label>
         <input 

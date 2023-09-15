@@ -60,7 +60,7 @@ router.get('/getOne/:id', async (req, res) => {
   }
 })
 
-router.patch('/update/:id', async (req, res) => {
+router.patch('/update-id/:id', async (req, res) => {
   try {
     const id = req.params.id;
     //will need to pass in new rooms on frontend
@@ -87,11 +87,15 @@ router.patch('/update/:username', async (req, res) => {
     //will need to pass in new rooms on frontend
     const updatedData = req.body;
     const options = { new: true };
+    const room = await RoomModel.findOne({roomNumber:req.body?.roomNumber})
+    if(!room && req.body.roomNumber){
+      return res.status(400).json({message:'room not found'})
+    }
 
     const result = await UserModel.findOneAndUpdate(
         {username}, {
           $set:updatedData,
-          ...(req.body?.roomNumber?{$addToSet: { rooms: req.body?.roomNumber } }:{})
+          ...(room?{$addToSet: { rooms: room?._id } }:{})
         }, options
     )
 
