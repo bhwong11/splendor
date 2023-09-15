@@ -5,7 +5,6 @@ import RoomModel from '../models/RoomModel.js';
 const router = express.Router();
 
 router.post('/create', async (req, res) => {
-
   try {
       const room = await RoomModel.findOne(
         {roomNumber:req.body.roomNumber }
@@ -21,8 +20,6 @@ router.post('/create', async (req, res) => {
       })
 
       await newUser.save()
-    
-      console.log('newUSER',newUser)
 
       await RoomModel.findByIdAndUpdate(
         room._id,
@@ -32,7 +29,6 @@ router.post('/create', async (req, res) => {
         },
         { new:true  }
       )
-
       res.status(200).json(newUser)
   }
   catch (error) {
@@ -73,6 +69,27 @@ router.patch('/update/:id', async (req, res) => {
 
     const result = await UserModel.findByIdAndUpdate(
         id, {
+          $set:updatedData,
+          ...(req.body?.roomNumber?{$addToSet: { rooms: req.body?.roomNumber } }:{})
+        }, options
+    )
+
+    res.status(200).json(result)
+  }
+  catch (error) {
+      res.status(400).json({ message: error.message })
+  }
+})
+
+router.patch('/update/:username', async (req, res) => {
+  try {
+    const username = req.params.username;
+    //will need to pass in new rooms on frontend
+    const updatedData = req.body;
+    const options = { new: true };
+
+    const result = await UserModel.findOneAndUpdate(
+        {username}, {
           $set:updatedData,
           ...(req.body?.roomNumber?{$addToSet: { rooms: req.body?.roomNumber } }:{})
         }, options

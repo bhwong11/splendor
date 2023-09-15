@@ -43,7 +43,7 @@ export default function EnterRoom({
       <h3>update user</h3>
       <form onSubmit={async (e)=>{
         e.preventDefault();
-        console.log('creating user and added to room')
+        console.log('updating user and added to room')
 
         //will it not set room number?
         await updateUser({
