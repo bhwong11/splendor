@@ -36,7 +36,10 @@ const RoomPage = ({params})=>{
           <h1>Room</h1>
           <h3>{params.roomNumber}</h3>
           {users?.map(user=>(
-            <p key={user.username}>{user.username}</p>
+            <div key={user.username}>
+            <span>{user.username}</span>
+            <span>{user.active?"ACTIVE":"NOT ACTIVE"}</span>
+            </div>
           ))}
       </div>)
   )

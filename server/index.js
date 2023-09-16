@@ -10,6 +10,8 @@ import { Server } from "socket.io"
 import db from "./db/conn.js";
 import mongoose from "mongoose";
 import RoomModel from "./models/RoomModel.js";
+import joinActions from "./socketActions/join/index.js";
+import leaveActions from "./socketActions/leave/index.js";
 
 dotenv.config();
 
@@ -55,53 +57,56 @@ const activeRooms = {}
 io.on('connection', async (socket) => {
   console.log('a user connected');
 
-  // console.log('res',results)
-  socket.on('join-room',async (obj)=>{
-    console.log('join room user',socket.id)
-    let roomInDB
-    try{
-      roomInDB = await RoomModel.findOne({roomNumber:obj?.room})
-    }catch(err){
-      console.log('error in room',err)
-    }
-    if(!roomInDB){
-      socket.broadcast.to(socket.id).emit('no-room',{
-        message:'room not found'
-      })
-    }
-
-    const existingUser = activeRooms[obj?.room]?.find(user=>user.username===obj.username)
-
-    if(existingUser){
-      socket.broadcast.to(socket.id).emit('user-already-exist',{
-        message:'user-already-exist'
-      })
-      return
-    }
-
-    if(obj?.room){
-      socket.join(obj?.room)
-      if(activeRooms[obj?.room]){
-        activeRooms[obj?.room].push({
-          username:obj?.username,
-          socketId:socket.id
-        })
-      }else{
-        activeRooms[obj?.room] = []
-      }
-      io.sockets.in(obj?.room).emit('user-joined',activeRooms[obj?.room])
-    }
-    console.log('rooms',socket.rooms)
+  joinActions({
+    io,
+    socket,
+    activeRooms
+  })
+  leaveActions({
+    io,
+    socket,
+    activeRooms
   })
 
-    //test
-  // let collection = db.collection("posts");
-  // let results = await collection.aggregate([
-  //   {"$project": {"author": 1, "title": 1, "tags": 1, "date": 1}},
-  //   {"$sort": {"date": -1}},
-  //   {"$limit": 3}
-  // ]).toArray();
+  // console.log('res',results)
+  // socket.on('join-room',async (obj)=>{
+  //   console.log('join room user',socket.id)
+  //   let roomInDB
+  //   try{
+  //     roomInDB = await RoomModel.findOne({roomNumber:obj?.room})
+  //   }catch(err){
+  //     console.log('error in room',err)
+  //   }
+  //   if(!roomInDB){
+  //     socket.broadcast.to(socket.id).emit('no-room',{
+  //       message:'room not found'
+  //     })
+  //   }
 
+  //   const existingUser = activeRooms[obj?.room]?.find(user=>user.username===obj.username)
+
+  //   if(existingUser){
+  //     socket.broadcast.to(socket.id).emit('user-already-exist',{
+  //       message:'user-already-exist'
+  //     })
+  //     return
+  //   }
+
+  //   if(obj?.room){
+  //     socket.join(obj?.room)
+  //     if(activeRooms[obj?.room]){
+  //       activeRooms[obj?.room].push({
+  //         username:obj?.username,
+  //         socketId:socket.id,
+  //         active:true
+  //       })
+  //     }else{
+  //       activeRooms[obj?.room] = []
+  //     }
+  //     io.sockets.in(obj?.room).emit('user-joined',activeRooms[obj?.room])
+  //   }
+  //   console.log('rooms',socket.rooms)
+  // })
   // socket.on("send-message",(obj)=>{
   //   console.log('send',obj)
   //   // io.emit('receive-message',obj)
@@ -110,18 +115,23 @@ io.on('connection', async (socket) => {
   // })
 
 
-  socket.on('disconnecting', () => {
-    console.log('disconnecting',socket.id);
-    console.log('disconnecting room',socket.rooms);
-    console.log(socket.rooms);
-    const [socketId,room]=socket.rooms
-    if(activeRooms[room]){
-      activeRooms[room]=activeRooms[room]?.filter((user)=>(
-        user.socketId!==socketId
-      ))
-    }
-    io.sockets.in(room).emit('user-left',activeRooms[room])
-  });
+  // socket.on('disconnecting', () => {
+  //   console.log('disconnecting',socket.id);
+  //   console.log('disconnecting room',socket.rooms);
+  //   console.log(socket.rooms);
+  //   const [socketId,room]=socket.rooms
+  //   if(activeRooms[room]){
+  //     activeRooms[room]=activeRooms[room]?.map((user)=>(
+  //       user.socketId===socketId?{
+  //         ...user,
+  //         active:false
+  //       }:{
+  //         ...user
+  //       }
+  //     ))
+  //   }
+  //   io.sockets.in(room).emit('user-left',activeRooms[room])
+  // });
   socket.on('disconnect', () => {
     console.log('disconnecting ID',socket.id);
     // io.sockets.in(obj?.room).emit('user-joined',obj)
