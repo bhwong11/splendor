@@ -20,11 +20,11 @@ const RoomPage = ({params})=>{
     console.log('soc',socket)
     if(socket){
       socket.on('user-joined',data=>{
-        console.log(data)
+        console.log('user=join',data)
         setUsers(data)
       })
       socket.on('user-left',data=>{
-        console.log(data)
+        console.log('user-left',data)
         setUsers(data)
       })
     }

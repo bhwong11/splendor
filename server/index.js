@@ -69,26 +69,27 @@ io.on('connection', async (socket) => {
         message:'room not found'
       })
     }
-    const activeRoom = activeRooms[obj?.room]
-    const existingUser = activeRoom.find(user=>user.username===obj.username)
+
+    const existingUser = activeRooms[obj?.room]?.find(user=>user.username===obj.username)
 
     if(existingUser){
       socket.broadcast.to(socket.id).emit('user-already-exist',{
         message:'user-already-exist'
       })
+      return
     }
 
     if(obj?.room){
       socket.join(obj?.room)
-      if(activeRoom){
-        activeRoom.push({
+      if(activeRooms[obj?.room]){
+        activeRooms[obj?.room].push({
           username:obj?.username,
           socketId:socket.id
         })
       }else{
-        activeRoom = []
+        activeRooms[obj?.room] = []
       }
-      io.sockets.in(obj?.room).emit('user-joined',activeRoom)
+      io.sockets.in(obj?.room).emit('user-joined',activeRooms[obj?.room])
     }
     console.log('rooms',socket.rooms)
   })
@@ -115,9 +116,9 @@ io.on('connection', async (socket) => {
     console.log(socket.rooms);
     const [socketId,room]=socket.rooms
     if(activeRooms[room]){
-      activeRooms[room]=activeRooms[room]?.filter((user)=>{
+      activeRooms[room]=activeRooms[room]?.filter((user)=>(
         user.socketId!==socketId
-      })
+      ))
     }
     io.sockets.in(room).emit('user-left',activeRooms[room])
   });
