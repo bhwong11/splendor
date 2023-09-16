@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createUser } from "@/api";
 import { useUserStore } from "@/zustand";
@@ -11,6 +11,9 @@ export default function CreateUser({
   const [username,setUsername] = useState('')
   const router = useRouter()
   const updateUserName = useUserStore(state=>state.setUsername)
+  useEffect(()=>{
+    setRoomNumber(existingRoomNumber)
+  },[])
 
   return(
     <div>

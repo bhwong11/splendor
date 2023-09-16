@@ -13,17 +13,11 @@ export default function EnterRoom({
   const [roomNumber,setRoomNumber] = useState('')
   const [username,setUsername] = useState('')
   const router = useRouter()
-  const updateUserName = useUserStore(state=>state.setUsername)
-
   useEffect(()=>{
-    // socketInitializer()
-    // socket.on("receive-message", (data) => {
-    //   console.log('recive',data)
-    // });
-    // return () => {
-    //   socket.disconnect();
-    // };
+    setRoomNumber(existingRoomNumber)
   },[])
+  
+  const updateUserName = useUserStore(state=>state.setUsername)
 
 
   return(

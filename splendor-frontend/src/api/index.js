@@ -35,7 +35,7 @@ const getRoom = async ({
   const res = await fetch(
   `${process.env.NEXT_PUBLIC_API_URL}/api/rooms/getOne/${roomNumber}`
   )
-  // refresh()
+  refresh()
   const newRoom = await res.json()
   console.log('new room',newRoom)
   return {
