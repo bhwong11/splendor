@@ -31,13 +31,14 @@ const RoomPage = ({params})=>{
   },[])
 
   return (
+      username && (
       <div>
           <h1>Room</h1>
           <h3>{params.roomNumber}</h3>
           {users?.map(user=>(
             <p key={user.username}>{user.username}</p>
           ))}
-      </div>
+      </div>)
   )
 }
 
