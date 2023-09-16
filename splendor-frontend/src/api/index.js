@@ -33,9 +33,9 @@ const getRoom = async ({
   //put this in helper func
   if(!roomNumber && !roomNumber===0) return
   const res = await fetch(
-  `${process.env.NEXT_PUBLIC_API_URL}/api/rooms/getOne`
+  `${process.env.NEXT_PUBLIC_API_URL}/api/rooms/getOne/${roomNumber}`
   )
-  refresh()
+  // refresh()
   const newRoom = await res.json()
   console.log('new room',newRoom)
   return {

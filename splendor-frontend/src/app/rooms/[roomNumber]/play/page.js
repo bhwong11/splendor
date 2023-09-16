@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { socketInitializeRoom } from "@/socket";
 import { useUserStore } from "@/zustand";
 import { useRouter } from "next/navigation";
@@ -8,6 +8,7 @@ let socket
 
 const RoomPage = ({params})=>{
   console.log(params.roomNumber)
+  const [users,setUsers] = useState([])
   const username = useUserStore(state=>state.username)
   const router = useRouter()
   useEffect(()=>{
@@ -16,12 +17,26 @@ const RoomPage = ({params})=>{
       router.push('/')
     }
     socket = socketInitializeRoom(params.roomNumber,username)
+    console.log('soc',socket)
+    if(socket){
+      socket.on('user-joined',data=>{
+        console.log(data)
+        setUsers(data)
+      })
+      socket.on('user-left',data=>{
+        console.log(data)
+        setUsers(data)
+      })
+    }
   },[])
 
   return (
       <div>
           <h1>Room</h1>
           <h3>{params.roomNumber}</h3>
+          {users?.map(user=>(
+            <p key={user.username}>{user.username}</p>
+          ))}
       </div>
   )
 }

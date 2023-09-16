@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const socketInitializeRoom = async (room,username) =>{
+const socketInitializeRoom = (room,username) =>{
   const socket = io(process.env.NEXT_PUBLIC_API_URL)
   socket.on('connect',()=>{
     console.log('init!',socket.id)

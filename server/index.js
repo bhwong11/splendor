@@ -56,7 +56,6 @@ io.on('connection', async (socket) => {
   console.log('a user connected');
 
   // console.log('res',results)
-  //dynamically generate room value
   socket.on('join-room',async (obj)=>{
     console.log('join room user',socket.id)
     let roomInDB
@@ -84,23 +83,34 @@ io.on('connection', async (socket) => {
     }
     console.log('rooms',socket.rooms)
   })
+
     //test
-  let collection = db.collection("posts");
-  let results = await collection.aggregate([
-    {"$project": {"author": 1, "title": 1, "tags": 1, "date": 1}},
-    {"$sort": {"date": -1}},
-    {"$limit": 3}
-  ]).toArray();
-  socket.on("send-message",(obj)=>{
-    console.log('send',obj)
-    // io.emit('receive-message',obj)
-    io.sockets.in('room-1').emit('receive-message',obj)
-    // socket.to("room-1").emit('receive-message',obj)
-  })
+  // let collection = db.collection("posts");
+  // let results = await collection.aggregate([
+  //   {"$project": {"author": 1, "title": 1, "tags": 1, "date": 1}},
+  //   {"$sort": {"date": -1}},
+  //   {"$limit": 3}
+  // ]).toArray();
+
+  // socket.on("send-message",(obj)=>{
+  //   console.log('send',obj)
+  //   // io.emit('receive-message',obj)
+  //   io.sockets.in('room-1').emit('receive-message',obj)
+  //   // socket.to("room-1").emit('receive-message',obj)
+  // })
+
+
   socket.on('disconnecting', () => {
     console.log('disconnecting',socket.id);
     console.log('disconnecting room',socket.rooms);
-    console.log(socket.rooms); // the Set contains at least the socket ID
+    console.log(socket.rooms);
+    const [socketId,room]=socket.rooms
+    if(activeRooms[room]){
+      activeRooms[room]=activeRooms[room]?.filter((user)=>{
+        user.socketId!==socketId
+      })
+    }
+    io.sockets.in(room).emit('user-left',activeRooms[room])
   });
   socket.on('disconnect', () => {
     console.log('disconnecting ID',socket.id);
