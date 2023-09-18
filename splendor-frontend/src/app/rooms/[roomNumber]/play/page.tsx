@@ -4,7 +4,7 @@ import { socketInitializeRoom } from "@/socket";
 import { useUserStore } from "@/zustand";
 import { useRouter } from "next/navigation";
 
-let socket
+let socket;
 
 const RoomPage = ({params})=>{
   console.log(params.roomNumber)

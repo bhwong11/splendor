@@ -104,7 +104,7 @@ export default function CreatePost(){
       })
     }}>
     <div>
-      <label for="number">room number</label>
+      <label htmlhtmlFor="number">room number</label>
       <input 
         name="number"
         type="text"
@@ -137,14 +137,14 @@ export default function CreatePost(){
         refresh:()=>router.refresh()
       })
     }}>
-      <label for="username">username</label>
+      <label htmlFor="username">username</label>
       <input 
         name="username"
         type="text"
         value={username}
         onChange={e=>setUsername(e.target.value)}
       />
-      <label for="roomNumber">roomNumber</label>
+      <label htmlFor="roomNumber">roomNumber</label>
       <input 
         name="roomNumber"
         type="text"
@@ -168,14 +168,14 @@ export default function CreatePost(){
       });
       setMessage("");
     }}>
-      <label for="username">username</label>
+      <label htmlFor="username">username</label>
       <input 
         name="username"
         type="text"
         value={username}
         onChange={e=>setUsername(e.target.value)}
       />
-      <label for="message">message</label>
+      <label htmlFor="message">message</label>
       <input 
         name="message"
         type="text"

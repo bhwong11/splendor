@@ -10,6 +10,8 @@ import UpdateUser from "./UpdateUser"
 
 export default function EnterRoom({
   existingRoomNumber
+}:{
+  existingRoomNumber?:number | string
 }){
   const [roomNumber,setRoomNumber] = useState('')
   const [username,setUsername] = useState('')
@@ -36,14 +38,14 @@ export default function EnterRoom({
         })
         router.push(`/rooms/${roomNumber}/play`)
       }}>
-        <label for="username">new user: username</label>
+        <label htmlFor="username">new user: username</label>
         <input 
           name="username"
           type="text"
           value={username}
           onChange={e=>setUsername(e.target.value)}
         />
-        <label for="roomNumber">roomNumber</label>
+        <label htmlFor="roomNumber">roomNumber</label>
         <input 
           name="roomNumber"
           type="text"
@@ -68,14 +70,14 @@ export default function EnterRoom({
         })
         router.push(`/rooms/${roomNumber}/play`)
       }}>
-        <label for="username">update user: username</label>
+        <label htmlFor="username">update user: username</label>
         <input 
           name="username"
           type="text"
           value={username}
           onChange={e=>setUsername(e.target.value)}
         />
-        <label for="roomNumber">roomNumber</label>
+        <label htmlFor="roomNumber">roomNumber</label>
         <input 
           name="roomNumber"
           type="text"

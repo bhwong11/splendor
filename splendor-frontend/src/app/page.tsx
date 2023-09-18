@@ -1,4 +1,4 @@
-import styles from './page.module.css'
+// import styles from './page.module.css'
 import CreatePost from './posts/[id]/createPost'
 import CreateRoom from './(components)/CreateRoom'
 import EnterRoom from './(components)/EnterRoom'
@@ -16,8 +16,8 @@ const getAllRooms = async ()=>{
 export default async function Home() {
   const allRooms = await getAllRooms()
   return (
-    <main className={styles.main}>
-      <h1 className={styles.test}>test</h1>
+    <main className=''>
+      <h1 className=''>test</h1>
       <div>
         {allRooms?.map(room=>(
           <p>room number{room.roomNumber}</p>
