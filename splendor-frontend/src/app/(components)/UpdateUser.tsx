@@ -1,40 +1,47 @@
 'use client';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createUser } from "@/api";
+import { useEffect } from 'react'
+import { updateUser } from "@/api";
 import { useUserStore } from "@/zustand";
 
-export default function CreateUser({
+
+export default function EnterRoom({
   existingRoomNumber
 }){
   const [roomNumber,setRoomNumber] = useState('')
   const [username,setUsername] = useState('')
   const router = useRouter()
-  const updateUserName = useUserStore(state=>state.setUsername)
   useEffect(()=>{
     setRoomNumber(existingRoomNumber)
   },[])
+  
+  const updateUserName = useUserStore(state=>state.setUsername)
+
 
   return(
     <div>
-      <h3>create user</h3>
+
+      <h3>update user</h3>
       <form onSubmit={async (e)=>{
         e.preventDefault();
-        console.log('creating user and added to room')
+        console.log('updating user and added to room')
 
-        const newUser = await createUser({
+        //will it not set room number?
+        const updatedUser = await updateUser({
           username,
           roomNumber,
           refresh:()=>router.refresh()
         })
-        if(newUser.status!==200){
-          console.log(newUser.message)
+        if(updatedUser.status!==200){
+          console.log(updatedUser.message)
           return
         }
-        updateUserName(newUser.username)
+        console.log('updated user',updatedUser)
+        updateUserName(updatedUser.username)
         router.push(`/rooms/${roomNumber}/play`)
       }}>
-        <label for="username">new user: username</label>
+        <label>update user: username</label>
         <input 
           name="username"
           type="text"
@@ -43,7 +50,7 @@ export default function CreateUser({
         />
         {!existingRoomNumber &&
         <>
-          <label for="roomNumber">roomNumber</label>
+          <label>roomNumber</label>
           <input 
             name="roomNumber"
             type="text"
@@ -52,7 +59,7 @@ export default function CreateUser({
           />
         </>}
         <button type="submit">
-          Enter Room
+          Enter Room update
         </button>
       </form>
     </div>

@@ -6,9 +6,6 @@ import { io } from "socket.io-client";
 import { createUser, updateUser } from "@/api";
 import CreateUser from "./CreateUser";
 import UpdateUser from "./UpdateUser"
-import { socketInitializeRoom } from "@/socket";
-
-let socket;
 
 
 export default function EnterRoom({
@@ -20,25 +17,6 @@ export default function EnterRoom({
   const [allMessages,setAllMessages] = useState([])
   const [randomRoomNumber,setRandomRoomNumber] = useState('')
   const router = useRouter()
-
-  const socketInitializer = async () =>{
-    socket = io(process.env.NEXT_PUBLIC_API_URL)
-    console.log('init')
-    socket.emit('join-room',{
-      room:'room-1',
-      username:''
-    })
-  }
-  useEffect(()=>{
-    // socketInitializer()
-    // socket.on("receive-message", (data) => {
-    //   console.log('recive',data)
-    //   setAllMessages((pre) => [...pre, data]);
-    // });
-    // return () => {
-    //   socket.disconnect();
-    // };
-  },[])
 
 
   return(

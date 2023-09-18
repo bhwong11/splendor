@@ -4,7 +4,7 @@ const createRoom = async ({
   refresh=()=>{}
 }={})=>{
   //put this in helper func
-  if(!roomNumber && !roomNumber===0) return
+  if(!roomNumber && roomNumber!==0) return
   const res = await fetch(
   `${process.env.NEXT_PUBLIC_API_URL}/api/rooms/create`,{
       method: 'POST',
@@ -29,9 +29,12 @@ const createRoom = async ({
 const getRoom = async ({
   roomNumber=null,
   refresh=()=>{}
-}={})=>{
+}:{
+  roomNumber:number | null,
+  refresh?:() => void
+})=>{
   //put this in helper func
-  if(!roomNumber && !roomNumber===0) return
+  if(!roomNumber && roomNumber!==0) return
   const res = await fetch(
   `${process.env.NEXT_PUBLIC_API_URL}/api/rooms/getOne/${roomNumber}`
   )
@@ -44,11 +47,16 @@ const getRoom = async ({
   }
 }
 
+
 const createUser = async ({
   username='',
-  roomNumber,
+  roomNumber=null,
   refresh=()=>{}
-}={})=>{
+}:{
+  username:string,
+  roomNumber:number | string | null,
+  refresh?:() => void
+})=>{
   if(!username) return
   //put this in helper func
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/create`,{
@@ -77,7 +85,13 @@ const updateUser = async ({
   roomNumbers,
   roomNumber,
   refresh=()=>{}
-}={})=>{
+}:{
+  userId?:string,
+  username?:string,
+  roomNumbers?:number[] | string[] | null,
+  roomNumber?: number | string | null,
+  refresh?:() => void
+})=>{
   if(!userId && !username) return
   //put this in helper func
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/update/${

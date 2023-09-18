@@ -1,39 +1,12 @@
 'use client';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect } from 'react'
-import { io } from "socket.io-client";
 import { createRoom } from "@/api";
-
-let socket;
 
 
 export default function CreateRoom(){
   const [roomNumber,setRoomNumber] = useState('')
-  const [username,setUsername] = useState('')
-  const [message,setMessage] = useState('')
-  const [allMessages,setAllMessages] = useState([])
-  const [randomRoomNumber,setRandomRoomNumber] = useState('')
   const router = useRouter()
-
-  const socketInitializer = async () =>{
-    socket = io(process.env.NEXT_PUBLIC_API_URL)
-    console.log('init')
-    socket.emit('join-room',{
-      room:'room-1',
-      username:''
-    })
-  }
-  useEffect(()=>{
-    // socketInitializer()
-    // socket.on("receive-message", (data) => {
-    //   console.log('recive',data)
-    //   setAllMessages((pre) => [...pre, data]);
-    // });
-    // return () => {
-    //   socket.disconnect();
-    // };
-  },[])
 
 
   return(
@@ -50,7 +23,7 @@ export default function CreateRoom(){
         router.push(`/rooms/${newRoom.roomNumber}`)
       }}>
       <div>
-        <label for="number">room number</label>
+        <label>room number</label>
         <input 
           name="number"
           type="text"
