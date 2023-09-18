@@ -1,62 +1,287 @@
 export default [
+  //black
   {
+    id:70,
     gem:"black",
     picture: "mine",
-    level:1,
-    victoryPoints:0,
+    level:3,
+    victoryPoints:3,
     price:{
-      white:1,
-      blue:1,
-      green:1,
-      red:1
+      white:3,
+      blue:3,
+      green:5,
+      red:3,
+      black:0
     }
   },
   {
+    id:71,
     gem:"black",
     picture: "mine",
-    level:1,
-    victoryPoints:0,
+    level:3,
+    victoryPoints:4,
     price:{
-      white:1,
-      blue:1,
-      green:1,
-      red:1
+      white:0,
+      blue:0,
+      green:0,
+      red:7,
+      black:0
     }
   },
   {
+    id:72,
     gem:"black",
     picture: "mine",
-    level:1,
-    victoryPoints:0,
+    level:3,
+    victoryPoints:4,
     price:{
-      white:1,
-      blue:1,
-      green:1,
-      red:1
+      white:0,
+      blue:0,
+      green:3,
+      red:6,
+      black:3
     }
   },
   {
+    id:73,
     gem:"black",
     picture: "mine",
-    level:1,
-    victoryPoints:0,
+    level:3,
+    victoryPoints:5,
     price:{
-      white:1,
-      blue:1,
-      green:1,
-      red:1
+      white:0,
+      blue:0,
+      green:0,
+      red:7,
+      black:3
     }
   },
-  {
-    gem:"black",
-    picture: "mine",
-    level:1,
-    victoryPoints:0,
-    price:{
-      white:1,
-      blue:1,
-      green:1,
-      red:1
-    }
-  },
+    //blue
+    {
+      id:74,
+      gem:"blue",
+      picture: "mine",
+      level:3,
+      victoryPoints:3,
+      price:{
+        white:3,
+        blue:0,
+        green:3,
+        red:3,
+        black:5
+      }
+    },
+    {
+      id:75,
+      gem:"blue",
+      picture: "mine",
+      level:3,
+      victoryPoints:4,
+      price:{
+        white:7,
+        blue:0,
+        green:0,
+        red:0,
+        black:0
+      }
+    },
+    {
+      id:76,
+      gem:"blue",
+      picture: "mine",
+      level:3,
+      victoryPoints:4,
+      price:{
+        white:6,
+        blue:3,
+        green:0,
+        red:0,
+        black:3
+      }
+    },
+    {
+      id:77,
+      gem:"blue",
+      picture: "mine",
+      level:3,
+      victoryPoints:5,
+      price:{
+        white:7,
+        blue:3,
+        green:0,
+        red:0,
+        black:0
+      }
+    },
+    //white
+    {
+      id:78,
+      gem:"blue",
+      picture: "mine",
+      level:3,
+      victoryPoints:3,
+      price:{
+        white:0,
+        blue:3,
+        green:3,
+        red:5,
+        black:5
+      }
+    },
+    {
+      id:79,
+      gem:"blue",
+      picture: "mine",
+      level:3,
+      victoryPoints:4,
+      price:{
+        white:0,
+        blue:0,
+        green:0,
+        red:0,
+        black:7
+      }
+    },
+    {
+      id:80,
+      gem:"blue",
+      picture: "mine",
+      level:3,
+      victoryPoints:4,
+      price:{
+        white:3,
+        blue:0,
+        green:0,
+        red:3,
+        black:6
+      }
+    },
+    {
+      id:81,
+      gem:"blue",
+      picture: "mine",
+      level:3,
+      victoryPoints:5,
+      price:{
+        white:3,
+        blue:0,
+        green:0,
+        red:0,
+        black:7
+      }
+    },
+    //green
+    {
+      id:82,
+      gem:"green",
+      picture: "mine",
+      level:3,
+      victoryPoints:3,
+      price:{
+        white:0,
+        blue:3,
+        green:3,
+        red:5,
+        black:5
+      }
+    },
+    {
+      id:83,
+      gem:"green",
+      picture: "mine",
+      level:3,
+      victoryPoints:4,
+      price:{
+        white:0,
+        blue:0,
+        green:0,
+        red:0,
+        black:7
+      }
+    },
+    {
+      id:84,
+      gem:"green",
+      picture: "mine",
+      level:3,
+      victoryPoints:4,
+      price:{
+        white:3,
+        blue:0,
+        green:0,
+        red:3,
+        black:6
+      }
+    },
+    {
+      id:85,
+      gem:"green",
+      picture: "mine",
+      level:3,
+      victoryPoints:5,
+      price:{
+        white:3,
+        blue:0,
+        green:0,
+        red:0,
+        black:7
+      }
+    },
+    //red
+    {
+      id:86,
+      gem:"red",
+      picture: "mine",
+      level:3,
+      victoryPoints:3,
+      price:{
+        white:3,
+        blue:5,
+        green:3,
+        red:0,
+        black:3
+      }
+    },
+    {
+      id:87,
+      gem:"red",
+      picture: "mine",
+      level:3,
+      victoryPoints:4,
+      price:{
+        white:0,
+        blue:0,
+        green:7,
+        red:0,
+        black:0
+      }
+    },
+    {
+      id:88,
+      gem:"red",
+      picture: "mine",
+      level:3,
+      victoryPoints:4,
+      price:{
+        white:0,
+        blue:3,
+        green:6,
+        red:3,
+        black:0
+      }
+    },
+    {
+      id:89,
+      gem:"red",
+      picture: "mine",
+      level:3,
+      victoryPoints:5,
+      price:{
+        white:0,
+        blue:0,
+        green:7,
+        red:3,
+        black:0
+      }
+    },
 ]
