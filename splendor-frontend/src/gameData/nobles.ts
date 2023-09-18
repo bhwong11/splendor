@@ -1,0 +1,122 @@
+export default [
+  {
+    id:0,
+    picture: "mine",
+    victoryPoints:3,
+    price:{
+      white:0,
+      blue:0,
+      green:4,
+      red:4,
+      black:0
+    }
+  },
+  {
+    id:1,
+    picture: "mine",
+    victoryPoints:3,
+    price:{
+      white:3,
+      blue:0,
+      green:0,
+      red:3,
+      black:3
+    }
+  },
+  {
+    id:2,
+    picture: "mine",
+    victoryPoints:3,
+    price:{
+      white:4,
+      blue:4,
+      green:0,
+      red:0,
+      black:0
+    }
+  },
+  {
+    id:3,
+    picture: "mine",
+    victoryPoints:3,
+    price:{
+      white:4,
+      blue:0,
+      green:0,
+      red:0,
+      black:4
+    }
+  },
+  {
+    id:4,
+    picture: "mine",
+    victoryPoints:3,
+    price:{
+      white:0,
+      blue:4,
+      green:4,
+      red:0,
+      black:0
+    }
+  },
+  {
+    id:5,
+    picture: "mine",
+    victoryPoints:3,
+    price:{
+      white:0,
+      blue:3,
+      green:3,
+      red:3,
+      black:0
+    }
+  },
+  {
+    id:6,
+    picture: "mine",
+    victoryPoints:3,
+    price:{
+      white:3,
+      blue:0,
+      green:3,
+      red:3,
+      black:0
+    }
+  },
+  {
+    id:7,
+    picture: "mine",
+    victoryPoints:3,
+    price:{
+      white:0,
+      blue:0,
+      green:0,
+      red:4,
+      black:4
+    }
+  },
+  {
+    id:8,
+    picture: "mine",
+    victoryPoints:3,
+    price:{
+      white:3,
+      blue:3,
+      green:0,
+      red:0,
+      black:3
+    }
+  },
+  {
+    id:9,
+    picture: "mine",
+    victoryPoints:3,
+    price:{
+      white:0,
+      blue:0,
+      green:3,
+      red:3,
+      black:3
+    }
+  },
+]
