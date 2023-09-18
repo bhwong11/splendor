@@ -1,5 +1,7 @@
 import RoomModel from "../../models/RoomModel.js"
 
+const userLimit = 4
+
 const joinActions =async ({
   io,
   socket,
@@ -13,10 +15,18 @@ const joinActions =async ({
     }catch(err){
       console.log('error in room',err)
     }
+    if(activeRooms[obj?.room].users>=userLimit){
+      socket.broadcast.to(socket.id).emit('load-error',{
+        message:'room is full'
+      })
+      return
+    }
+
     if(!roomInDB){
-      socket.broadcast.to(socket.id).emit('no-room',{
+      socket.broadcast.to(socket.id).emit('load-error',{
         message:'room not found'
       })
+      return
     }
 
     const existingUser = activeRooms[obj?.room]?.find(user=>user.username===obj.username)
