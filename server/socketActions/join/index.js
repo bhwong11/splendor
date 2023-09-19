@@ -15,7 +15,7 @@ const joinActions =async ({
     }catch(err){
       console.log('error in room',err)
     }
-    if(activeRooms[obj?.room].users>=userLimit){
+    if((activeRooms[obj?.room]?.users?.length || 0) > userLimit){
       socket.broadcast.to(socket.id).emit('load-error',{
         message:'room is full'
       })
