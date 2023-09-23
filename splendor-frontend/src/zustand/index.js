@@ -14,8 +14,24 @@ const useSocketStore = create((set) => ({
   setSocket: (socket)=>set(_=>({socket}))
 }))
 
+const useBoardStore = create((set) => ({
+  turnPlayer:'',
+  cardsLv1:[],
+  cardsLv2:[],
+  cardsLv3:[],
+  nobles:[],
+  tokens:{},
+  setTurnPlayer: (turnPlayer)=>set(_=>({turnPlayer})),
+  setCardsLv1: (cardsLv1)=>set(_=>({cardsLv1})),
+  setCardsLv2: (cardsLv2)=>set(_=>({cardsLv2})),
+  setCardsLv3: (cardsLv3)=>set(_=>({cardsLv3})),
+  setNobles: (nobles)=>set(_=>({nobles})),
+  setTokens: (tokens)=>set(_=>({tokens})),
+}))
+
 
 export {
   useUserStore,
-  useSocketStore
+  useSocketStore,
+  useBoardStore
 }
