@@ -3,9 +3,7 @@ import { useEffect,useState } from "react";
 import { socketInitializeRoom } from "@/socket";
 import { useUserStore } from "@/zustand";
 import { useRouter } from "next/navigation";
-import cardsLv1 from "@/gameData/cardsLv1";
-import cardsLv2 from "@/gameData/cardsLv2";
-import cardsLv3 from "@/gameData/cardsLv1";
+import { createGame } from "@/app/lib";
 
 let socket;
 
@@ -47,9 +45,8 @@ const RoomPage = ({params})=>{
           <button onClick={(e)=>{
             e.preventDefault()
             socket?.emit('start-game',{
-              cardsLv1,
-              cardsLv2,
-              cardsLv3
+              room:params.roomNumber,
+              board:createGame()
             })
           }}>Play</button>
       </div>)

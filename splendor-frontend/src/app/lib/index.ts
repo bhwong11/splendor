@@ -1,8 +1,15 @@
+import cardsLv1 from "@/gameData/cardsLv1";
+import cardsLv2 from "@/gameData/cardsLv2";
+import cardsLv3 from "@/gameData/cardsLv1";
+import nobles from "@/gameData/nobles";
+import tokens from "@/gameData/tokens";
+
+
 interface Card{
     id:number,
-    gem:string,
+    gem?:string,
     picture: string,
-    level:number,
+    level?:number,
     victoryPoints:number,
     price:{
       white?:number,
@@ -12,6 +19,17 @@ interface Card{
       black?:number
     }
 }
-const shuffleCards = (cards:Card[]=[])=>{
 
+const shuffleCards = (cards:Card[]=[])=>{
+  return cards.sort(() => (Math.random() > .5) ? 1 : -1);
+}
+
+export const createGame = ()=>{
+  const gameBoard = {
+    nobles:shuffleCards(nobles),
+    tokens,
+    cardsLv1:shuffleCards(cardsLv1),
+    cardsLv2:shuffleCards(cardsLv2),
+    cardsLv3:shuffleCards(cardsLv3)
+  }
 }
