@@ -2,6 +2,7 @@
 import { useEffect,useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSocketStore, useBoardStore, useUserStore } from "@/zustand";
+import { actionTypes } from "@/zustand";
 
 const CardsGrid = ({params})=>{
   console.log(params.roomNumber)
@@ -14,6 +15,10 @@ const CardsGrid = ({params})=>{
   const cardsLv1 = useBoardStore(state=>state.cardsLv1)
   const cardsLv2 = useBoardStore(state=>state.cardsLv2)
   const cardsLv3 = useBoardStore(state=>state.cardsLv3)
+
+  const turnAction = useUserStore(state=>state.turnAction)
+  const userCards = useUserStore(state=>state.cards)
+  const userTokens = useUserStore(state=>state.tokens)
   
   const router = useRouter()
   useEffect(()=>{
@@ -27,6 +32,13 @@ const CardsGrid = ({params})=>{
     }
   },[socket])
 
+  const takeCard = ()=>{
+    const cardsValueMap = userCards.reduce((all,next)=>({
+      ...all,
+      [next.gem]: all[next.gem]?all[next.gem]+1:1
+    }),{})
+  }
+
   return (
       username && (
       <div>
@@ -35,7 +47,13 @@ const CardsGrid = ({params})=>{
           <div className="cards-lv3 d-flex">
             {cardsLv3?.slice(cardsLv3.length-4,cardsLv3.length)
               .map(cardLv3=>(
-                <div className="card" key={cardLv3.id}>
+                <div
+                  className="card"
+                  key={cardLv3.id}
+                  onClick={()=>{
+
+                  }}
+                >
                   {JSON.stringify(cardLv3)}
                 </div>
               ))}

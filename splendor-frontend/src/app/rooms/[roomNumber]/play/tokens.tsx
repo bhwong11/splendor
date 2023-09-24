@@ -61,7 +61,7 @@ const Tokens = ({params})=>{
       [color]:userTokens[color]+1
     }
     setUserTokens(newUserTokens)
-    socket.emit('take-token',{
+    socket.emit('update-tokens',{
       room: params.roomNumber,
       username,
       boardTokens:newBoardTokens,
