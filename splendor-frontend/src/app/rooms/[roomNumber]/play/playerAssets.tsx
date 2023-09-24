@@ -3,11 +3,11 @@ import { useEffect,useState } from "react";
 import { socketInitializeRoom } from "@/socket";
 import { useRouter } from "next/navigation";
 import { useSocketStore, useUserStore, useBoardStore } from "@/zustand";
+import { actionTypes } from "@/zustand";
 
 
 const CardsGrid = ({params})=>{
   console.log(params.roomNumber)
-  const [users,setUsers] = useState([])
   const socket = useSocketStore(state=>state.socket)
   const username = useUserStore(state=>state.username)
   const cards = useUserStore(state=>state.cards)
@@ -15,8 +15,10 @@ const CardsGrid = ({params})=>{
 
   const turn = useBoardStore(state=>state.turn)
   const turnPlayer = useBoardStore(state=>state.turnPlayer)
+  const turnAction = useUserStore(state=>state.turnAction)
   const setTurn = useBoardStore(state=>state.setTurn)
   const setTurnPlayer = useBoardStore(state=>state.setTurnPlayer)
+  const setTurnAction= useUserStore(state=>state.setTurnAction)
 
   const passTurn = ()=>{
     socket.emit('next-turn',{
@@ -38,9 +40,30 @@ const CardsGrid = ({params})=>{
   return (
       username && (
       <div>
-          <h1>Player Assets</h1>
+          <h1>ActionAssets</h1>
           <h4>turn:{JSON.stringify(turn)}</h4>
+          <h4>turn action: {JSON.stringify(turnAction)}</h4>
           <h4>turn player: {JSON.stringify(turnPlayer)}</h4>
+          <p>tokens: {JSON.stringify(tokens)}</p>
+          <p>cards: {JSON.stringify(cards)}</p>
+
+          <div>
+            <button onClick={(e)=>{
+              e.preventDefault()
+              setTurnAction(actionTypes.RESERVE)
+            }}>Reserve</button>
+
+            <button onClick={(e)=>{
+              e.preventDefault()
+              setTurnAction(actionTypes.BUY_CARD)
+            }}>Buy</button>
+
+            <button onClick={(e)=>{
+              e.preventDefault()
+              setTurnAction(actionTypes.TAKE_TOKENS)
+            }}>take tokens</button>
+          </div>
+
           <button onClick={(e)=>{
             e.preventDefault()
             passTurn()

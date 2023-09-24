@@ -13,6 +13,7 @@ import RoomModel from "./models/RoomModel.js";
 import joinActions from "./socketActions/join/index.js";
 import leaveActions from "./socketActions/leave/index.js";
 import turnActions from "./socketActions/turns/index.js";
+import gameActions from "./socketActions/gamePlay/index.js";
 
 dotenv.config();
 
@@ -64,6 +65,11 @@ io.on('connection', async (socket) => {
     activeRooms
   })
   turnActions({
+    io,
+    socket,
+    activeRooms
+  })
+  gameActions({
     io,
     socket,
     activeRooms

@@ -23,7 +23,7 @@ export default async function Home() {
           <p>room number{room.roomNumber}</p>
         ))}
       </div>
-      <CreatePost/>
+      {/* <CreatePost/> */}
       <CreateRoom/>
       <EnterRoom/>
     </main>
