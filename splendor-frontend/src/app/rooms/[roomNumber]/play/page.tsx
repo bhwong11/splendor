@@ -4,6 +4,7 @@ import { socketInitializeRoom } from "@/socket";
 import { useUserStore } from "@/zustand";
 import { useRouter } from "next/navigation";
 import { createGame } from "@/app/lib";
+import { useSocketStore } from "@/zustand";
 
 let socket;
 
@@ -11,6 +12,7 @@ const RoomPage = ({params})=>{
   console.log(params.roomNumber)
   const [users,setUsers] = useState([])
   const username = useUserStore(state=>state.username)
+  const setSocket = useSocketStore(state=>state.setSocket)
   const router = useRouter()
   useEffect(()=>{
     console.log('username!',username)
@@ -18,6 +20,7 @@ const RoomPage = ({params})=>{
       router.push('/')
     }
     socket = socketInitializeRoom(params.roomNumber,username)
+    setSocket(socket)
     console.log('soc',socket)
     if(socket){
       socket.on('user-joined',data=>{
