@@ -4,20 +4,28 @@ import cardsLv3 from "@/gameData/cardsLv1";
 import nobles from "@/gameData/nobles";
 import tokens from "@/gameData/tokens";
 
+export interface Tokens{
+  white:number,
+  blue:number,
+  green:number,
+  red:number,
+  black:number,
+  gold: number
+}
 
-interface Card{
-    id:number,
-    gem?:string,
-    picture: string,
-    level?:number,
-    victoryPoints:number,
-    price:{
-      white?:number,
-      blue?:number,
-      green?:number,
-      red?:number,
-      black?:number
-    }
+export interface Card{
+  id:number,
+  gem?:string,
+  picture: string,
+  level?:number,
+  victoryPoints:number,
+  price:{
+    white?:number,
+    blue?:number,
+    green?:number,
+    red?:number,
+    black?:number
+  }
 }
 
 const shuffleCards = (cards:Card[]=[])=>{
