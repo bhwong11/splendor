@@ -33,7 +33,7 @@ const shuffleCards = (cards:Card[]=[])=>{
 }
 
 export const createGame = ()=>{
-  const gameBoard = {
+  return {
     nobles:shuffleCards(nobles),
     tokens,
     cardsLv1:shuffleCards(cardsLv1),

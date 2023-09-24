@@ -8,7 +8,7 @@ import { useSocketStore } from "@/zustand";
 import CardsGrid from "./cardsGrid";
 import PlayerAssets from "./playerAssets"
 
-let socket;
+let socket: any;
 
 const RoomPage = ({params})=>{
   console.log(params.roomNumber)
