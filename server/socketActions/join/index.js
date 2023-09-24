@@ -56,7 +56,16 @@ const joinActions =async ({
         activeRooms[obj?.room].users?.push({
           username:obj?.username,
           socketId:socket.id,
-          active:true
+          active:true,
+          tokens:{
+            white:0,
+            blue:0,
+            green:0,
+            red:0,
+            black:0,
+            gold: 0
+          },
+          cards:[]
         })
       }
       console.log('active rooms',activeRooms)

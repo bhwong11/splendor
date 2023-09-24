@@ -9,6 +9,7 @@ import CardsGrid from "./cardsGrid";
 import Tokens from "./tokens";
 import PlayerAssets from "./playerAssets"
 import Nobles from "./nobles"
+import OtherPlayerAssets from "./otherPlayersAssets";
 
 let socket: any;
 
@@ -57,6 +58,7 @@ const RoomPage = ({params})=>{
               board:createGame()
             })
           }}>Play</button>
+          <OtherPlayerAssets params={params}/>
       </div>)
   )
 }

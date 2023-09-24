@@ -9,17 +9,18 @@ const turnActions =async ({
     activeRooms[obj?.room].turnPlayer = activeRooms[obj?.room]?.users?.[0]
     activeRooms[obj?.room].turn = 1
     io.sockets.in(obj?.room).emit('game-board',obj.board)
+    io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room].users)
     io.sockets.in(obj?.room).emit('turn-update',{
-      turn:1,
+      turn:0,
       turnPlayer: activeRooms[obj?.room].turnPlayer
     })
   })
   socket.on('next-turn',(obj)=>{
-    activeRooms[obj?.room].turn+=1
     const turn = activeRooms[obj?.room].turn
-    console.log('active room',activeRooms[obj?.room])
     const players = activeRooms[obj?.room]?.users
     const turnPlayerIndex = (turn) % players.length
+    activeRooms[obj?.room].turn+=1
+    console.log('active room',activeRooms[obj?.room])
     const turnPlayer = activeRooms[obj?.room]?.users[turnPlayerIndex]
     io.sockets.in(obj?.room).emit('turn-update',{
       turn,

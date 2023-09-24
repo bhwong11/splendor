@@ -6,7 +6,7 @@ import { useSocketStore, useUserStore, useBoardStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
 
 
-const CardsGrid = ({params})=>{
+const PlayerAssets = ({params})=>{
   console.log(params.roomNumber)
   const socket = useSocketStore(state=>state.socket)
   const username = useUserStore(state=>state.username)
@@ -21,6 +21,7 @@ const CardsGrid = ({params})=>{
   const setTurnAction= useUserStore(state=>state.setTurnAction)
 
   const passTurn = ()=>{
+    console.log('passing turn')
     socket.emit('next-turn',{
       room:params.roomNumber
     })
@@ -36,6 +37,10 @@ const CardsGrid = ({params})=>{
       })
     }
   },[socket])
+
+  useEffect(()=>{
+    setTurnAction(null)
+  },[turnPlayer])
 
   return (
       username && (
@@ -72,4 +77,4 @@ const CardsGrid = ({params})=>{
   )
 }
 
-export default CardsGrid
+export default PlayerAssets

@@ -3,6 +3,7 @@ import cardsLv2 from "@/gameData/cardsLv2";
 import cardsLv3 from "@/gameData/cardsLv1";
 import nobles from "@/gameData/nobles";
 import tokens from "@/gameData/tokens";
+import { useBoardStore, useUserStore } from "@/zustand";
 
 export interface Tokens{
   white:number,
@@ -40,4 +41,10 @@ export const createGame = ()=>{
     cardsLv2:shuffleCards(cardsLv2),
     cardsLv3:shuffleCards(cardsLv3)
   }
+}
+
+export const useIsTurnPlayer = ()=>{
+  const turnPlayer = useBoardStore(state=>state.turnPlayer)
+  const username = useUserStore(state=>state.username)
+  return username === turnPlayer
 }

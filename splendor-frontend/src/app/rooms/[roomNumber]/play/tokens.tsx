@@ -1,13 +1,14 @@
 'use client';
 import { useEffect,useState } from "react";
-import { socketInitializeRoom } from "@/socket";
 import { useRouter } from "next/navigation";
 import { useSocketStore, useBoardStore,useUserStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
+import { useIsTurnPlayer } from "@/app/lib";
 
 const Tokens = ({params})=>{
   const username = useUserStore(state=>state.username)
   const socket = useSocketStore(state=>state.socket)
+  const isTurnPlayer = useIsTurnPlayer()
 
   const [taken,setTaken] = useState(0)
 
@@ -42,8 +43,13 @@ const Tokens = ({params})=>{
   ),[])
 
   const takeToken = (color: string)=>{
-    if(turnAction !== actionTypes.TAKE_TOKENS) return
-    if(taken>=3) return
+    console.log('turnAction',turnAction,isTurnPlayer,taken)
+    if(
+      turnAction !== actionTypes.TAKE_TOKENS
+      || !isTurnPlayer
+      || taken>=3
+    ) return
+
     console.log('taking token')
     setTaken(prev=>prev+1)
     const newBoardTokens = {
