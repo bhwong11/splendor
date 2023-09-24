@@ -30,7 +30,7 @@ const CardsGrid = ({params})=>{
       socket.on('turn-update',data=>{
         console.log('turn update',data)
         setTurn(data.turn)
-        setTurnPlayer(data.turnPlayer)
+        setTurnPlayer(data.turnPlayer.username)
       })
     }
   },[socket])
@@ -39,8 +39,8 @@ const CardsGrid = ({params})=>{
       username && (
       <div>
           <h1>Player Assets</h1>
-          <h4>turn:{turn}</h4>
-          <h4>turn player{turnPlayer}</h4>
+          <h4>turn:{JSON.stringify(turn)}</h4>
+          <h4>turn player: {JSON.stringify(turnPlayer)}</h4>
           <button onClick={(e)=>{
             e.preventDefault()
             passTurn()
