@@ -6,7 +6,9 @@ import { useRouter } from "next/navigation";
 import { createGame } from "@/app/lib";
 import { useSocketStore } from "@/zustand";
 import CardsGrid from "./cardsGrid";
+import Tokens from "./tokens";
 import PlayerAssets from "./playerAssets"
+import Nobles from "./nobles"
 
 let socket: any;
 
@@ -43,7 +45,9 @@ const RoomPage = ({params})=>{
             <span>{user.active?"ACTIVE":"NOT ACTIVE"}</span>
             </div>
           ))}
+          <Nobles params={params}/>
           <CardsGrid params={params}/>
+          <Tokens params={params}/>
           <PlayerAssets params={params}/>
           <button onClick={(e)=>{
             e.preventDefault()

@@ -10,22 +10,16 @@ const CardsGrid = ({params})=>{
   const setCardsLv1 = useBoardStore(state=>state.setCardsLv1)
   const setCardsLv2 = useBoardStore(state=>state.setCardsLv2)
   const setCardsLv3 = useBoardStore(state=>state.setCardsLv3)
-  const setNobles = useBoardStore(state=>state.setNobles)
-  const setTokens = useBoardStore(state=>state.setTokens)
 
   const cardsLv1 = useBoardStore(state=>state.cardsLv1)
   const cardsLv2 = useBoardStore(state=>state.cardsLv2)
   const cardsLv3 = useBoardStore(state=>state.cardsLv3)
-  const nobles = useBoardStore(state=>state.nobles)
-  const tokens = useBoardStore(state=>state.tokens)
   
   const router = useRouter()
   useEffect(()=>{
     if(socket){
       socket.on('game-board',data=>{
         console.log('game-board',data)
-        setNobles(data.nobles)
-        setTokens(data.tokens)
         setCardsLv1(data.cardsLv1)
         setCardsLv2(data.cardsLv2)
         setCardsLv3(data.cardsLv3)
@@ -64,7 +58,6 @@ const CardsGrid = ({params})=>{
               </div>
             ))}
           </div>
-          <h3>{params.roomNumber}</h3>
       </div>)
   )
 }

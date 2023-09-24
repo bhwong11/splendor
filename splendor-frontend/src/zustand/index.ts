@@ -1,21 +1,31 @@
 import { create } from 'zustand'
 import { Card, Tokens } from '@/app/lib'
 
+
+export const actionTypes ={
+  RESERVE:'reserve',
+  BUY_CARD:'buy-card',
+  TAKE_TOKENS:'take-tokens',
+}
+
 interface UserState {
   username: string
   room: string | number
   cards: Card[]
-  tokens:Tokens,
-  setRoom: (roomNumber: string | number)=>void,
-  setUsername: (username: string)=>void,
+  tokens:Tokens
+  turnAction: null | string
+  setRoom: (roomNumber: string | number)=>void
+  setUsername: (username: string)=>void
   setCards:(cards: Card[])=>void
   setTokens:(tokens: Tokens)=>void
+  setTurnAction:(action: null | string )=>void
 }
 
 const useUserStore = create<UserState>()((set) => ({
   username:'',
   room:'',
   cards:[],
+  turnAction: null,
   tokens:{
     white:0,
     blue:0,
@@ -27,7 +37,8 @@ const useUserStore = create<UserState>()((set) => ({
   setRoom: (roomNumber)=>set(_=>({room:roomNumber})),
   setUsername: (username)=>set(_=>({username})),
   setCards:(cards)=>set(_=>({cards})),
-  setTokens:(tokens)=>set(_=>({tokens}))
+  setTokens:(tokens)=>set(_=>({tokens})),
+  setTurnAction:(turnAction)=>set(_=>({turnAction}))
 }))
 
 interface SocketState {
