@@ -5,6 +5,8 @@ import { useUserStore } from "@/zustand";
 import { useRouter } from "next/navigation";
 import { createGame } from "@/app/lib";
 import { useSocketStore } from "@/zustand";
+import CardsGrid from "./cardsGrid";
+import PlayerAssets from "./playerAssets"
 
 let socket;
 
@@ -15,21 +17,17 @@ const RoomPage = ({params})=>{
   const setSocket = useSocketStore(state=>state.setSocket)
   const router = useRouter()
   useEffect(()=>{
-    console.log('username!',username)
     if(!username){
       router.push('/')
     }
     socket = socketInitializeRoom(params.roomNumber,username)
     setSocket(socket)
-    console.log('soc',socket)
     if(socket){
       socket.on('user-joined',data=>{
-        console.log('user=join',data)
-        setUsers(data)
+        setUsers(data?.users)
       })
       socket.on('user-left',data=>{
-        console.log('user-left',data)
-        setUsers(data)
+        setUsers(data?.users)
       })
     }
   },[])
@@ -45,8 +43,11 @@ const RoomPage = ({params})=>{
             <span>{user.active?"ACTIVE":"NOT ACTIVE"}</span>
             </div>
           ))}
+          <CardsGrid params={params}/>
+          <PlayerAssets params={params}/>
           <button onClick={(e)=>{
             e.preventDefault()
+            console.log('socket',socket)
             socket?.emit('start-game',{
               room:params.roomNumber,
               board:createGame()

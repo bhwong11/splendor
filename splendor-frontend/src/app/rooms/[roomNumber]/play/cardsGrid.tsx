@@ -3,6 +3,7 @@ import { useEffect,useState } from "react";
 import { socketInitializeRoom } from "@/socket";
 import { useUserStore } from "@/zustand";
 import { useRouter } from "next/navigation";
+import { useSocketStore, useBoardStore } from "@/zustand";
 
 let socket;
 
@@ -10,25 +11,16 @@ const CardsGrid = ({params})=>{
   console.log(params.roomNumber)
   const [users,setUsers] = useState([])
   const username = useUserStore(state=>state.username)
+  const socket = useSocketStore(state=>state.socket)
+  
   const router = useRouter()
   useEffect(()=>{
-    console.log('username!',username)
-    if(!username){
-      router.push('/')
-    }
-    socket = socketInitializeRoom(params.roomNumber,username)
-    console.log('soc',socket)
     if(socket){
-      socket.on('user-joined',data=>{
+      socket.on('game-board',data=>{
         console.log('user=join',data)
-        setUsers(data)
-      })
-      socket.on('user-left',data=>{
-        console.log('user-left',data)
-        setUsers(data)
       })
     }
-  },[])
+  },[socket])
 
   return (
       username && (

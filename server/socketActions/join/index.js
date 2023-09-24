@@ -29,7 +29,7 @@ const joinActions =async ({
       return
     }
 
-    const existingUser = activeRooms[obj?.room]?.find(user=>user.username===obj.username)
+    const existingUser = activeRooms[obj?.room]?.users?.find(user=>user.username===obj.username)
 
     if(existingUser){
       if(existingUser.active){
@@ -46,10 +46,14 @@ const joinActions =async ({
       console.log('user',obj)
       socket.join(obj?.room)
       if(!activeRooms[obj?.room]){
-        activeRooms[obj?.room] = []
+        console.log('no existon!!')
+        activeRooms[obj?.room] = {
+          users:[]
+        }
       }
       if(!existingUser){
-        activeRooms[obj?.room].push({
+        console.log('no existon',activeRooms[obj?.room])
+        activeRooms[obj?.room].users?.push({
           username:obj?.username,
           socketId:socket.id,
           active:true

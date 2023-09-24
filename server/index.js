@@ -12,6 +12,7 @@ import mongoose from "mongoose";
 import RoomModel from "./models/RoomModel.js";
 import joinActions from "./socketActions/join/index.js";
 import leaveActions from "./socketActions/leave/index.js";
+import turnActions from "./socketActions/turns/index.js";
 
 dotenv.config();
 
@@ -58,6 +59,11 @@ io.on('connection', async (socket) => {
   console.log('a user connected');
 
   joinActions({
+    io,
+    socket,
+    activeRooms
+  })
+  turnActions({
     io,
     socket,
     activeRooms

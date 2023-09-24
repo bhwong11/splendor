@@ -11,7 +11,7 @@ const leaveActions =async ({
     console.log(socket.rooms);
     const [socketId,room]=socket.rooms
     if(activeRooms[room]){
-      activeRooms[room]=activeRooms[room]?.map((user)=>(
+      activeRooms[room].users=activeRooms[room]?.users?.map((user)=>(
         user.socketId===socketId?{
           ...user,
           active:false
