@@ -12,11 +12,13 @@ interface UserState {
   username: string
   room: string | number
   cards: Card[]
+  reservedCards: Card[]
   tokens:Tokens
   turnAction: null | string
   setRoom: (roomNumber: string | number)=>void
   setUsername: (username: string)=>void
   setCards:(cards: Card[])=>void
+  setReservedCards:(cards: Card[])=>void
   setTokens:(tokens: Tokens)=>void
   setTurnAction:(action: null | string )=>void
 }
@@ -25,6 +27,7 @@ const useUserStore = create<UserState>()((set) => ({
   username:'',
   room:'',
   cards:[],
+  reservedCards:[],
   turnAction: null,
   tokens:{
     white:0,
@@ -37,6 +40,7 @@ const useUserStore = create<UserState>()((set) => ({
   setRoom: (roomNumber)=>set(_=>({room:roomNumber})),
   setUsername: (username)=>set(_=>({username})),
   setCards:(cards)=>set(_=>({cards})),
+  setReservedCards:(reservedCards)=>set(_=>({reservedCards})),
   setTokens:(tokens)=>set(_=>({tokens})),
   setTurnAction:(turnAction)=>set(_=>({turnAction}))
 }))

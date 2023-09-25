@@ -48,3 +48,20 @@ export const useIsTurnPlayer = ()=>{
   const username = useUserStore(state=>state.username)
   return username === turnPlayer
 }
+
+export const useCanBuyCard = ()=>{
+  const userCards = useUserStore(state=>state.cards)
+  const userTokens = useUserStore(state=>state.tokens)
+  const cardsValueMap = userCards.reduce((all,next)=>({
+    ...all,
+    [next.gem]: all[next.gem]?all[next.gem]+1:1
+  }),{})
+  return {
+    canBuyCard:(card: Card)=>(
+      Object.keys(card.price).every(gemColor=>(
+        card.price[gemColor]<=cardsValueMap[gemColor]+userTokens[gemColor]
+      ))
+    ),
+    userCardsValueMap:cardsValueMap
+  }
+}
