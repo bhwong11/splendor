@@ -17,7 +17,7 @@ const CardsGrid = ({params})=>{
   const setUserTokens = useUserStore(state=>state.setTokens)
   const setReservedCards = useUserStore(state=>state.setReservedCards)
 
-  const {canBuyCard,userCardsValueMap} = useCanBuyCard()
+  const {canBuyCard,remainingCost,userCardsValueMap} = useCanBuyCard()
   const isTurnPlayer = useIsTurnPlayer()
 
   const cardsLv1 = useBoardStore(state=>state.cardsLv1)
@@ -100,14 +100,20 @@ const CardsGrid = ({params})=>{
         || !isTurnPlayer
         || turnAction!==actionTypes.BUY_CARD
       ) return
+    const goldTokenCost = remainingCost(card)
     const userTokensClone = cloneDeep(userTokens)
     const boardTokensClone = cloneDeep(boardTokens)
     Object.keys(card.price).forEach(gemColor=>{
+      //maybe a way to clean this up
       const rawPriceLessCards = card.price[gemColor] - userCardsValueMap[gemColor]
-      const finalPriceLessCards = rawPriceLessCards>=0?rawPriceLessCards:0
-      userTokensClone[gemColor]-= finalPriceLessCards
-      boardTokensClone[gemColor] += finalPriceLessCards
+      const nonNegPriceLessCards = rawPriceLessCards>=0?rawPriceLessCards:0
+      const finalPrice = (userTokensClone[gemColor]>=nonNegPriceLessCards)
+        ?nonNegPriceLessCards:userTokensClone[gemColor]
+        
+      userTokensClone[gemColor]-= finalPrice
+      boardTokensClone[gemColor] += finalPrice
     })
+    boardTokensClone.gold +=goldTokenCost
     setUserTokens(userTokensClone)
     removeCardFromBoard(card)
     updateTokens(userTokensClone,boardTokensClone)

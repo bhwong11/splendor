@@ -56,18 +56,18 @@ export const useCanBuyCard = ()=>{
     ...all,
     [next.gem]: all[next.gem]?all[next.gem]+1:1
   }),{})
+  const remainingCost=(card:Card):number=>{
+    let remainingCost = 0
+    for(let gemColor in card.price){
+      const costOver = card.price[gemColor]-(cardsValueMap[gemColor]+userTokens[gemColor])
+      remainingCost += costOver>=0?costOver:0
+    }
+    return remainingCost
+  }
   return {
-    canBuyCard:(card: Card)=>{
-
-      const remainingCost = 0
-      Object.keys(card.price).reduce((all,gemColor)=>({
-        ...all,
-        [gemColor]:card.price[gemColor]<=cardsValueMap[gemColor]+userTokens[gemColor]
-      }),{})
-      
-      return Object.keys(card.price).every(gemColor=>(
-        card.price[gemColor]<=cardsValueMap[gemColor]+userTokens[gemColor]
-      ))
+    remainingCost,
+    canBuyCard:(card: Card):boolean=>{
+      return userTokens.gold>=remainingCost(card)
     },
     userCardsValueMap:cardsValueMap
   }
