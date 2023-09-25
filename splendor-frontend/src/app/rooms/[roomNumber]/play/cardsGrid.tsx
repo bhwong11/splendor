@@ -5,6 +5,7 @@ import { useSocketStore, useBoardStore, useUserStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
 import { useCanBuyCard, useIsTurnPlayer } from "@/app/lib";
 import cloneDeep from 'lodash/clonedeep';
+import { Card, Tokens } from "@/app/lib";
 
 const CardsGrid = ({params})=>{
   console.log(params.roomNumber)
@@ -14,6 +15,7 @@ const CardsGrid = ({params})=>{
   const setCardsLv2 = useBoardStore(state=>state.setCardsLv2)
   const setCardsLv3 = useBoardStore(state=>state.setCardsLv3)
   const setUserTokens = useUserStore(state=>state.setTokens)
+  const setReservedCards = useUserStore(state=>state.setReservedCards)
 
   const {canBuyCard,userCardsValueMap} = useCanBuyCard()
   const isTurnPlayer = useIsTurnPlayer()
@@ -25,6 +27,7 @@ const CardsGrid = ({params})=>{
 
   const turnAction = useUserStore(state=>state.turnAction)
   const userCards = useUserStore(state=>state.cards)
+  const useReservedCards = useUserStore(state=>state.reservedCards)
   const userTokens = useUserStore(state=>state.tokens)
   
   const router = useRouter()
@@ -46,7 +49,43 @@ const CardsGrid = ({params})=>{
     }
   },[socket])
 
-  const takeCard = (card)=>{
+  const removeCardFromBoard = (card:Card) =>{
+    //probably a way to clean this up but not too mad, since it'll max out at 3
+    let cardsLv1Copy = cardsLv1
+    let cardsLv2Copy = cardsLv2
+    let cardsLv3Copy = cardsLv3
+    if(card.level === 1){
+      cardsLv1Copy = cardsLv1Copy.filter(c=>c.id!==card.id)
+    }
+    if(card.level === 2){
+      cardsLv2Copy = cardsLv3Copy.filter(c=>c.id!==card.id)
+    }
+    if(card.level === 3){
+      cardsLv3Copy = cardsLv3Copy.filter(c=>c.id!==card.id)
+    }
+    socket.emit('update-cards',{
+      room: params.roomNumber,
+      username,
+      newCard:card,
+      cardsLv1:cardsLv1Copy,
+      cardsLv2:cardsLv2Copy,
+      cardsLv3:cardsLv3Copy,
+    })
+  }
+
+  const updateTokens = (
+    userTokensInput:Tokens, 
+    boardTokensInput:Tokens
+  ) =>{
+    socket.emit('update-tokens',{
+      room: params.roomNumber,
+      username,
+      boardTokens:boardTokensInput,
+      userTokens:userTokensInput
+    })
+  }
+
+  const takeCard = (card:Card)=>{
     // const cardsValueMap = userCards.reduce((all,next)=>({
     //   ...all,
     //   [next.gem]: all[next.gem]?all[next.gem]+1:1
@@ -70,37 +109,28 @@ const CardsGrid = ({params})=>{
       boardTokensClone[gemColor] += finalPriceLessCards
     })
     setUserTokens(userTokensClone)
-    //probably a way to clean this up but not too mad, since it'll max out at 3
-    let cardsLv1Copy = cardsLv1
-    let cardsLv2Copy = cardsLv2
-    let cardsLv3Copy = cardsLv3
-    if(card.level === 1){
-      cardsLv1Copy = cardsLv1Copy.filter(c=>c.id!==card.id)
-    }
-    if(card.level === 2){
-      cardsLv2Copy = cardsLv3Copy.filter(c=>c.id!==card.id)
-    }
-    if(card.level === 3){
-      cardsLv3Copy = cardsLv3Copy.filter(c=>c.id!==card.id)
-    }
-    socket.emit('update-cards',{
-      room: params.roomNumber,
-      username,
-      newCard:card,
-      cardsLv1:cardsLv1Copy,
-      cardsLv2:cardsLv2Copy,
-      cardsLv3:cardsLv3Copy,
-    })
-    socket.emit('update-tokens',{
-      room: params.roomNumber,
-      username,
-      boardTokens:boardTokensClone,
-      userTokens:userTokensClone
-    })
+    removeCardFromBoard(card)
+    updateTokens(userTokensClone,boardTokensClone)
   }
 
-  const reserveCard = ()=>{
-    
+  const reserveCard = (card:Card)=>{
+    if(boardTokens.gold<=0) return
+    updateTokens(
+    {
+      ...userTokens,
+      gold:userTokens.gold+1
+    },
+    {
+      ...boardTokens,
+      gold:boardTokens.gold -1
+    })
+    removeCardFromBoard(card)
+    socket.emit('reserve-card',{
+      room:params.roomNumber,
+      username,
+      card
+    })
+    setReservedCards([...useReservedCards,card])
   }
 
   return (
@@ -115,7 +145,12 @@ const CardsGrid = ({params})=>{
                   className="card"
                   key={cardLv3.id}
                   onClick={()=>{
-
+                    if(turnAction===actionTypes.BUY_CARD){
+                      takeCard(cardLv3)
+                    }
+                    if(turnAction===actionTypes.RESERVE){
+                      reserveCard(cardLv3)
+                    }
                   }}
                 >
                   {JSON.stringify(cardLv3)}
