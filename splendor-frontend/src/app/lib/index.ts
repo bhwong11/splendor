@@ -57,11 +57,18 @@ export const useCanBuyCard = ()=>{
     [next.gem]: all[next.gem]?all[next.gem]+1:1
   }),{})
   return {
-    canBuyCard:(card: Card)=>(
-      Object.keys(card.price).every(gemColor=>(
+    canBuyCard:(card: Card)=>{
+
+      const remainingCost = 0
+      Object.keys(card.price).reduce((all,gemColor)=>({
+        ...all,
+        [gemColor]:card.price[gemColor]<=cardsValueMap[gemColor]+userTokens[gemColor]
+      }),{})
+      
+      return Object.keys(card.price).every(gemColor=>(
         card.price[gemColor]<=cardsValueMap[gemColor]+userTokens[gemColor]
       ))
-    ),
+    },
     userCardsValueMap:cardsValueMap
   }
 }
