@@ -16,6 +16,7 @@ const CardsGrid = ({params})=>{
   const setCardsLv3 = useBoardStore(state=>state.setCardsLv3)
   const setUserTokens = useUserStore(state=>state.setTokens)
   const setReservedCards = useUserStore(state=>state.setReservedCards)
+  const setUserCards = useUserStore(state=>state.setCards)
 
   const {canBuyCard,remainingCost,userCardsValueMap} = useCanBuyCard()
   const isTurnPlayer = useIsTurnPlayer()
@@ -109,12 +110,15 @@ const CardsGrid = ({params})=>{
       const nonNegPriceLessCards = rawPriceLessCards>=0?rawPriceLessCards:0
       const finalPrice = (userTokensClone[gemColor]>=nonNegPriceLessCards)
         ?nonNegPriceLessCards:userTokensClone[gemColor]
-        
+
       userTokensClone[gemColor]-= finalPrice
       boardTokensClone[gemColor] += finalPrice
     })
+    userTokensClone.gold -=goldTokenCost
     boardTokensClone.gold +=goldTokenCost
+
     setUserTokens(userTokensClone)
+    setUserCards([...userCards,card])
     removeCardFromBoard(card)
     updateTokens(userTokensClone,boardTokensClone)
   }
@@ -167,7 +171,18 @@ const CardsGrid = ({params})=>{
           <div className="cards-lv2 d-flex">
             {cardsLv2?.slice(cardsLv2.length-4,cardsLv2.length)
               .map(cardLv2=>(
-              <div className="card" key={cardLv2.id}>
+              <div
+                className="card"
+                key={cardLv2.id}
+                onClick={()=>{
+                  if(turnAction===actionTypes.BUY_CARD){
+                    takeCard(cardLv2)
+                  }
+                  if(turnAction===actionTypes.RESERVE){
+                    reserveCard(cardLv2)
+                  }
+                }}
+              >
                 {JSON.stringify(cardLv2)}
               </div>
             ))}
@@ -176,7 +191,18 @@ const CardsGrid = ({params})=>{
           <div className="cards-lv2 d-flex">
             {cardsLv1?.slice(cardsLv1.length-4,cardsLv1.length)
               .map(cardLv1=>(
-              <div className="card" key={cardLv1.id}>
+              <div
+                className="card"
+                key={cardLv1.id}
+                onClick={()=>{
+                  if(turnAction===actionTypes.BUY_CARD){
+                    takeCard(cardLv1)
+                  }
+                  if(turnAction===actionTypes.RESERVE){
+                    reserveCard(cardLv1)
+                  }
+                }}
+              >
                 {JSON.stringify(cardLv1)}
               </div>
             ))}

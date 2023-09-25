@@ -10,7 +10,14 @@ const Tokens = ({params})=>{
   const socket = useSocketStore(state=>state.socket)
   const isTurnPlayer = useIsTurnPlayer()
 
-  const [taken,setTaken] = useState(0)
+  const [taken,setTaken] = useState({
+    white:0,
+    blue:0,
+    green:0,
+    red:0,
+    black:0,
+    gold: 0
+  })
 
   const setTokens = useBoardStore(state=>state.setTokens)
   const setUserTokens = useUserStore(state=>state.setTokens)
@@ -35,7 +42,14 @@ const Tokens = ({params})=>{
   },[socket])
 
   useEffect(()=>{
-    setTaken(0)
+    setTaken({
+      white:0,
+      blue:0,
+      green:0,
+      red:0,
+      black:0,
+      gold: 0
+    })
   },[turn])
 
   const tokensArray = Object.keys(tokens)?.reduce((all,next)=>(
@@ -44,14 +58,23 @@ const Tokens = ({params})=>{
 
   const takeToken = (color: string)=>{
     console.log('turnAction',turnAction,isTurnPlayer,taken)
+    const totalTaken = Object.values(taken).reduce((all,next)=>(
+      all+next
+    ),0)
+    const takenTwoOfSame = Object.values(taken).some(colorQty=>colorQty>=2)
+
     if(
       turnAction !== actionTypes.TAKE_TOKENS
       || !isTurnPlayer
-      || taken>=3
+      || totalTaken>=3
+      || takenTwoOfSame
     ) return
 
     console.log('taking token')
-    setTaken(prev=>prev+1)
+    setTaken(prev=>({
+      ...prev,
+      [color]:prev[color]+1
+    }))
     const newBoardTokens = {
       ...tokens,
       [color]:tokens[color]>0?tokens[color]-1:0

@@ -29,6 +29,15 @@ export interface Card{
   }
 }
 
+const emptyTokens = {
+  white:0,
+  blue:0,
+  green:0,
+  red:0,
+  black:0,
+  gold: 0
+}
+
 const shuffleCards = (cards:Card[]=[])=>{
   return cards.sort(() => (Math.random() > .5) ? 1 : -1);
 }
@@ -55,7 +64,8 @@ export const useCanBuyCard = ()=>{
   const cardsValueMap = userCards.reduce((all,next)=>({
     ...all,
     [next.gem]: all[next.gem]?all[next.gem]+1:1
-  }),{})
+  }),emptyTokens)
+
   const remainingCost=(card:Card):number=>{
     let remainingCost = 0
     for(let gemColor in card.price){
