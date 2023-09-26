@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useSocketStore, useBoardStore,useUserStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
 import { useIsTurnPlayer } from "@/app/lib";
+import { SocketUser } from "@/app/lib";
 
 const Tokens = ({params})=>{
   const username = useUserStore(state=>state.username)
@@ -37,6 +38,12 @@ const Tokens = ({params})=>{
       socket.on('token-taken',data=>{
         console.log('game-board tokens new',data)
         setTokens(data)
+      })
+
+      socket.on('players-update',(data:SocketUser[])=>{
+        console.log('players-update',data)
+        const playerData = data.find((player:SocketUser)=>player.username===username)
+        setUserTokens(playerData.tokens)
       })
     }
   },[socket])
@@ -83,7 +90,6 @@ const Tokens = ({params})=>{
       ...userTokens,
       [color]:userTokens[color]+1
     }
-    setUserTokens(newUserTokens)
     socket.emit('update-tokens',{
       room: params.roomNumber,
       username,

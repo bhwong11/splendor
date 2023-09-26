@@ -29,6 +29,15 @@ export interface Card{
   }
 }
 
+export interface SocketUser{
+  active:boolean,
+  cards:Card[],
+  reserveCards:Card[],
+  socketId:string,
+  tokens:Tokens,
+  username:string
+}
+
 const emptyTokens = {
   white:0,
   blue:0,

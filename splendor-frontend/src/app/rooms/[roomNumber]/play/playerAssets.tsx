@@ -43,7 +43,7 @@ const PlayerAssets = ({params})=>{
 
   useEffect(()=>{
     setTurnAction(null)
-  },[turnPlayer])
+  },[turn])
 
   return (
       username && (

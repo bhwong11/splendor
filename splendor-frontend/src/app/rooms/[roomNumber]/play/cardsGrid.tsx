@@ -5,7 +5,7 @@ import { useSocketStore, useBoardStore, useUserStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
 import { useCanBuyCard, useIsTurnPlayer } from "@/app/lib";
 import cloneDeep from 'lodash/clonedeep';
-import { Card, Tokens } from "@/app/lib";
+import { Card, Tokens, SocketUser } from "@/app/lib";
 
 const CardsGrid = ({params})=>{
   console.log(params.roomNumber)
@@ -47,6 +47,14 @@ const CardsGrid = ({params})=>{
         setCardsLv2(data.cardsLv2)
         setCardsLv3(data.cardsLv3)
       })
+
+      socket.on('players-update',(data:SocketUser[])=>{
+        console.log('players-update',data)
+        const playerData = data.find((player:SocketUser)=>player.username===username)
+        setUserTokens(playerData.tokens)
+        setUserCards(playerData.cards)
+        setReservedCards(playerData.reserveCards)
+      })
     }
   },[socket])
 
@@ -55,6 +63,7 @@ const CardsGrid = ({params})=>{
     let cardsLv1Copy = cardsLv1
     let cardsLv2Copy = cardsLv2
     let cardsLv3Copy = cardsLv3
+    console.log('CARD!!1',cardsLv1)
     if(card.level === 1){
       cardsLv1Copy = cardsLv1Copy.filter(c=>c.id!==card.id)
     }
@@ -64,6 +73,7 @@ const CardsGrid = ({params})=>{
     if(card.level === 3){
       cardsLv3Copy = cardsLv3Copy.filter(c=>c.id!==card.id)
     }
+    console.log('CARD!!',cardsLv1Copy)
     socket.emit('update-cards',{
       room: params.roomNumber,
       username,
@@ -110,9 +120,6 @@ const CardsGrid = ({params})=>{
     })
     userTokensClone.gold -=goldTokenCost
     boardTokensClone.gold +=goldTokenCost
-
-    setUserTokens(userTokensClone)
-    setUserCards([...userCards,card])
     removeCardFromBoard(card)
     updateTokens(userTokensClone,boardTokensClone)
   }
@@ -134,7 +141,6 @@ const CardsGrid = ({params})=>{
       username,
       card
     })
-    setReservedCards([...useReservedCards,card])
   }
 
   return (
