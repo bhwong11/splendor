@@ -88,13 +88,6 @@ const CardsGrid = ({params})=>{
   }
 
   const takeCard = (card:Card)=>{
-    // const cardsValueMap = userCards.reduce((all,next)=>({
-    //   ...all,
-    //   [next.gem]: all[next.gem]?all[next.gem]+1:1
-    // }),{})
-    // const canBuy = Object.keys(card.price).every(gemColor=>(
-    //   card.price[gemColor]<=cardsValueMap[gemColor]+userTokens[gemColor]
-    // ))
     const canBuy = canBuyCard(card)
     console.log('buying card',!canBuy,!isTurnPlayer,turnAction!==actionTypes.BUY_CARD)
     if(
