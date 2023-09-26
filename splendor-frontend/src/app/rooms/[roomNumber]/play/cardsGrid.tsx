@@ -28,8 +28,11 @@ const CardsGrid = ({params})=>{
 
   const turnAction = useUserStore(state=>state.turnAction)
   const userCards = useUserStore(state=>state.cards)
-  const useReservedCards = useUserStore(state=>state.reservedCards)
+  const userReservedCards = useUserStore(state=>state.reservedCards)
   const userTokens = useUserStore(state=>state.tokens)
+  const [cardsLv1Display,setCardsLv1Display] = useState([])
+  const [cardsLv2Display,setCardsLv2Display] = useState([])
+  const [cardsLv3Display,setCardsLv3Display] = useState([])
   
   const router = useRouter()
   useEffect(()=>{
@@ -39,6 +42,9 @@ const CardsGrid = ({params})=>{
         setCardsLv1(data.cardsLv1)
         setCardsLv2(data.cardsLv2)
         setCardsLv3(data.cardsLv3)
+        setCardsLv1Display(data.cardsLv1.slice(data.cardsLv1.length-4,data.cardsLv1.length))
+        setCardsLv2Display(data.cardsLv2.slice(data.cardsLv2.length-4,data.cardsLv2.length))
+        setCardsLv3Display(data.cardsLv3.slice(data.cardsLv3.length-4,data.cardsLv3.length))
       })
 
       socket.on('board-cards-update',data=>{
@@ -46,6 +52,39 @@ const CardsGrid = ({params})=>{
         setCardsLv1(data.cardsLv1)
         setCardsLv2(data.cardsLv2)
         setCardsLv3(data.cardsLv3)
+        setCardsLv1Display(prev=>{
+          const newCards = data.cardsLv1.slice(data.cardsLv1.length-4,data.cardsLv1.length)
+
+          const indexOfOldCard = prev.findIndex(card=>card.id===data?.newCard.id)
+          if(indexOfOldCard===-1){
+            return newCards
+          }
+          const prevCopy = [...prev]
+          prevCopy.splice(indexOfOldCard,1,newCards[0])
+          return prevCopy
+        })
+        setCardsLv2Display(prev=>{
+          const newCards = data.cardsLv2.slice(data.cardsLv2.length-4,data.cardsLv2.length)
+
+          const indexOfOldCard = prev.findIndex(card=>card.id===data?.newCard.id)
+          if(indexOfOldCard===-1){
+            return newCards
+          }
+          const prevCopy = [...prev]
+          prevCopy.splice(indexOfOldCard,1,newCards[0])
+          return prevCopy
+        })
+        setCardsLv3Display(prev=>{
+          const newCards = data.cardsLv3.slice(data.cardsLv3.length-4,data.cardsLv3.length)
+
+          const indexOfOldCard = prev.findIndex(card=>card.id===data?.newCard.id)
+          if(indexOfOldCard===-1){
+            return newCards
+          }
+          const prevCopy = [...prev]
+          prevCopy.splice(indexOfOldCard,1,newCards[0])
+          return prevCopy
+        })
       })
 
       socket.on('players-update',(data:SocketUser[])=>{
@@ -63,7 +102,6 @@ const CardsGrid = ({params})=>{
     let cardsLv1Copy = cardsLv1
     let cardsLv2Copy = cardsLv2
     let cardsLv3Copy = cardsLv3
-    console.log('CARD!!1',cardsLv1)
     if(card.level === 1){
       cardsLv1Copy = cardsLv1Copy.filter(c=>c.id!==card.id)
     }
@@ -73,7 +111,6 @@ const CardsGrid = ({params})=>{
     if(card.level === 3){
       cardsLv3Copy = cardsLv3Copy.filter(c=>c.id!==card.id)
     }
-    console.log('CARD!!',cardsLv1Copy)
     socket.emit('update-cards',{
       room: params.roomNumber,
       username,
@@ -149,7 +186,7 @@ const CardsGrid = ({params})=>{
           <h1>Card grid</h1>
           <h4>lv 3 cards</h4>
           <div className="cards-lv3 d-flex">
-            {cardsLv3?.slice(cardsLv3.length-4,cardsLv3.length)
+            {cardsLv3Display
               .map(cardLv3=>(
                 <div
                   className="card"
@@ -169,7 +206,7 @@ const CardsGrid = ({params})=>{
           </div>
           <h4>lv 2 cards</h4>
           <div className="cards-lv2 d-flex">
-            {cardsLv2?.slice(cardsLv2.length-4,cardsLv2.length)
+            {cardsLv2Display
               .map(cardLv2=>(
               <div
                 className="card"
@@ -189,7 +226,7 @@ const CardsGrid = ({params})=>{
           </div>
           <h4>lv 1 cards</h4>
           <div className="cards-lv2 d-flex">
-            {cardsLv1?.slice(cardsLv1.length-4,cardsLv1.length)
+            {cardsLv1Display
               .map(cardLv1=>(
               <div
                 className="card"
