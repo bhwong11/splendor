@@ -22,6 +22,7 @@ const PlayerAssets = ({params})=>{
   const setTurnAction = useUserStore(state=>state.setTurnAction)
   const setUserCards = useUserStore(state=>state.setCards)
   const setReservedCards = useUserStore(state=>state.setReservedCards)
+  const [actionTaken,setActionTaken]=useState(false)
 
   const passTurn = ()=>{
     console.log('passing turn')
@@ -43,6 +44,7 @@ const PlayerAssets = ({params})=>{
 
   useEffect(()=>{
     setTurnAction(null)
+    setActionTaken(false)
   },[turn])
 
   return (
@@ -75,23 +77,28 @@ const PlayerAssets = ({params})=>{
 
 
           <div>
+            {/* make a enum to loop over */}
             <button onClick={(e)=>{
               e.preventDefault()
+              if(actionTaken) return
               setTurnAction(actionTypes.RESERVE)
             }}>Reserve</button>
 
             <button onClick={(e)=>{
               e.preventDefault()
+              if(actionTaken) return
               setTurnAction(actionTypes.BUY_CARD)
             }}>Buy Card</button>
 
             <button onClick={(e)=>{
               e.preventDefault()
+              if(actionTaken) return
               setTurnAction(actionTypes.BUY_CARD)
             }}>Buy Reserved Card</button>
 
             <button onClick={(e)=>{
               e.preventDefault()
+              if(actionTaken) return
               setTurnAction(actionTypes.TAKE_TOKENS)
             }}>take tokens</button>
           </div>
