@@ -19,7 +19,7 @@ pnpm dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 # start server
-* This server connects to a Mongo Atlas database and you will need a ATLAS URI to connect
+* This server connects to a Mongo Atlas database and you will need a ATLAS URI to [connect](https://www.mongodb.com/docs/atlas/tutorial/connect-to-your-cluster/)
 
 to start the server run the following commands from the root directory
 
