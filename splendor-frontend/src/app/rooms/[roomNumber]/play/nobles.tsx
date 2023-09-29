@@ -15,7 +15,7 @@ const Nobles = ({params})=>{
   const router = useRouter()
   useEffect(()=>{
     if(socket){
-      socket.on('game-board',data=>{
+      socket.on('game-board',(data:any)=>{
         console.log('game-board nobles',data)
         setNobles(data.nobles)
       })
