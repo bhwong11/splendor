@@ -56,11 +56,6 @@ const PlayerAssets = ({params})=>{
       goldTokenCost,
       userCardsValueMap
     )
-    socket.emit('buy-reserve-card',{
-      room:params.roomNumber,
-      username,
-      card
-    })
     removeCardFromBoard(
       socket,
       username,
@@ -78,6 +73,11 @@ const PlayerAssets = ({params})=>{
       userTokensClone,
       boardTokensClone
     )
+    socket.emit('buy-reserve-card',{
+      room:params.roomNumber,
+      username,
+      card
+    })
   }
 
   const router = useRouter()

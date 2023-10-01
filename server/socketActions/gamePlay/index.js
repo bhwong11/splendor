@@ -55,7 +55,7 @@ const gameActions =async ({
   socket.on('buy-reserve-card',(obj)=>{
     console.log('buy-reserve-card')
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
-    user.reservedCards= user.reservedCards.filter(c=>c.id!==obj.card)
+    user.reservedCards= user.reservedCards.filter(c=>c.id!==obj.card.id)
     user.cards.push(obj?.card)
     io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)
   })
