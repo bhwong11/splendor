@@ -23,6 +23,7 @@ const gameActions =async ({
   socket.on('update-tokens',(obj)=>{
     console.log('update-tokens')
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
+    if(!user) return
     user.tokens = obj?.userTokens
     activeRooms[obj?.room].board.tokens = obj.boardTokens
     io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)

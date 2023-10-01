@@ -19,6 +19,10 @@ const PlayerAssets = ({params})=>{
   const cardsLv1 = useBoardStore(state=>state.cardsLv1)
   const cardsLv2 = useBoardStore(state=>state.cardsLv2)
   const cardsLv3 = useBoardStore(state=>state.cardsLv3)
+  const victoryPoints = useUserStore(state=>(
+    state.cards.reduce((all,card)=>all+card.victoryPoints,0)
+    + state.nobles.reduce((all,noble)=>all+noble.victoryPoints,0)
+  ))
   const {remainingCost,userCardsValueMap} = useCanBuyCard()
 
   const turn = useBoardStore(state=>state.turn)
@@ -110,6 +114,7 @@ const PlayerAssets = ({params})=>{
           <h4>turn:{JSON.stringify(turn)}</h4>
           <h4>turn action: {JSON.stringify(turnAction)}</h4>
           <h4>turn player: {JSON.stringify(turnPlayer)}</h4>
+          <p>victoryPoints: {victoryPoints}</p>
           <p>tokens: {JSON.stringify(tokens)}</p>
           <p>cards: {JSON.stringify(userCards)}</p>
           <p>Reserved Cards: {JSON.stringify(reservedCards)}</p>
