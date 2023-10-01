@@ -66,7 +66,8 @@ const joinActions =async ({
             gold: 0
           },
           cards:[],
-          reserveCards:[]
+          reserveCards:[],
+          nobles:[]
         })
       }
       console.log('active rooms',activeRooms)

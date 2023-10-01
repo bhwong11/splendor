@@ -92,7 +92,7 @@ const CardsGrid = ({params})=>{
         const playerData = data.find((player:SocketUser)=>player.username===username)
         setUserTokens(playerData.tokens)
         setUserCards(playerData.cards)
-        setReservedCards(playerData.reserveCards)
+        setReservedCards(playerData.reservedCards)
       })
     }
   },[socket])

@@ -11,6 +11,7 @@ export const actionTypes ={
 interface UserState {
   username: string
   room: string | number
+  nobles: Card[]
   cards: Card[]
   reservedCards: Card[]
   tokens:Tokens
@@ -18,6 +19,7 @@ interface UserState {
   setRoom: (roomNumber: string | number)=>void
   setUsername: (username: string)=>void
   setCards:(cards: Card[])=>void
+  setNobles:(nobles: Card[])=>void
   setReservedCards:(cards: Card[])=>void
   setTokens:(tokens: Tokens)=>void
   setTurnAction:(action: null | string )=>void
@@ -27,6 +29,7 @@ const useUserStore = create<UserState>()((set) => ({
   username:'',
   room:'',
   cards:[],
+  nobles:[],
   reservedCards:[],
   turnAction: null,
   tokens:{
@@ -40,6 +43,7 @@ const useUserStore = create<UserState>()((set) => ({
   setRoom: (roomNumber)=>set(_=>({room:roomNumber})),
   setUsername: (username)=>set(_=>({username})),
   setCards:(cards)=>set(_=>({cards})),
+  setNobles:(nobles)=>set(_=>({nobles})),
   setReservedCards:(reservedCards)=>set(_=>({reservedCards})),
   setTokens:(tokens)=>set(_=>({tokens})),
   setTurnAction:(turnAction)=>set(_=>({turnAction}))

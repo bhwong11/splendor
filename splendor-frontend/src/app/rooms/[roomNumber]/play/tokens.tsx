@@ -75,6 +75,7 @@ const Tokens = ({params})=>{
       || !isTurnPlayer
       || totalTaken>=3
       || takenTwoOfSame
+      || color === 'gold'
     ) return
 
     console.log('taking token')

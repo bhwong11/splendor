@@ -4,6 +4,7 @@ import { socketInitializeRoom } from "@/socket";
 import { useRouter } from "next/navigation";
 import { useSocketStore, useUserStore, useBoardStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
+import { SocketUser } from "@/app/lib";
 
 
 const PlayerAssets = ({params})=>{
@@ -11,6 +12,7 @@ const PlayerAssets = ({params})=>{
   const socket = useSocketStore(state=>state.socket)
   const username = useUserStore(state=>state.username)
   const userCards = useUserStore(state=>state.cards)
+  const userNobles = useUserStore(state=>state.nobles)
   const tokens = useUserStore(state=>state.tokens)
   const reservedCards = useUserStore(state=>state.reservedCards)
 
@@ -22,6 +24,8 @@ const PlayerAssets = ({params})=>{
   const setTurnAction = useUserStore(state=>state.setTurnAction)
   const setUserCards = useUserStore(state=>state.setCards)
   const setReservedCards = useUserStore(state=>state.setReservedCards)
+  const setUserNobles = useUserStore(state=>state.setNobles)
+  const setUserTokens = useUserStore(state=>state.setTokens)
   const [actionTaken,setActionTaken]=useState(false)
 
   const passTurn = ()=>{
@@ -38,6 +42,13 @@ const PlayerAssets = ({params})=>{
         console.log('turn update',data)
         setTurn(data.turn)
         setTurnPlayer(data.turnPlayer.username)
+      })
+      socket.on('players-update',(users:SocketUser[])=>{
+        const currentUser = users.find(user=>user.username=username)
+        setUserCards(currentUser.cards)
+        setReservedCards(currentUser.reservedCards)
+        setUserNobles(currentUser.nobles)
+        setUserTokens(currentUser.tokens)
       })
     }
   },[socket])
@@ -57,6 +68,7 @@ const PlayerAssets = ({params})=>{
           <p>tokens: {JSON.stringify(tokens)}</p>
           <p>cards: {JSON.stringify(userCards)}</p>
           <p>Reserved Cards: {JSON.stringify(reservedCards)}</p>
+          <p>nobles: {JSON.stringify(userNobles)}</p>
           <div>
             {reservedCards?.map(card=>(
               <div 

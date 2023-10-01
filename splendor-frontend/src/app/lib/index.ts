@@ -11,7 +11,7 @@ export interface Tokens{
   green:number,
   red:number,
   black:number,
-  gold: number
+  gold?: number
 }
 
 export interface Card{
@@ -21,24 +21,25 @@ export interface Card{
   level?:number,
   victoryPoints:number,
   price:{
-    white?:number,
-    blue?:number,
-    green?:number,
-    red?:number,
-    black?:number
+    white:number,
+    blue:number,
+    green:number,
+    red:number,
+    black:number
   }
 }
 
 export interface SocketUser{
   active:boolean,
   cards:Card[],
-  reserveCards:Card[],
+  reservedCards:Card[],
   socketId:string,
   tokens:Tokens,
-  username:string
+  username:string,
+  nobles:Card[]
 }
 
-const emptyTokens = {
+export const emptyTokens = {
   white:0,
   blue:0,
   green:0,
@@ -91,3 +92,9 @@ export const useCanBuyCard = ()=>{
     userCardsValueMap:cardsValueMap
   }
 }
+
+export const costCovered=(valueObj:Tokens,priceObj:Tokens)=>(
+  Object.keys(priceObj).every(
+    tokenColor=>valueObj[tokenColor]>=priceObj[tokenColor]
+  )
+)
