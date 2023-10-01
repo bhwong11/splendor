@@ -5,6 +5,7 @@ const gameActions =async ({
 })=>{
   socket.on('clear-user',obj=>{
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
+    if(!user) return
     user.tokens={
         white:0,
         blue:0,
@@ -16,12 +17,14 @@ const gameActions =async ({
     user.cards=[],
     user.reserveCards=[],
     user.nobles=[]
+    io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)
   })
 
   socket.on('update-tokens',(obj)=>{
     console.log('update-tokens')
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
     user.tokens = obj?.userTokens
+    activeRooms[obj?.room].board.tokens = obj.boardTokens
     io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)
     io.sockets.in(obj?.room).emit('token-taken',obj.boardTokens)
   })

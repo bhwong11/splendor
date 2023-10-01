@@ -8,6 +8,7 @@ const turnActions =async ({
     activeRooms[obj?.room].board = obj.board
     activeRooms[obj?.room].turnPlayer = activeRooms[obj?.room]?.users?.[0]
     activeRooms[obj?.room].turn = 1
+    activeRooms[obj?.room].gameActive = true
     io.sockets.in(obj?.room).emit('game-board',obj.board)
     io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room].users)
     console.log('TURN PLAYER',activeRooms[obj?.room].turnPlayer)

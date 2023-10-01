@@ -16,6 +16,7 @@ let socket: any;
 const RoomPage = ({params})=>{
   console.log(params.roomNumber)
   const [users,setUsers] = useState([])
+  const [gameStarted,setGameStarted] = useState(false)
   const username = useUserStore(state=>state.username)
   const setSocket = useSocketStore(state=>state.setSocket)
   const router = useRouter()
@@ -53,11 +54,12 @@ const RoomPage = ({params})=>{
           <button onClick={(e)=>{
             e.preventDefault()
             console.log('socket',socket)
+            setGameStarted(true)
             socket?.emit('start-game',{
               room:params.roomNumber,
               board:createGame()
             })
-          }}>Play</button>
+          }}>{gameStarted?'Reset':'Play'}</button>
           <OtherPlayerAssets params={params}/>
       </div>)
   )

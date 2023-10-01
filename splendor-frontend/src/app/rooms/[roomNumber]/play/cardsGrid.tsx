@@ -87,13 +87,13 @@ const CardsGrid = ({params})=>{
         })
       })
 
-      socket.on('players-update',(data:SocketUser[])=>{
-        console.log('players-update',data)
-        const playerData = data.find((player:SocketUser)=>player.username===username)
-        setUserTokens(playerData.tokens)
-        setUserCards(playerData.cards)
-        setReservedCards(playerData.reservedCards)
-      })
+      // socket.on('players-update',(data:SocketUser[])=>{
+      //   console.log('players-update',data)
+      //   const playerData = data.find((player:SocketUser)=>player.username===username)
+      //   setUserTokens(playerData.tokens)
+      //   setUserCards(playerData.cards)
+      //   setReservedCards(playerData.reservedCards)
+      // })
     }
   },[socket])
 

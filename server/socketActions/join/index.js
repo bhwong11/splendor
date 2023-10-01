@@ -2,6 +2,20 @@ import RoomModel from "../../models/RoomModel.js"
 
 const userLimit = 4
 
+const emptyUserAssets = {
+  tokens:{
+    white:0,
+    blue:0,
+    green:0,
+    red:0,
+    black:0,
+    gold: 0
+  },
+  cards:[],
+  reserveCards:[],
+  nobles:[]
+}
+
 const joinActions =async ({
   io,
   socket,
@@ -57,17 +71,7 @@ const joinActions =async ({
           username:obj?.username,
           socketId:socket.id,
           active:true,
-          tokens:{
-            white:0,
-            blue:0,
-            green:0,
-            red:0,
-            black:0,
-            gold: 0
-          },
-          cards:[],
-          reserveCards:[],
-          nobles:[]
+          ...emptyUserAssets
         })
       }
       console.log('active rooms',activeRooms)

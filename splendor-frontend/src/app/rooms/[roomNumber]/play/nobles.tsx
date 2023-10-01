@@ -35,7 +35,7 @@ const Nobles = ({params})=>{
         )
       })
       socket.on('noble-change',(data:any)=>{
-        setUserNobles(data.userNobles)
+        // setUserNobles(data.userNobles)
         setNobles(data.nobles)
       })
     }
@@ -49,7 +49,7 @@ const Nobles = ({params})=>{
       socket.emit('noble-change',{
         room:params.roomNumber,
         username,
-        userNobles,
+        userNobles:newUserNobles,
         nobles:nobles.filter(
           noble=>!newUserNobles.map(n=>n.id).includes(noble.id)
         )

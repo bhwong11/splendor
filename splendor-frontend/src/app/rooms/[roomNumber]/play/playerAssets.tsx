@@ -35,6 +35,13 @@ const PlayerAssets = ({params})=>{
     })
   }
 
+  const clearUser = ()=>{
+    socket.emit('clear-user',{
+      room:params.roomNumber,
+      username
+    })
+  }
+
   const router = useRouter()
   useEffect(()=>{
     if(socket){
@@ -45,6 +52,7 @@ const PlayerAssets = ({params})=>{
       })
       socket.on('players-update',(users:SocketUser[])=>{
         const currentUser = users.find(user=>user.username=username)
+        console.log('USER UPDATE',currentUser)
         setUserCards(currentUser.cards)
         setReservedCards(currentUser.reservedCards)
         setUserNobles(currentUser.nobles)
@@ -119,6 +127,11 @@ const PlayerAssets = ({params})=>{
             e.preventDefault()
             passTurn()
           }}>pass turn</button>
+
+          <button onClick={(e)=>{
+            e.preventDefault()
+            clearUser()
+          }}>clear user</button>
       </div>)
   )
 }

@@ -1,6 +1,6 @@
 import cardsLv1 from "@/gameData/cardsLv1";
 import cardsLv2 from "@/gameData/cardsLv2";
-import cardsLv3 from "@/gameData/cardsLv1";
+import cardsLv3 from "@/gameData/cardsLv3";
 import nobles from "@/gameData/nobles";
 import tokens from "@/gameData/tokens";
 import { useBoardStore, useUserStore } from "@/zustand";

@@ -40,11 +40,11 @@ const Tokens = ({params})=>{
         setTokens(data)
       })
 
-      socket.on('players-update',(data:SocketUser[])=>{
-        console.log('players-update',data)
-        const playerData = data.find((player:SocketUser)=>player.username===username)
-        setUserTokens(playerData.tokens)
-      })
+      // socket.on('players-update',(data:SocketUser[])=>{
+      //   console.log('players-update',data)
+      //   const playerData = data.find((player:SocketUser)=>player.username===username)
+      //   setUserTokens(playerData.tokens)
+      // })
     }
   },[socket])
 
@@ -73,6 +73,7 @@ const Tokens = ({params})=>{
     if(
       turnAction !== actionTypes.TAKE_TOKENS
       || !isTurnPlayer
+      || tokens[color]<=0
       || totalTaken>=3
       || takenTwoOfSame
       || color === 'gold'
