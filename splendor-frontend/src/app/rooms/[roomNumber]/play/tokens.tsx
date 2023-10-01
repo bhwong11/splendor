@@ -39,12 +39,6 @@ const Tokens = ({params})=>{
         console.log('game-board tokens new',data)
         setTokens(data)
       })
-
-      // socket.on('players-update',(data:SocketUser[])=>{
-      //   console.log('players-update',data)
-      //   const playerData = data.find((player:SocketUser)=>player.username===username)
-      //   setUserTokens(playerData.tokens)
-      // })
     }
   },[socket])
 
@@ -68,14 +62,15 @@ const Tokens = ({params})=>{
     const totalTaken = Object.values(taken).reduce((all,next)=>(
       all+next
     ),0)
-    const takenTwoOfSame = Object.values(taken).some(colorQty=>colorQty>=2)
+  
+    const willBeTwoOfSame = totalTaken>=2 && taken[color]>=1
 
     if(
       turnAction !== actionTypes.TAKE_TOKENS
       || !isTurnPlayer
       || tokens[color]<=0
       || totalTaken>=3
-      || takenTwoOfSame
+      || willBeTwoOfSame
       || color === 'gold'
     ) return
 

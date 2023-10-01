@@ -4,7 +4,7 @@ import { socketInitializeRoom } from "@/socket";
 import { useRouter } from "next/navigation";
 import { useSocketStore, useUserStore, useBoardStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
-import { SocketUser } from "@/app/lib";
+import { Card,SocketUser,generateUserBoardTokensFromBuy,useCanBuyCard,updateTokens,removeCardFromBoard } from "@/app/lib";
 
 
 const PlayerAssets = ({params})=>{
@@ -14,7 +14,12 @@ const PlayerAssets = ({params})=>{
   const userCards = useUserStore(state=>state.cards)
   const userNobles = useUserStore(state=>state.nobles)
   const tokens = useUserStore(state=>state.tokens)
+  const boardTokens = useBoardStore(state=>state.tokens)
   const reservedCards = useUserStore(state=>state.reservedCards)
+  const cardsLv1 = useBoardStore(state=>state.cardsLv1)
+  const cardsLv2 = useBoardStore(state=>state.cardsLv2)
+  const cardsLv3 = useBoardStore(state=>state.cardsLv3)
+  const {remainingCost,userCardsValueMap} = useCanBuyCard()
 
   const turn = useBoardStore(state=>state.turn)
   const turnPlayer = useBoardStore(state=>state.turnPlayer)
@@ -42,6 +47,39 @@ const PlayerAssets = ({params})=>{
     })
   }
 
+  const buyReservedCard = (card:Card)=>{
+    const goldTokenCost = remainingCost(card)
+    const [userTokensClone,boardTokensClone]=generateUserBoardTokensFromBuy(
+      card,
+      tokens,
+      boardTokens,
+      goldTokenCost,
+      userCardsValueMap
+    )
+    socket.emit('buy-reserve-card',{
+      room:params.roomNumber,
+      username,
+      card
+    })
+    removeCardFromBoard(
+      socket,
+      username,
+      params.roomNumber,
+      card,
+      cardsLv1,
+      cardsLv2,
+      cardsLv3,
+      false
+    )
+    updateTokens(
+      socket,
+      username,
+      params.roomNumber,
+      userTokensClone,
+      boardTokensClone
+    )
+  }
+
   const router = useRouter()
   useEffect(()=>{
     if(socket){
@@ -52,7 +90,6 @@ const PlayerAssets = ({params})=>{
       })
       socket.on('players-update',(users:SocketUser[])=>{
         const currentUser = users.find(user=>user.username=username)
-        console.log('USER UPDATE',currentUser)
         setUserCards(currentUser.cards)
         setReservedCards(currentUser.reservedCards)
         setUserNobles(currentUser.nobles)
@@ -80,15 +117,7 @@ const PlayerAssets = ({params})=>{
           <div>
             {reservedCards?.map(card=>(
               <div 
-                onClick={()=>{
-                  socket.emit('buy-reserve-card',{
-                    room:params.roomNumber,
-                    username,
-                    card
-                  })
-                  setUserCards([...userCards,card])
-                  setReservedCards(reservedCards.filter(c=>c.id!==card.id))
-                }}
+                onClick={()=>buyReservedCard(card)}
               >
                 {JSON.stringify(card)}
               </div>

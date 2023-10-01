@@ -15,7 +15,7 @@ const gameActions =async ({
         gold: 0
       }
     user.cards=[],
-    user.reserveCards=[],
+    user.reservedCards=[],
     user.nobles=[]
     io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)
   })
@@ -32,7 +32,9 @@ const gameActions =async ({
   socket.on('update-cards',(obj)=>{
     console.log('update-cards')
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
-    user.cards.push(obj?.newCard)
+    if(obj?.addToUser){
+      user.cards.push(obj?.newCard)
+    }
     activeRooms[obj?.room].board = {
       ...activeRooms[obj?.room].board,
       cardsLv1:obj.cardsLv1,
@@ -46,14 +48,14 @@ const gameActions =async ({
   socket.on('reserve-card',(obj)=>{
     console.log('reserve-card')
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
-    user.reservedCards.push(obj?.card)
+    user.reservedCards?.push(obj?.card)
     io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)
   })
 
   socket.on('buy-reserve-card',(obj)=>{
     console.log('buy-reserve-card')
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
-    user.reservedCards= user.reserveCards.filter(c=>c.id!==obj.card)
+    user.reservedCards= user.reservedCards.filter(c=>c.id!==obj.card)
     user.cards.push(obj?.card)
     io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)
   })

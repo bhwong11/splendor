@@ -4,6 +4,7 @@ import cardsLv3 from "@/gameData/cardsLv3";
 import nobles from "@/gameData/nobles";
 import tokens from "@/gameData/tokens";
 import { useBoardStore, useUserStore } from "@/zustand";
+import cloneDeep from 'lodash/clonedeep';
 
 export interface Tokens{
   white:number,
@@ -68,6 +69,7 @@ export const useIsTurnPlayer = ()=>{
   return username === turnPlayer
 }
 
+//hook
 export const useCanBuyCard = ()=>{
   const userCards = useUserStore(state=>state.cards)
   const userTokens = useUserStore(state=>state.tokens)
@@ -98,3 +100,78 @@ export const costCovered=(valueObj:Tokens,priceObj:Tokens)=>(
     tokenColor=>valueObj[tokenColor]>=priceObj[tokenColor]
   )
 )
+
+export const generateUserBoardTokensFromBuy = (
+  card:Card,
+  userTokens:Tokens,
+  boardTokens:Tokens,
+  goldTokenCost:number,
+  userCardsValueMap:Tokens
+):[Tokens,Tokens]=>{
+  const userTokensClone = cloneDeep(userTokens)
+  const boardTokensClone = cloneDeep(boardTokens)
+  Object.keys(card.price).forEach(gemColor=>{
+    //maybe a way to clean this up
+    const rawPriceLessCards = card.price[gemColor] - userCardsValueMap[gemColor]
+    const nonNegPriceLessCards = rawPriceLessCards>=0?rawPriceLessCards:0
+    const finalPrice = (userTokensClone[gemColor]>=nonNegPriceLessCards)
+      ?nonNegPriceLessCards:userTokensClone[gemColor]
+
+    userTokensClone[gemColor]-= finalPrice
+    boardTokensClone[gemColor] += finalPrice
+  })
+  userTokensClone.gold -=goldTokenCost
+  boardTokensClone.gold +=goldTokenCost
+  return [userTokensClone,boardTokensClone]
+}
+
+export const updateTokens = (
+  socket:any,
+  username:string,
+  roomNumber:number,
+  userTokensInput:Tokens, 
+  boardTokensInput:Tokens
+) =>{
+  // setUserTokens(userTokensInput)
+  socket.emit('update-tokens',{
+    room: roomNumber,
+    username,
+    boardTokens:boardTokensInput,
+    userTokens:userTokensInput
+  })
+}
+
+//should just make this a hook that spits out this function
+export const removeCardFromBoard = (
+  socket:any,
+  username:string,
+  roomNumber:number,
+  card:Card,
+  cardsLv1:Card[],
+  cardsLv2:Card[],
+  cardsLv3:Card[],
+  addToUser:boolean=true
+) =>{
+  //probably a way to clean this up but not too mad, since it'll max out at 3
+  let cardsLv1Copy = cardsLv1
+  let cardsLv2Copy = cardsLv2
+  let cardsLv3Copy = cardsLv3
+  if(card.level === 1){
+    cardsLv1Copy = cardsLv1Copy.filter(c=>c.id!==card.id)
+  }
+  if(card.level === 2){
+    cardsLv2Copy = cardsLv3Copy.filter(c=>c.id!==card.id)
+  }
+  if(card.level === 3){
+    cardsLv3Copy = cardsLv3Copy.filter(c=>c.id!==card.id)
+  }
+  socket.emit('update-cards',{
+    room: roomNumber,
+    username,
+    newCard:card,
+    addToUser,
+    cardsLv1:cardsLv1Copy,
+    cardsLv2:cardsLv2Copy,
+    cardsLv3:cardsLv3Copy,
+  })
+}

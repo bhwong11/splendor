@@ -4,8 +4,7 @@ import { useRouter } from "next/navigation";
 import { useSocketStore, useBoardStore, useUserStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
 import { useCanBuyCard, useIsTurnPlayer } from "@/app/lib";
-import cloneDeep from 'lodash/clonedeep';
-import { Card, Tokens, SocketUser } from "@/app/lib";
+import { Card, Tokens, generateUserBoardTokensFromBuy, updateTokens, removeCardFromBoard } from "@/app/lib";
 
 const CardsGrid = ({params})=>{
   console.log(params.roomNumber)
@@ -86,53 +85,8 @@ const CardsGrid = ({params})=>{
           return prevCopy
         })
       })
-
-      // socket.on('players-update',(data:SocketUser[])=>{
-      //   console.log('players-update',data)
-      //   const playerData = data.find((player:SocketUser)=>player.username===username)
-      //   setUserTokens(playerData.tokens)
-      //   setUserCards(playerData.cards)
-      //   setReservedCards(playerData.reservedCards)
-      // })
     }
   },[socket])
-
-  const removeCardFromBoard = (card:Card) =>{
-    //probably a way to clean this up but not too mad, since it'll max out at 3
-    let cardsLv1Copy = cardsLv1
-    let cardsLv2Copy = cardsLv2
-    let cardsLv3Copy = cardsLv3
-    if(card.level === 1){
-      cardsLv1Copy = cardsLv1Copy.filter(c=>c.id!==card.id)
-    }
-    if(card.level === 2){
-      cardsLv2Copy = cardsLv3Copy.filter(c=>c.id!==card.id)
-    }
-    if(card.level === 3){
-      cardsLv3Copy = cardsLv3Copy.filter(c=>c.id!==card.id)
-    }
-    socket.emit('update-cards',{
-      room: params.roomNumber,
-      username,
-      newCard:card,
-      cardsLv1:cardsLv1Copy,
-      cardsLv2:cardsLv2Copy,
-      cardsLv3:cardsLv3Copy,
-    })
-  }
-
-  const updateTokens = (
-    userTokensInput:Tokens, 
-    boardTokensInput:Tokens
-  ) =>{
-    setUserTokens(userTokensInput)
-    socket.emit('update-tokens',{
-      room: params.roomNumber,
-      username,
-      boardTokens:boardTokensInput,
-      userTokens:userTokensInput
-    })
-  }
 
   const takeCard = (card:Card)=>{
     const canBuy = canBuyCard(card)
@@ -142,28 +96,40 @@ const CardsGrid = ({params})=>{
         || !isTurnPlayer
         || turnAction!==actionTypes.BUY_CARD
       ) return
+    
     const goldTokenCost = remainingCost(card)
-    const userTokensClone = cloneDeep(userTokens)
-    const boardTokensClone = cloneDeep(boardTokens)
-    Object.keys(card.price).forEach(gemColor=>{
-      //maybe a way to clean this up
-      const rawPriceLessCards = card.price[gemColor] - userCardsValueMap[gemColor]
-      const nonNegPriceLessCards = rawPriceLessCards>=0?rawPriceLessCards:0
-      const finalPrice = (userTokensClone[gemColor]>=nonNegPriceLessCards)
-        ?nonNegPriceLessCards:userTokensClone[gemColor]
-
-      userTokensClone[gemColor]-= finalPrice
-      boardTokensClone[gemColor] += finalPrice
-    })
-    userTokensClone.gold -=goldTokenCost
-    boardTokensClone.gold +=goldTokenCost
-    removeCardFromBoard(card)
-    updateTokens(userTokensClone,boardTokensClone)
+    const [userTokensClone,boardTokensClone]=generateUserBoardTokensFromBuy(
+      card,
+      userTokens,
+      boardTokens,
+      goldTokenCost,
+      userCardsValueMap
+    )
+    removeCardFromBoard(
+      socket,
+      username,
+      params.roomNumber,
+      card,
+      cardsLv1,
+      cardsLv2,
+      cardsLv3,
+      true
+    )
+    updateTokens(
+      socket,
+      username,
+      params.roomNumber,
+      userTokensClone,
+      boardTokensClone
+    )
   }
 
   const reserveCard = (card:Card)=>{
     if(boardTokens.gold<=0) return
     updateTokens(
+      socket,
+      username,
+      params.roomNumber,
     {
       ...userTokens,
       gold:userTokens.gold+1
@@ -172,7 +138,16 @@ const CardsGrid = ({params})=>{
       ...boardTokens,
       gold:boardTokens.gold -1
     })
-    removeCardFromBoard(card)
+    removeCardFromBoard(
+      socket,
+      username,
+      params.roomNumber,
+      card,
+      cardsLv1,
+      cardsLv2,
+      cardsLv3,
+      false
+    )
     socket.emit('reserve-card',{
       room:params.roomNumber,
       username,

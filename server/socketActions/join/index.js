@@ -12,7 +12,7 @@ const emptyUserAssets = {
     gold: 0
   },
   cards:[],
-  reserveCards:[],
+  reservedCards:[],
   nobles:[]
 }
 
