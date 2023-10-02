@@ -30,14 +30,17 @@ export interface Card{
   }
 }
 
-export interface SocketUser{
-  active:boolean,
+export interface User{
   cards:Card[],
   reservedCards:Card[],
-  socketId:string,
   tokens:Tokens,
   username:string,
   nobles:Card[]
+}
+
+export interface SocketUser extends User{
+  active:boolean,
+  socketId:string,
 }
 
 export const emptyTokens = {
@@ -174,4 +177,9 @@ export const removeCardFromBoard = (
     cardsLv2:cardsLv2Copy,
     cardsLv3:cardsLv3Copy,
   })
+}
+
+export const determineVictoryPoints = (player:User):number=>{
+  return player.cards.reduce((all,card)=>all+card.victoryPoints,0)
+  + player.nobles.reduce((all,noble)=>all+noble.victoryPoints,0)
 }

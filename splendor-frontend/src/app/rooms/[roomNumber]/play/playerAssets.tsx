@@ -4,7 +4,15 @@ import { socketInitializeRoom } from "@/socket";
 import { useRouter } from "next/navigation";
 import { useSocketStore, useUserStore, useBoardStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
-import { Card,SocketUser,generateUserBoardTokensFromBuy,useCanBuyCard,updateTokens,removeCardFromBoard } from "@/app/lib";
+import { 
+  Card,
+  SocketUser,
+  generateUserBoardTokensFromBuy,
+  useCanBuyCard,
+  updateTokens,
+  removeCardFromBoard,
+  determineVictoryPoints
+ } from "@/app/lib";
 
 
 const PlayerAssets = ({params})=>{
@@ -19,10 +27,7 @@ const PlayerAssets = ({params})=>{
   const cardsLv1 = useBoardStore(state=>state.cardsLv1)
   const cardsLv2 = useBoardStore(state=>state.cardsLv2)
   const cardsLv3 = useBoardStore(state=>state.cardsLv3)
-  const victoryPoints = useUserStore(state=>(
-    state.cards.reduce((all,card)=>all+card.victoryPoints,0)
-    + state.nobles.reduce((all,noble)=>all+noble.victoryPoints,0)
-  ))
+  const user = useUserStore(state=>(state))
   const {remainingCost,userCardsValueMap} = useCanBuyCard()
 
   const turn = useBoardStore(state=>state.turn)
@@ -36,6 +41,8 @@ const PlayerAssets = ({params})=>{
   const setUserNobles = useUserStore(state=>state.setNobles)
   const setUserTokens = useUserStore(state=>state.setTokens)
   const [actionTaken,setActionTaken]=useState(false)
+
+  const victoryPoints = determineVictoryPoints(user)
 
   const passTurn = ()=>{
     console.log('passing turn')

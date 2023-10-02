@@ -60,6 +60,7 @@ const useSocketStore = create<SocketState>()((set) => ({
 }))
 
 interface BoardState {
+  victor:string | null,
   turn: number,
   turnPlayer: string,
   cardsLv1:Card[],
@@ -70,6 +71,7 @@ interface BoardState {
   cardsLv3Deck:[],
   nobles:Card[],
   tokens:Tokens,
+  setVictor: (victor:string)=> void
   setTurn: (turn:number)=> void
   setTurnPlayer: (turnPlayer:string)=> void
   setCardsLv1: (cardsLv1:Card[])=>void
@@ -83,6 +85,7 @@ interface BoardState {
 }
 
 const useBoardStore = create<BoardState>()((set) => ({
+  victor:null,
   turn: 0,
   turnPlayer:'',
   cardsLv1:[],
@@ -100,6 +103,7 @@ const useBoardStore = create<BoardState>()((set) => ({
     black:0,
     gold: 0
   },
+  setVictor: (victor)=>set(_=>({victor})),
   setTurn: (turn)=>set(_=>({turn})),
   setTurnPlayer: (turnPlayer)=>set(_=>({turnPlayer})),
   setCardsLv1: (cardsLv1)=>set(_=>({cardsLv1})),

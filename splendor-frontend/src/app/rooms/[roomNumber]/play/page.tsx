@@ -1,10 +1,9 @@
 'use client';
 import { useEffect,useState } from "react";
 import { socketInitializeRoom } from "@/socket";
-import { useUserStore } from "@/zustand";
+import { useUserStore,useSocketStore, useBoardStore } from "@/zustand";
 import { useRouter } from "next/navigation";
 import { createGame } from "@/app/lib";
-import { useSocketStore } from "@/zustand";
 import CardsGrid from "./cardsGrid";
 import Tokens from "./tokens";
 import PlayerAssets from "./playerAssets"
@@ -18,6 +17,7 @@ const RoomPage = ({params})=>{
   const [users,setUsers] = useState([])
   const [gameStarted,setGameStarted] = useState(false)
   const username = useUserStore(state=>state.username)
+  const victor = useBoardStore(state=>state.victor)
   const setSocket = useSocketStore(state=>state.setSocket)
   const router = useRouter()
   useEffect(()=>{
@@ -48,6 +48,7 @@ const RoomPage = ({params})=>{
             <span>{user.active?"ACTIVE":"NOT ACTIVE"}</span>
             </div>
           ))}
+          {victor && <h1>Game Over, Winner: {victor}</h1>}
           <Nobles params={params}/>
           <CardsGrid params={params}/>
           <Tokens params={params}/>
