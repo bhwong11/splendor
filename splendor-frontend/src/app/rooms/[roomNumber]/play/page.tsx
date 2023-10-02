@@ -29,6 +29,7 @@ const RoomPage = ({params})=>{
     if(socket){
       socket.on('user-joined',data=>{
         setUsers(data?.users)
+        setGameStarted(data.gameActive)
       })
       socket.on('user-left',data=>{
         setUsers(data?.users)

@@ -94,6 +94,7 @@ const PlayerAssets = ({params})=>{
       })
       socket.on('players-update',(users:SocketUser[])=>{
         const currentUser = users.find(user=>user.username=username)
+        console.log('player update cur',currentUser)
         setUserCards(currentUser.cards)
         setReservedCards(currentUser.reservedCards)
         setUserNobles(currentUser.nobles)
