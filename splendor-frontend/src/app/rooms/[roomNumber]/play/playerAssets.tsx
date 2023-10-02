@@ -121,8 +121,9 @@ const PlayerAssets = ({params})=>{
           <p>nobles: {JSON.stringify(userNobles)}</p>
           <div>
             {reservedCards?.map(card=>(
-              <div 
+              <div
                 onClick={()=>buyReservedCard(card)}
+                className="card"
               >
                 {JSON.stringify(card)}
               </div>
