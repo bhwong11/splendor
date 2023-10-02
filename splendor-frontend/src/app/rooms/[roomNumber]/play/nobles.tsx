@@ -61,7 +61,7 @@ const Nobles = ({params})=>{
       username && (
       <div>
           <h4>Nobles</h4>
-          <div className="cards-lv3 d-flex">
+          <div className="flex">
             {nobles
               .map(noble=>(
                 <div className="card" key={noble.id}>

@@ -99,7 +99,7 @@ const Tokens = ({params})=>{
       username && (
       <div>
           <h4>Tokens</h4>
-          <div className="cards-lv3 d-flex">
+          <div className="flex">
             {tokensArray?.map(token=>(
                 <div 
                   className="card"

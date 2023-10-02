@@ -158,9 +158,9 @@ const CardsGrid = ({params})=>{
   return (
       username && (
       <div>
-          <h1>Card grid</h1>
+          <h1 className="text-3xl font-bold underline">Card grid</h1>
           <h4>lv 3 cards</h4>
-          <div className="cards-lv3 d-flex">
+          <div className="cards-lv3 flex">
             {cardsLv3Display
               .map(cardLv3=>(
                 <div
@@ -180,7 +180,7 @@ const CardsGrid = ({params})=>{
               ))}
           </div>
           <h4>lv 2 cards</h4>
-          <div className="cards-lv2 d-flex">
+          <div className="cards-lv2 flex">
             {cardsLv2Display
               .map(cardLv2=>(
               <div
@@ -200,7 +200,7 @@ const CardsGrid = ({params})=>{
             ))}
           </div>
           <h4>lv 1 cards</h4>
-          <div className="cards-lv2 d-flex">
+          <div className="cards-lv2 flex">
             {cardsLv1Display
               .map(cardLv1=>(
               <div
