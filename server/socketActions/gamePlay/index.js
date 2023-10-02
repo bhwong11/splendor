@@ -64,6 +64,10 @@ const gameActions =async ({
     console.log('noble-change')
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
     user.nobles= obj?.userNobles
+    activeRooms[obj?.room].board = {
+      ...activeRooms[obj?.room].board,
+      nobles:obj.nobles
+    }
     io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)
     io.sockets.in(obj?.room).emit('noble-change',obj)
   })

@@ -116,9 +116,18 @@ const PlayerAssets = ({params})=>{
           <h4>turn player: {JSON.stringify(turnPlayer)}</h4>
           <p>victoryPoints: {victoryPoints}</p>
           <p>tokens: {JSON.stringify(tokens)}</p>
-          <p>cards: {JSON.stringify(userCards)}</p>
-          <p>Reserved Cards: {JSON.stringify(reservedCards)}</p>
           <p>nobles: {JSON.stringify(userNobles)}</p>
+          <p>cards:</p>
+          <div>
+            {userCards?.map(card=>(
+              <div
+                className="card"
+              >
+                {JSON.stringify(card)}
+              </div>
+            ))}
+          </div>
+          <p>reserved cards:</p>
           <div>
             {reservedCards?.map(card=>(
               <div

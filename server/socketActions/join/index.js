@@ -60,7 +60,7 @@ const joinActions =async ({
       console.log('user',obj)
       socket.join(obj?.room)
       if(!activeRooms[obj?.room]){
-        console.log('no existon!!')
+
         activeRooms[obj?.room] = {
           users:[]
         }
@@ -76,6 +76,14 @@ const joinActions =async ({
       }
       console.log('active rooms',activeRooms)
       io.sockets.in(obj?.room).emit('user-joined',activeRooms[obj?.room])
+      if(activeRooms[obj?.room].gameActive){
+        io.sockets.in(obj?.room).emit('game-board',activeRooms[obj?.room].board)
+        io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room].users)
+        io.sockets.in(obj?.room).emit('turn-update',{
+          turn:activeRooms[obj?.room].turn,
+          turnPlayer: activeRooms[obj?.room].turnPlayer
+        })
+      }
     }
     console.log('rooms',socket.rooms)
   })

@@ -31,7 +31,7 @@ const Nobles = ({params})=>{
       socket.on('game-board',(data:any)=>{
         console.log('game-board nobles',data)
         setNobles(
-          data.nobles?.slice(data.nobles.length-4,data.nobles.length)
+          data.nobles
         )
       })
       socket.on('noble-change',(data:any)=>{

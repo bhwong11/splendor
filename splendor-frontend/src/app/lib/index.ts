@@ -55,7 +55,7 @@ const shuffleCards = (cards:Card[]=[])=>{
 
 export const createGame = ()=>{
   return {
-    nobles:shuffleCards(nobles),
+    nobles:shuffleCards(nobles).slice(0,4),
     tokens,
     cardsLv1:shuffleCards(cardsLv1),
     cardsLv2:shuffleCards(cardsLv2),
