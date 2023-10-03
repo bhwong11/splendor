@@ -47,6 +47,26 @@ const getRoom = async ({
   }
 }
 
+const getUser = async ({
+  username=null,
+  refresh=()=>{}
+}:{
+  username:number | null,
+  refresh?:() => void
+})=>{
+  //put this in helper func
+  if(!username) return
+  const res = await fetch(
+  `${process.env.NEXT_PUBLIC_API_URL}/api/users/getOne/${username}`
+  )
+  refresh()
+  const user = await res.json()
+  return {
+    status:res.status,
+    ...user
+  }
+}
+
 
 const createUser = async ({
   username='',
@@ -122,5 +142,6 @@ export {
   createRoom,
   createUser,
   updateUser,
-  getRoom
+  getRoom,
+  getUser
 }
