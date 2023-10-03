@@ -26,6 +26,10 @@ const OtherPlayerAssets = ({params})=>{
   useEffect(()=>{
     if(topPlayer["victoryPoints"]>=15){
       setVictor(topPlayer["username"])
+      socket.emit('winner',{
+        room:params.roomNumber,
+        username
+      })
     }
   },[topPlayer["victoryPoints"]])
 

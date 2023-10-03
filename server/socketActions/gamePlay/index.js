@@ -1,3 +1,5 @@
+import UserModel from "../../models/UserModel.js"
+
 const gameActions =async ({
   io,
   socket,
@@ -80,6 +82,7 @@ const gameActions =async ({
     user.cards.push(obj?.card)
     io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)
   })
+
   socket.on('noble-change',(obj)=>{
     console.log('noble-change')
     if(!activeRooms[obj?.room]){
@@ -96,7 +99,17 @@ const gameActions =async ({
     io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)
     io.sockets.in(obj?.room).emit('noble-change',obj)
   })
-  
+
+  socket.on('winner',(obj)=>{
+    console.log('winner')
+    UserModel.findOneAndUpdate(
+      {username}, { $inc: { wins: 1 } }
+  )
+    const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
+    user.reservedCards= user.reservedCards.filter(c=>c.id!==obj.card.id)
+    user.cards.push(obj?.card)
+    io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)
+  })
 
 }
 
