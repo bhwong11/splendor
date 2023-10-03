@@ -163,7 +163,7 @@ export const removeCardFromBoard = (
     cardsLv1Copy = cardsLv1Copy.filter(c=>c.id!==card.id)
   }
   if(card.level === 2){
-    cardsLv2Copy = cardsLv3Copy.filter(c=>c.id!==card.id)
+    cardsLv2Copy = cardsLv2Copy.filter(c=>c.id!==card.id)
   }
   if(card.level === 3){
     cardsLv3Copy = cardsLv3Copy.filter(c=>c.id!==card.id)
