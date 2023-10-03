@@ -123,31 +123,6 @@ const PlayerAssets = ({params})=>{
           <h4>turn action: {JSON.stringify(turnAction)}</h4>
           <h4>turn player: {JSON.stringify(turnPlayer)}</h4>
           <p>victoryPoints: {victoryPoints}</p>
-          <p>tokens: {JSON.stringify(tokens)}</p>
-          <p>nobles: {JSON.stringify(userNobles)}</p>
-          <p>cards:</p>
-          <div>
-            {userCards?.map(card=>(
-              <div
-                className="card"
-              >
-                {JSON.stringify(card)}
-              </div>
-            ))}
-          </div>
-          <p>reserved cards:</p>
-          <div>
-            {reservedCards?.map(card=>(
-              <div
-                onClick={()=>buyReservedCard(card)}
-                className="card"
-              >
-                {JSON.stringify(card)}
-              </div>
-            ))}
-          </div>
-
-
           <div>
             {/* make a enum to loop over */}
             <button onClick={(e)=>{
@@ -173,17 +148,41 @@ const PlayerAssets = ({params})=>{
               if(actionTaken) return
               setTurnAction(actionTypes.TAKE_TOKENS)
             }}>take tokens</button>
+
+            <button onClick={(e)=>{
+              e.preventDefault()
+              passTurn()
+            }}>pass turn</button>
+
+            <button onClick={(e)=>{
+              e.preventDefault()
+              clearUser()
+            }}>clear user</button>
+          </div>
+          <p>tokens: {JSON.stringify(tokens)}</p>
+          <p>nobles: {JSON.stringify(userNobles)}</p>
+          <p>cards:</p>
+          <div>
+            {userCards?.map(card=>(
+              <div
+                className="card"
+              >
+                {JSON.stringify(card)}
+              </div>
+            ))}
+          </div>
+          <p>reserved cards:</p>
+          <div>
+            {reservedCards?.map(card=>(
+              <div
+                onClick={()=>buyReservedCard(card)}
+                className="card"
+              >
+                {JSON.stringify(card)}
+              </div>
+            ))}
           </div>
 
-          <button onClick={(e)=>{
-            e.preventDefault()
-            passTurn()
-          }}>pass turn</button>
-
-          <button onClick={(e)=>{
-            e.preventDefault()
-            clearUser()
-          }}>clear user</button>
       </div>)
   )
 }

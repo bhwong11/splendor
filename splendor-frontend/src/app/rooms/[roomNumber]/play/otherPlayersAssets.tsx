@@ -15,23 +15,24 @@ const OtherPlayerAssets = ({params})=>{
   const setVictor = useBoardStore(state=>state.setVictor)
 
   const [otherPlayerAssets,setOtherPlayerAssets] = useState([])
+  const [otherPlayerVictoryPoints,setOtherPlayerVictoryPoints] = useState([])
 
-  const otherPlayerVictoryPoints = otherPlayerAssets.map(playerAsset=>({
-    username: playerAsset.username,
-    victoryPoints:determineVictoryPoints(playerAsset)
-  }))
-  const topPlayer = otherPlayerAssets.reduce((all,assets)=>{
-    if(assets.victoryPoints>=all.victoryPoints){
+  const topPlayer = otherPlayerVictoryPoints.reduce((all,assets)=>{
+    if(
+      (!all.victoryPoints && all.victoryPoints!==0) 
+        || assets.victoryPoints>=all["victoryPoints"]
+      ){
       return assets
     }
     return all
   },{})
-  
+  console.log('TOP APL',topPlayer,otherPlayerVictoryPoints)
+
   useEffect(()=>{
-    if(topPlayer.victoryPoints>=15){
-      setVictor(topPlayer.username)
+    if(topPlayer["victoryPoints"]>=15){
+      setVictor(topPlayer["username"])
     }
-  },[topPlayer.victoryPoints])
+  },[topPlayer["victoryPoints"]])
 
   const router = useRouter()
   useEffect(()=>{
@@ -39,6 +40,12 @@ const OtherPlayerAssets = ({params})=>{
       socket.on('players-update',(data:SocketUser[])=>{
         console.log('players-update',data)
         setOtherPlayerAssets(data)
+
+        const otherPlayerVictoryPoints = data.map(playerAsset=>({
+          username: playerAsset.username,
+          victoryPoints:determineVictoryPoints(playerAsset)
+        }))
+        setOtherPlayerVictoryPoints(otherPlayerVictoryPoints)
       })
     }
   },[socket])

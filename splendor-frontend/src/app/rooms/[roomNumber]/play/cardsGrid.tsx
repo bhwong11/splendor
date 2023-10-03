@@ -157,14 +157,14 @@ const CardsGrid = ({params})=>{
 
   return (
       username && (
-      <div>
+      <div className="max-w-7xl">
           <h1 className="text-3xl font-bold underline">Card grid</h1>
           <h4>lv 3 cards</h4>
-          <div className="cards-lv3 flex">
+          <div className="cards-lv3 flex w-full">
             {cardsLv3Display
               .map(cardLv3=>(
                 <div
-                  className="card"
+                  className="card w-full"
                   key={cardLv3.id}
                   onClick={()=>{
                     if(turnAction===actionTypes.BUY_CARD){
