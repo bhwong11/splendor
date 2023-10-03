@@ -90,7 +90,7 @@ io.on('connection', async (socket) => {
   //     console.log('error in room',err)
   //   }
   //   if(!roomInDB){
-  //     socket.broadcast.to(socket.id).emit('no-room',{
+  //     io.to(socket.id).emit('no-room',{
   //       message:'room not found'
   //     })
   //   }
@@ -98,7 +98,7 @@ io.on('connection', async (socket) => {
   //   const existingUser = activeRooms[obj?.room]?.find(user=>user.username===obj.username)
 
   //   if(existingUser){
-  //     socket.broadcast.to(socket.id).emit('user-already-exist',{
+  //     io.to(socket.id).emit('user-already-exist',{
   //       message:'user-already-exist'
   //     })
   //     return

@@ -18,6 +18,11 @@ const turnActions =async ({
       nobles:[]
     }
     console.log('start-game',obj,activeRooms[obj?.room])
+    if(!activeRooms[obj?.room]){
+      io.to(socket.id).emit('load-error',{
+        message:'room-does-not-exist'
+      })
+    }
     activeRooms[obj?.room].board = obj.board
     activeRooms[obj?.room].turnPlayer = activeRooms[obj?.room]?.users?.[0]
     activeRooms[obj?.room].turn = 1
@@ -34,6 +39,11 @@ const turnActions =async ({
     })
   })
   socket.on('next-turn',(obj)=>{
+    if(!activeRooms[obj?.room]){
+      io.to(socket.id).emit('load-error',{
+        message:'room-does-not-exist'
+      })
+    }
     const turn = activeRooms[obj?.room].turn
     const players = activeRooms[obj?.room]?.users
     const turnPlayerIndex = (turn) % players.length

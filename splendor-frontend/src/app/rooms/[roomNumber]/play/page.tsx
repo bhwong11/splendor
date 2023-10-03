@@ -12,12 +12,18 @@ import OtherPlayerAssets from "./otherPlayersAssets";
 
 let socket: any;
 
+type error = {
+  message:string
+}
+
 const RoomPage = ({params})=>{
   console.log(params.roomNumber)
   const [users,setUsers] = useState([])
   const [gameStarted,setGameStarted] = useState(false)
+  const [error,setError]=useState<error | null>(null)
   const username = useUserStore(state=>state.username)
   const victor = useBoardStore(state=>state.victor)
+  const setVictor = useBoardStore(state=>state.setVictor)
   const setSocket = useSocketStore(state=>state.setSocket)
   const router = useRouter()
   useEffect(()=>{
@@ -34,12 +40,19 @@ const RoomPage = ({params})=>{
       socket.on('user-left',data=>{
         setUsers(data?.users)
       })
+      socket.on('load-error',data=>{
+        console.log('hit error!')
+        setError(data.message ?? 'Error Occured, please reload the page')
+      })
     }
   },[])
 
   return (
       username && (
       <div>
+          {
+            error && <h1 className="error">error</h1>
+          }
           <h1>Room</h1>
           <h3>{params.roomNumber}</h3>
           {users?.map(user=>(
@@ -55,7 +68,7 @@ const RoomPage = ({params})=>{
           <PlayerAssets params={params}/>
           <button onClick={(e)=>{
             e.preventDefault()
-            console.log('socket',socket)
+            setVictor(null)
             setGameStarted(true)
             socket?.emit('start-game',{
               room:params.roomNumber,

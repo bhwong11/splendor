@@ -1,17 +1,13 @@
 'use client';
 import { useEffect,useState } from "react";
-import { socketInitializeRoom } from "@/socket";
 import { useRouter } from "next/navigation";
 import { useSocketStore, useUserStore, useBoardStore } from "@/zustand";
-import { actionTypes } from "@/zustand";
 import { determineVictoryPoints,SocketUser } from "@/app/lib";
 
 
 const OtherPlayerAssets = ({params})=>{
   const socket = useSocketStore(state=>state.socket)
   const username = useUserStore(state=>state.username)
-  const turnPlayer = useBoardStore(state=>state.turnPlayer)
-  const victor = useBoardStore(state=>state.victor)
   const setVictor = useBoardStore(state=>state.setVictor)
 
   const [otherPlayerAssets,setOtherPlayerAssets] = useState([])
@@ -26,7 +22,6 @@ const OtherPlayerAssets = ({params})=>{
     }
     return all
   },{})
-  console.log('TOP APL',topPlayer,otherPlayerVictoryPoints)
 
   useEffect(()=>{
     if(topPlayer["victoryPoints"]>=15){

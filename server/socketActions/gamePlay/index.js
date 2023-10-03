@@ -4,6 +4,11 @@ const gameActions =async ({
   activeRooms
 })=>{
   socket.on('clear-user',obj=>{
+    if(!activeRooms[obj?.room]){
+      io.to(socket.id).emit('load-error',{
+        message:'room does not exist'
+      })
+    }
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
     if(!user) return
     user.tokens={
@@ -22,6 +27,11 @@ const gameActions =async ({
 
   socket.on('update-tokens',(obj)=>{
     console.log('update-tokens')
+    if(!activeRooms[obj?.room]){
+      io.to(socket.id).emit('load-error',{
+        message:'room-does-not-exist'
+      })
+    }
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
     if(!user) return
     user.tokens = obj?.userTokens
@@ -32,6 +42,11 @@ const gameActions =async ({
 
   socket.on('update-cards',(obj)=>{
     console.log('update-cards')
+    if(!activeRooms[obj?.room]){
+      io.to(socket.id).emit('load-error',{
+        message:'room-does-not-exist'
+      })
+    }
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
     if(obj?.addToUser){
       user.cards.push(obj?.newCard)
@@ -48,6 +63,11 @@ const gameActions =async ({
 
   socket.on('reserve-card',(obj)=>{
     console.log('reserve-card')
+    if(!activeRooms[obj?.room]){
+      io.to(socket.id).emit('load-error',{
+        message:'room-does-not-exist'
+      })
+    }
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
     user.reservedCards?.push(obj?.card)
     io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)
@@ -62,6 +82,11 @@ const gameActions =async ({
   })
   socket.on('noble-change',(obj)=>{
     console.log('noble-change')
+    if(!activeRooms[obj?.room]){
+      io.to(socket.id).emit('load-error',{
+        message:'room-does-not-exist'
+      })
+    }
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
     user.nobles= obj?.userNobles
     activeRooms[obj?.room].board = {

@@ -30,14 +30,14 @@ const joinActions =async ({
       console.log('error in room',err)
     }
     if((activeRooms[obj?.room]?.users?.length || 0) > userLimit){
-      socket.broadcast.to(socket.id).emit('load-error',{
+      io.to(socket.id).emit('load-error',{
         message:'room is full'
       })
       return
     }
 
     if(!roomInDB){
-      socket.broadcast.to(socket.id).emit('load-error',{
+      io.to(socket.id).emit('load-error',{
         message:'room not found'
       })
       return
@@ -47,8 +47,8 @@ const joinActions =async ({
 
     if(existingUser){
       if(existingUser.active){
-        socket.broadcast.to(socket.id).emit('load-error',{
-          message:'user-already-exist'
+        io.to(socket.id).emit('load-error',{
+          message:'user already exist'
         })
         return
       }

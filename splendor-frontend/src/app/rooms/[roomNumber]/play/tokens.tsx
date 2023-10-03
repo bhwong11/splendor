@@ -68,10 +68,10 @@ const Tokens = ({params})=>{
     if(
       turnAction !== actionTypes.TAKE_TOKENS
       || !isTurnPlayer
-      || tokens[color]<=0
-      || totalTaken>=3
-      || willBeTwoOfSame
-      || color === 'gold'
+      // || tokens[color]<=0
+      // || totalTaken>=3
+      // || willBeTwoOfSame
+      // || color === 'gold'
     ) return
 
     console.log('taking token')

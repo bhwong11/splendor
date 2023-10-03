@@ -115,6 +115,16 @@ const PlayerAssets = ({params})=>{
     setActionTaken(false)
   },[turn])
 
+  const userCardsByGem = userCards.reduce((all,card)=>{
+    if(all[card.gem]){
+      all[card.gem].push(card)
+      return all
+    }
+    all[card.gem] = [card]
+    return all
+  },{})
+  console.log('userCards',userCardsByGem)
+
   return (
       username && (
       <div>
@@ -162,14 +172,20 @@ const PlayerAssets = ({params})=>{
           <p>tokens: {JSON.stringify(tokens)}</p>
           <p>nobles: {JSON.stringify(userNobles)}</p>
           <p>cards:</p>
-          <div>
-            {userCards?.map(card=>(
-              <div
-                className="card"
-              >
-                {JSON.stringify(card)}
+          <div className="flex">
+            {Object.keys(userCardsByGem).map((gemColor)=>(
+              <div className="flex flex-col">
+                <h3>{gemColor}</h3>
+                {userCardsByGem[gemColor]?.map((card:Card)=>(
+                  <div
+                    className="card"
+                  >
+                    {JSON.stringify(card)}
+                  </div>
+                ))}
               </div>
-            ))}
+            )
+          )}
           </div>
           <p>reserved cards:</p>
           <div>
