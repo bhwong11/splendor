@@ -103,7 +103,7 @@ const gameActions =async ({
   socket.on('winner',(obj)=>{
     console.log('winner')
     if(!activeRooms[obj?.room]?.gameOver){
-      activeRooms[obj?.room]?.gameOver = true
+      activeRooms[obj?.room].gameOver = true
       UserModel.findOneAndUpdate(
         {username}, { $inc: { wins: 1 } }
       )

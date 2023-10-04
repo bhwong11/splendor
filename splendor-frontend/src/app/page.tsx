@@ -18,7 +18,6 @@ export default async function Home() {
   const allRooms = await getAllRooms()
   async function goToScorePage(formData) {
     'use server'
-    console.log('E!!!',formData)
     redirect(`/${formData.get('username')}`)
   }
 
