@@ -2,8 +2,7 @@
 import CreatePost from './posts/[id]/createPost'
 import CreateRoom from './(components)/CreateRoom'
 import EnterRoom from './(components)/EnterRoom'
-import { useRouter } from "next/navigation";
-import { useState } from 'react';
+import { redirect } from 'next/navigation'
 
 
 const getAllRooms = async ()=>{
@@ -17,8 +16,11 @@ const getAllRooms = async ()=>{
 
 export default async function Home() {
   const allRooms = await getAllRooms()
-  const router = useRouter()
-  const [username,setUsername] = useState('')
+  async function goToScorePage(formData) {
+    'use server'
+    console.log('E!!!',formData)
+    redirect(`/${formData.get('username')}`)
+  }
 
   return (
     <main className=''>
@@ -31,16 +33,11 @@ export default async function Home() {
       {/* <CreatePost/> */}
       <CreateRoom/>
       <EnterRoom/>
-      <form onSubmit={async (e)=>{
-        e.preventDefault();
-        router.push(`/${username}`)
-      }}>
+      <form action={goToScorePage}>
         <label htmlFor="username">See Wins: username</label>
         <input 
           name="username"
           type="text"
-          value={username}
-          onChange={e=>setUsername(e.target.value)}
         />
         <button type="submit">
           See Wins

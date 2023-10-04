@@ -123,7 +123,7 @@ const PlayerAssets = ({params})=>{
     all[card.gem] = [card]
     return all
   },{})
-  console.log('userCards',userCardsByGem)
+
 
   return (
       username && (
