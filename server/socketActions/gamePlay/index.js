@@ -102,13 +102,12 @@ const gameActions =async ({
 
   socket.on('winner',(obj)=>{
     console.log('winner')
-    UserModel.findOneAndUpdate(
-      {username}, { $inc: { wins: 1 } }
-  )
-    const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
-    user.reservedCards= user.reservedCards.filter(c=>c.id!==obj.card.id)
-    user.cards.push(obj?.card)
-    io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)
+    if(!activeRooms[obj?.room]?.gameOver){
+      activeRooms[obj?.room]?.gameOver = true
+      UserModel.findOneAndUpdate(
+        {username}, { $inc: { wins: 1 } }
+      )
+    }
   })
 
 }
