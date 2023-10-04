@@ -28,19 +28,21 @@ const PlayerAssets = ({params})=>{
   const cardsLv2 = useBoardStore(state=>state.cardsLv2)
   const cardsLv3 = useBoardStore(state=>state.cardsLv3)
   const user = useUserStore(state=>(state))
-  const {remainingCost,userCardsValueMap} = useCanBuyCard()
+  const {canBuyCard,remainingCost,userCardsValueMap} = useCanBuyCard()
 
   const turn = useBoardStore(state=>state.turn)
   const turnPlayer = useBoardStore(state=>state.turnPlayer)
   const turnAction = useUserStore(state=>state.turnAction)
+  const actionTaken = useUserStore(state=>state.actionTaken)
   const setTurn = useBoardStore(state=>state.setTurn)
   const setTurnPlayer = useBoardStore(state=>state.setTurnPlayer)
   const setTurnAction = useUserStore(state=>state.setTurnAction)
   const setUserCards = useUserStore(state=>state.setCards)
+  const setActionTaken = useUserStore(state=>state.setActionTaken)
   const setReservedCards = useUserStore(state=>state.setReservedCards)
   const setUserNobles = useUserStore(state=>state.setNobles)
   const setUserTokens = useUserStore(state=>state.setTokens)
-  const [actionTaken,setActionTaken]=useState(false)
+  const [takenTurnCard,setTakenTurnCard] = useState(false)
 
   const victoryPoints = determineVictoryPoints(user)
 
@@ -59,6 +61,8 @@ const PlayerAssets = ({params})=>{
   }
 
   const buyReservedCard = (card:Card)=>{
+    const canBuy = canBuyCard(card)
+    if(!canBuy || takenTurnCard) return
     const goldTokenCost = remainingCost(card)
     const [userTokensClone,boardTokensClone]=generateUserBoardTokensFromBuy(
       card,
@@ -89,6 +93,7 @@ const PlayerAssets = ({params})=>{
       username,
       card
     })
+    setTakenTurnCard(true)
   }
 
   const router = useRouter()
@@ -113,6 +118,7 @@ const PlayerAssets = ({params})=>{
   useEffect(()=>{
     setTurnAction(null)
     setActionTaken(false)
+    setTakenTurnCard(false)
   },[turn])
 
   const userCardsByGem = userCards.reduce((all,card)=>{
@@ -124,6 +130,26 @@ const PlayerAssets = ({params})=>{
     return all
   },{})
 
+  interface Action{
+    name:string,
+    type:string
+  }
+
+  const userTurnActions = [
+    {
+      name:'Reserve',
+      type:actionTypes.RESERVE
+    },
+    {
+      name:'Buy Card',
+      type:actionTypes.BUY_CARD
+    },
+    {
+      name:'Take tokens',
+      type:actionTypes.TAKE_TOKENS
+    }
+  ]
+
 
   return (
       username && (
@@ -134,30 +160,18 @@ const PlayerAssets = ({params})=>{
           <h4>turn player: {JSON.stringify(turnPlayer)}</h4>
           <p>victoryPoints: {victoryPoints}</p>
           <div>
-            {/* make a enum to loop over */}
-            <button onClick={(e)=>{
-              e.preventDefault()
-              if(actionTaken) return
-              setTurnAction(actionTypes.RESERVE)
-            }}>Reserve</button>
-
-            <button onClick={(e)=>{
-              e.preventDefault()
-              if(actionTaken) return
-              setTurnAction(actionTypes.BUY_CARD)
-            }}>Buy Card</button>
-
-            <button onClick={(e)=>{
-              e.preventDefault()
-              if(actionTaken) return
-              setTurnAction(actionTypes.BUY_CARD)
-            }}>Buy Reserved Card</button>
-
-            <button onClick={(e)=>{
-              e.preventDefault()
-              if(actionTaken) return
-              setTurnAction(actionTypes.TAKE_TOKENS)
-            }}>take tokens</button>
+            {userTurnActions.map((action:Action)=>(
+            <button 
+              disabled={actionTaken}
+              onClick={(e)=>{
+                e.preventDefault()
+                if(actionTaken) return
+                setTurnAction(action.type)
+              }}
+            >
+                {action.name}
+            </button>
+            ))}
 
             <button onClick={(e)=>{
               e.preventDefault()

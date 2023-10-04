@@ -22,6 +22,7 @@ const Tokens = ({params})=>{
 
   const setTokens = useBoardStore(state=>state.setTokens)
   const setUserTokens = useUserStore(state=>state.setTokens)
+  const setActionTaken = useUserStore(state=>state.setActionTaken)
 
   const turnAction = useUserStore(state=>state.turnAction)
   const userTokens = useUserStore(state=>state.tokens)
@@ -68,10 +69,10 @@ const Tokens = ({params})=>{
     if(
       turnAction !== actionTypes.TAKE_TOKENS
       || !isTurnPlayer
-      // || tokens[color]<=0
-      // || totalTaken>=3
-      // || willBeTwoOfSame
-      // || color === 'gold'
+      || tokens[color]<=0
+      || totalTaken>=3
+      || willBeTwoOfSame
+      || color === 'gold'
     ) return
 
     console.log('taking token')
@@ -93,6 +94,7 @@ const Tokens = ({params})=>{
       boardTokens:newBoardTokens,
       userTokens:newUserTokens
     })
+    setActionTaken(true)
   }
 
   return (

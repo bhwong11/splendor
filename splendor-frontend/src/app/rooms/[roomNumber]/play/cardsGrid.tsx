@@ -13,12 +13,11 @@ const CardsGrid = ({params})=>{
   const setCardsLv1 = useBoardStore(state=>state.setCardsLv1)
   const setCardsLv2 = useBoardStore(state=>state.setCardsLv2)
   const setCardsLv3 = useBoardStore(state=>state.setCardsLv3)
-  const setUserTokens = useUserStore(state=>state.setTokens)
-  const setReservedCards = useUserStore(state=>state.setReservedCards)
-  const setUserCards = useUserStore(state=>state.setCards)
+  const setActionTaken = useUserStore(state=>state.setActionTaken)
 
   const {canBuyCard,remainingCost,userCardsValueMap} = useCanBuyCard()
   const isTurnPlayer = useIsTurnPlayer()
+  const turn = useBoardStore(state=>state.turn)
 
   const cardsLv1 = useBoardStore(state=>state.cardsLv1)
   const cardsLv2 = useBoardStore(state=>state.cardsLv2)
@@ -32,8 +31,13 @@ const CardsGrid = ({params})=>{
   const [cardsLv1Display,setCardsLv1Display] = useState([])
   const [cardsLv2Display,setCardsLv2Display] = useState([])
   const [cardsLv3Display,setCardsLv3Display] = useState([])
+  const [takenTurnCard,setTakenTurnCard] = useState(false)
   
   const router = useRouter()
+  useEffect(()=>{
+    setTakenTurnCard(false)
+  },[turn])
+
   useEffect(()=>{
     if(socket){
       socket.on('game-board',data=>{
@@ -48,6 +52,7 @@ const CardsGrid = ({params})=>{
 
       socket.on('board-cards-update',data=>{
         console.log('board-cards-update',data)
+        //potential performance improvement by not setting all cards
         setCardsLv1(data.cardsLv1)
         setCardsLv2(data.cardsLv2)
         setCardsLv3(data.cardsLv3)
@@ -90,11 +95,12 @@ const CardsGrid = ({params})=>{
 
   const takeCard = (card:Card)=>{
     const canBuy = canBuyCard(card)
-    console.log('buying card',!canBuy,!isTurnPlayer,turnAction!==actionTypes.BUY_CARD)
+    console.log('buying card',!canBuy,!isTurnPlayer,turnAction!==actionTypes.BUY_CARD,takenTurnCard)
     if(
         !canBuy
         || !isTurnPlayer
         || turnAction!==actionTypes.BUY_CARD
+        || takenTurnCard
       ) return
     
     const goldTokenCost = remainingCost(card)
@@ -122,10 +128,12 @@ const CardsGrid = ({params})=>{
       userTokensClone,
       boardTokensClone
     )
+    setTakenTurnCard(true)
+    setActionTaken(true)
   }
 
   const reserveCard = (card:Card)=>{
-    if(boardTokens.gold<=0) return
+    if(boardTokens.gold<=0 || takenTurnCard) return
     updateTokens(
       socket,
       username,
@@ -153,6 +161,8 @@ const CardsGrid = ({params})=>{
       username,
       card
     })
+    setTakenTurnCard(true)
+    setActionTaken(true)
   }
 
   return (
