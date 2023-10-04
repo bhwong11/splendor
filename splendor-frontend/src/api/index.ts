@@ -28,15 +28,23 @@ const createRoom = async ({
 
 const getRoom = async ({
   roomNumber=null,
-  refresh=()=>{}
+  refresh=()=>{},
+  revalidateSeconds = null,
+  noCache = false
 }:{
   roomNumber:number | null,
-  refresh?:() => void
+  refresh?:() => void,
+  revalidateSeconds?: number | null,
+  noCache?: boolean
 })=>{
   //put this in helper func
   if(!roomNumber && roomNumber!==0) return
   const res = await fetch(
-  `${process.env.NEXT_PUBLIC_API_URL}/api/rooms/getOne/${roomNumber}`
+  `${process.env.NEXT_PUBLIC_API_URL}/api/rooms/getOne/${roomNumber}`,
+    { 
+      ...(revalidateSeconds && !noCache?{next: { revalidate: revalidateSeconds }}:{}),
+      ...(noCache?{cache:'no-store'}:{})
+    }
   )
   refresh()
   const newRoom = await res.json()
