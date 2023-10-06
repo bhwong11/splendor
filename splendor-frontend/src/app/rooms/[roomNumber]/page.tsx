@@ -6,7 +6,6 @@ import { getRoom } from "@/api"
 const RoomPage = async ({params})=>{
   console.log(params.roomNumber)
   const room = await getRoom({roomNumber:params.roomNumber,revalidateSeconds:3600})
-  console.log('room',room)
 
   return (
       <div>
