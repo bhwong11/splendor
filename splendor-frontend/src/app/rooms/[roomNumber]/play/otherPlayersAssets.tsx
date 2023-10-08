@@ -8,6 +8,7 @@ import { determineVictoryPoints,SocketUser } from "@/app/lib";
 const OtherPlayerAssets = ({params})=>{
   const socket = useSocketStore(state=>state.socket)
   const username = useUserStore(state=>state.username)
+  const victor = useBoardStore(state=>state.victor)
   const setVictor = useBoardStore(state=>state.setVictor)
 
   const [otherPlayerAssets,setOtherPlayerAssets] = useState([])
@@ -24,11 +25,15 @@ const OtherPlayerAssets = ({params})=>{
   },{})
 
   useEffect(()=>{
-    if(topPlayer["victoryPoints"]>=15){
+    if(topPlayer["victoryPoints"]>=15 && !victor){
       setVictor(topPlayer["username"])
       socket.emit('winner',{
         room:params.roomNumber,
-        username
+        playerPoints:otherPlayerAssets.map(player=>({
+          username: player.username,
+          victor: topPlayer["username"]===username,
+          victoryPoints:determineVictoryPoints(player)
+        }))
       })
     }
   },[topPlayer["victoryPoints"]])
@@ -42,7 +47,7 @@ const OtherPlayerAssets = ({params})=>{
 
         const otherPlayerVictoryPoints = data.map(playerAsset=>({
           username: playerAsset.username,
-          victoryPoints:determineVictoryPoints(playerAsset)
+          victoryPoints:determineVictoryPoints(playerAsset)+14
         }))
         setOtherPlayerVictoryPoints(otherPlayerVictoryPoints)
       })

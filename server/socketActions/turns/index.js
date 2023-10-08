@@ -23,6 +23,7 @@ const turnActions =async ({
         message:'room-does-not-exist'
       })
     }
+    activeRooms[obj?.room].gameOver = false
     activeRooms[obj?.room].board = obj.board
     activeRooms[obj?.room].turnPlayer = activeRooms[obj?.room]?.users?.[0]
     activeRooms[obj?.room].turn = 1

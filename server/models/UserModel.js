@@ -14,6 +14,11 @@ const UserSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Room"
     }],
+    victoryPoints:{ 
+      required: true,
+      type: Number,
+      default: 0
+    },
     wins:{ 
       required: true,
       type: Number,

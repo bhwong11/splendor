@@ -150,9 +150,11 @@ const PlayerAssets = ({params})=>{
     }
   ]
 
+  const isTurnPlayer = turnPlayer!==username
+
   const disabled = (
     actionTaken
-    || turnPlayer!==username
+    || isTurnPlayer
   )
 
 
@@ -178,10 +180,15 @@ const PlayerAssets = ({params})=>{
             </button>
             ))}
 
-            <button onClick={(e)=>{
-              e.preventDefault()
-              passTurn()
-            }}>pass turn</button>
+            <button 
+              disabled={isTurnPlayer}
+              onClick={(e)=>{
+                e.preventDefault()
+                passTurn()
+              }}
+            >
+              pass turn
+            </button>
 
             <button onClick={(e)=>{
               e.preventDefault()

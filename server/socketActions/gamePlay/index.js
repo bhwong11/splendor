@@ -100,13 +100,22 @@ const gameActions =async ({
     io.sockets.in(obj?.room).emit('noble-change',obj)
   })
 
-  socket.on('winner',(obj)=>{
-    console.log('winner')
+  socket.on('winner', async (obj)=>{
+    console.log('winner',obj)
     if(!activeRooms[obj?.room]?.gameOver){
       activeRooms[obj?.room].gameOver = true
-      UserModel.findOneAndUpdate(
-        {username}, { $inc: { wins: 1 } }
-      )
+      for(let user of obj.playerPoints){
+        console.log('updating',user)
+        const udpatedUser = await UserModel.findOneAndUpdate(
+          {username:user.username}, 
+          { $inc: {
+            ...(user.victor?{wins: 1}:{}),
+            victoryPoints:user.victoryPoints
+          } },
+          { new: true }
+        )
+        console.log('updated',udpatedUser)
+      }
     }
   })
 

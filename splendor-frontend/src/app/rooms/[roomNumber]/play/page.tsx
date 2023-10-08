@@ -75,6 +75,11 @@ const RoomPage = ({params})=>{
               board:createGame()
             })
           }}>{gameStarted?'Reset':'Play'}</button>
+
+          <button onClick={(e)=>{
+            e.preventDefault()
+            router.push('/')
+          }}>leave room</button>
           <OtherPlayerAssets params={params}/>
       </div>)
   )

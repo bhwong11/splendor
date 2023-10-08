@@ -57,15 +57,23 @@ const getRoom = async ({
 
 const getUser = async ({
   username=null,
+  revalidateSeconds = null,
+  noCache = false,
   refresh=()=>{}
 }:{
   username:number | null,
+  revalidateSeconds?:number |  null,
+  noCache?: boolean
   refresh?:() => void
 })=>{
   //put this in helper func
   if(!username) return
   const res = await fetch(
-  `${process.env.NEXT_PUBLIC_API_URL}/api/users/getOne/${username}`
+  `${process.env.NEXT_PUBLIC_API_URL}/api/users/getOne/${username}`,
+  { 
+    ...(revalidateSeconds && !noCache?{next: { revalidate: revalidateSeconds }}:{}),
+    ...(noCache?{cache:'no-store'}:{})
+  }
   )
   refresh()
   const user = await res.json()
