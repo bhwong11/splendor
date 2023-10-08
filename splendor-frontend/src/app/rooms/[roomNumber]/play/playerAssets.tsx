@@ -150,6 +150,11 @@ const PlayerAssets = ({params})=>{
     }
   ]
 
+  const disabled = (
+    actionTaken
+    || turnPlayer!==username
+  )
+
 
   return (
       username && (
@@ -162,7 +167,7 @@ const PlayerAssets = ({params})=>{
           <div>
             {userTurnActions.map((action:Action)=>(
             <button 
-              disabled={actionTaken}
+              disabled={disabled}
               onClick={(e)=>{
                 e.preventDefault()
                 if(actionTaken) return
