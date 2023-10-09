@@ -4,6 +4,7 @@ import { socketInitializeRoom } from "@/socket";
 import { useRouter } from "next/navigation";
 import { useSocketStore, useBoardStore,useUserStore } from "@/zustand";
 import { costCovered,emptyTokens } from "@/app/lib";
+import GameCard from "@/app/(components)/GameCard";
 
 
 const Nobles = ({params})=>{
@@ -64,9 +65,12 @@ const Nobles = ({params})=>{
           <div className="flex">
             {nobles
               .map(noble=>(
-                <div className="card" key={noble.id}>
-                  {JSON.stringify(noble)}
-                </div>
+                <GameCard 
+                  key={`noble-${noble.id}`}
+                  card={noble}
+                  staticCard={true}
+                  roomNumber={params.roomNumber}
+                />
               ))}
           </div>
       </div>)
