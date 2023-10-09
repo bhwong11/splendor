@@ -1,6 +1,5 @@
 'use client';
 import { useEffect,useState } from "react";
-import { socketInitializeRoom } from "@/socket";
 import { useRouter } from "next/navigation";
 import { useSocketStore, useUserStore, useBoardStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
@@ -8,10 +7,6 @@ import GameCard from "@/app/(components)/GameCard";
 import { 
   Card,
   SocketUser,
-  generateUserBoardTokensFromBuy,
-  useCanBuyCard,
-  updateTokens,
-  removeCardFromBoard,
   determineVictoryPoints
  } from "@/app/lib";
 
@@ -164,7 +159,7 @@ const PlayerAssets = ({params})=>{
                   <GameCard 
                     key={`card-${card.id}`}
                     card={card}
-                    staticCard={false}
+                    staticCard={true}
                     roomNumber={params.roomNumber}
                   />
                 ))}
