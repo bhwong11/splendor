@@ -5,6 +5,7 @@ import { useSocketStore, useBoardStore, useUserStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
 import { useCanBuyCard, useIsTurnPlayer } from "@/app/lib";
 import { Card, Tokens, generateUserBoardTokensFromBuy, updateTokens, removeCardFromBoard } from "@/app/lib";
+import GameCard from "@/app/(components)/GameCard";
 
 const CardsGrid = ({params})=>{
   console.log(params.roomNumber)
@@ -167,66 +168,42 @@ const CardsGrid = ({params})=>{
 
   return (
       username && (
-      <div className="max-w-7xl">
+      <div className="flex flex-col">
           <h1 className="text-3xl font-bold underline">Card grid</h1>
           <h4>lv 3 cards</h4>
-          <div className="cards-lv3 flex w-full">
+          <div className="cards-lv3 flex">
             {cardsLv3Display
               .map(cardLv3=>(
-                <div
-                  className="card w-full"
-                  key={cardLv3.id}
-                  onClick={()=>{
-                    if(turnAction===actionTypes.BUY_CARD){
-                      takeCard(cardLv3)
-                    }
-                    if(turnAction===actionTypes.RESERVE){
-                      reserveCard(cardLv3)
-                    }
-                  }}
-                >
-                  {JSON.stringify(cardLv3)}
-                </div>
+                <GameCard 
+                  key={`card-${cardLv3.id}`}
+                  card={cardLv3}
+                  staticCard={false}
+                  roomNumber={params.roomNumber}
+                />
               ))}
           </div>
           <h4>lv 2 cards</h4>
           <div className="cards-lv2 flex">
             {cardsLv2Display
               .map(cardLv2=>(
-              <div
-                className="card"
-                key={cardLv2.id}
-                onClick={()=>{
-                  if(turnAction===actionTypes.BUY_CARD){
-                    takeCard(cardLv2)
-                  }
-                  if(turnAction===actionTypes.RESERVE){
-                    reserveCard(cardLv2)
-                  }
-                }}
-              >
-                {JSON.stringify(cardLv2)}
-              </div>
+                <GameCard 
+                  key={`card-${cardLv2.id}`}
+                  card={cardLv2}
+                  staticCard={false}
+                  roomNumber={params.roomNumber}
+                />
             ))}
           </div>
           <h4>lv 1 cards</h4>
           <div className="cards-lv2 flex">
             {cardsLv1Display
               .map(cardLv1=>(
-              <div
-                className="card"
-                key={cardLv1.id}
-                onClick={()=>{
-                  if(turnAction===actionTypes.BUY_CARD){
-                    takeCard(cardLv1)
-                  }
-                  if(turnAction===actionTypes.RESERVE){
-                    reserveCard(cardLv1)
-                  }
-                }}
-              >
-                {JSON.stringify(cardLv1)}
-              </div>
+                <GameCard 
+                  key={`card-${cardLv1.id}`}
+                  card={cardLv1}
+                  staticCard={false}
+                  roomNumber={params.roomNumber}
+                />
             ))}
           </div>
       </div>)

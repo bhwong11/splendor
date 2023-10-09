@@ -47,7 +47,7 @@ const OtherPlayerAssets = ({params})=>{
 
         const otherPlayerVictoryPoints = data.map(playerAsset=>({
           username: playerAsset.username,
-          victoryPoints:determineVictoryPoints(playerAsset)+14
+          victoryPoints:determineVictoryPoints(playerAsset)
         }))
         setOtherPlayerVictoryPoints(otherPlayerVictoryPoints)
       })

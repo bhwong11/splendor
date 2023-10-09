@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 import { Card, Tokens } from '@/app/lib'
 
-
 export const actionTypes ={
   RESERVE:'reserve',
   BUY_CARD:'buy-card',

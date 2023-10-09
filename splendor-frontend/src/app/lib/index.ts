@@ -15,6 +15,8 @@ export interface Tokens{
   gold?: number
 }
 
+export type ActionType = 'reserve' | 'buy-card' | 'take-tokens'
+
 export interface Card{
   id:number,
   gem?:string,
