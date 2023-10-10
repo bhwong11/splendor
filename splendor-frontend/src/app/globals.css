@@ -31,6 +31,11 @@
     overflow-wrap: break-word;
     font-family: Optima, sans-serif;
   }
+  .card__image-wrapper{
+    max-width: 10rem;
+    max-height: 10rem;
+    overflow: hidden;
+  }
 }
 
 @layer utilities {

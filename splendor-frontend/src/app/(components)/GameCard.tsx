@@ -4,18 +4,38 @@ import { useRouter } from "next/navigation";
 import { useSocketStore, useBoardStore, useUserStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
 import { useCanBuyCard, useIsTurnPlayer } from "@/app/lib";
-import { Card, generateUserBoardTokensFromBuy, updateTokens, removeCardFromBoard, tokenEmojiMap } from "@/app/lib";
+import classNames from "classnames";
+import { 
+  Card,
+  generateUserBoardTokensFromBuy,
+  updateTokens,
+  removeCardFromBoard,
+  tokenEmojiMap,
+  gameCardImages
+} from "@/app/lib";
 
 type CardProps ={
   card:Card
   staticCard: boolean
   roomNumber: number
+  className?: string
 }
+
+const gradientMap = {
+  white:'from-gray-400',
+  blue:'from-blue-400',
+  green:'from-green-400',
+  red:'from-red-400',
+  black:'from-gray-700',
+  gold: 'from-yellow-400'
+}
+
 
 const GameCard = ({
   card,
   staticCard=false,
-  roomNumber
+  roomNumber,
+  className=''
 }:CardProps)=>{
   const username = useUserStore(state=>state.username)
   const socket = useSocketStore(state=>state.socket)
@@ -41,6 +61,7 @@ const GameCard = ({
     setTakenTurnCard(false)
   },[turn])
 
+  //probably should break up these functions more
   const takeCard = (card:Card)=>{
     const canBuy = canBuyCard(card)
     console.log('buying card',!canBuy,!isTurnPlayer,turnAction!==actionTypes.BUY_CARD,takenTurnCard)
@@ -151,7 +172,11 @@ const GameCard = ({
 
   return (
     <div
-    className="card p-3"
+    className={classNames("card p-3 bg-gradient-to-b",
+      {[gradientMap[card.gem]]:card.gem},
+      className
+      )
+    }
     key={card.id}
     onClick={()=>{
       if(staticCard) return
@@ -169,6 +194,14 @@ const GameCard = ({
     {/* {JSON.stringify(card)} */}
     <p>id:{card.id}</p>
     {card.gem && <h4>Gem: {card.gem}</h4>}
+    {gameCardImages[card.level] && 
+    <div className="card__image-wrapper">
+      <picture>
+        <source srcSet={gameCardImages[card.level].WEBP} type="image/webp"/>
+        <source srcSet={gameCardImages[card.level].JPG} type="image/jpeg"/> 
+        <img src={gameCardImages[card.level].JPG}/>
+      </picture>
+    </div>}
     <h4>victory Points: {card.victoryPoints}</h4>
     <p>Price:</p>
     <div className="flex">
