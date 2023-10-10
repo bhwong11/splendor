@@ -3,7 +3,7 @@ import { Inter,Noto_Emoji } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const notoEmoji = Noto_Emoji({
+export const noto_emoji = Noto_Emoji({
   weight: ['400', '500', '700'],
   style: ['normal'],
   subsets: ['emoji']

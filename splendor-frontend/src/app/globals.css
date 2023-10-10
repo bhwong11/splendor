@@ -31,10 +31,9 @@
     overflow-wrap: break-word;
     font-family: Optima, sans-serif;
   }
-  .card__image-wrapper{
+  .card__emoji-wrapper{
     max-width: 10rem;
     max-height: 10rem;
-    overflow: hidden;
   }
 }
 

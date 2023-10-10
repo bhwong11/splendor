@@ -11,9 +11,9 @@ import {
   updateTokens,
   removeCardFromBoard,
   gemColorMap,
-  gameCardImages
+  gameCardEmojis
 } from "@/app/lib";
-import { notoEmoji } from '@/app/layout'
+import { noto_emoji } from '@/app/layout'
 
 type CardProps ={
   card:Card
@@ -23,11 +23,11 @@ type CardProps ={
 }
 
 const gradientMap = {
-  white:'from-gray-400',
-  blue:'from-blue-400',
-  green:'from-green-400',
-  red:'from-red-400',
-  black:'from-gray-700',
+  white:'from-gray-300',
+  blue:'from-blue-300',
+  green:'from-green-300',
+  red:'from-red-300',
+  black:'from-gray-600',
   gold: 'from-yellow-400'
 }
 
@@ -173,8 +173,11 @@ const GameCard = ({
 
   return (
     <div
-    className={classNames("card p-3 animate-fade bg-gradient-to-b",
-      {[gradientMap[card.gem]]:card.gem},
+    className={classNames("card p-3 bg-gradient-to-b",
+      {
+        [gradientMap[card.gem]]:card.gem,
+        'hover:animate-[wiggle_1s_ease-in-out_infinite]':!staticCard
+      },
       className
       )
     }
@@ -192,27 +195,29 @@ const GameCard = ({
       }
     }}
   >
-    {/* {JSON.stringify(card)} */}
+
     <p>id:{card.id}</p>
     {card.gem && (
     <h4>
       Gem: 
-      <span className={classNames(notoEmoji.className,gemColorMap[card.gem])}>💎</span>
+      <span className={classNames(noto_emoji.className,gemColorMap[card.gem])}>💎</span>
     </h4>)}
-    {gameCardImages[card.level] && 
-    <div className="card__image-wrapper">
-      <picture>
-        <source srcSet={gameCardImages[card.level].WEBP} type="image/webp"/>
-        <source srcSet={gameCardImages[card.level].JPG} type="image/jpeg"/> 
-        <img src={gameCardImages[card.level].JPG}/>
-      </picture>
+
+    {gameCardEmojis[card.level] && 
+    <div className={classNames(
+      "card__emoji-wrapper text-8xl pt-2 text-green-900",
+      noto_emoji.className
+    )}>
+      {gameCardEmojis[card.level]}
     </div>}
+
+
     <h4>victory Points: {card.victoryPoints}</h4>
     <p>Price:</p>
     <div className="flex justify-between">
       {Object.keys(card.price || {}).map((gem)=>(
         <div className="pe-1">
-          <div className={classNames(notoEmoji.className,gemColorMap[gem])}>
+          <div className={classNames(noto_emoji.className,gemColorMap[gem])}>
             💎
           </div>
           <div className={classNames("text-center")}>

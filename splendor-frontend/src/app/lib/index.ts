@@ -54,19 +54,25 @@ export const gemColorMap = {
   gold: 'text-yellow-500'
 }
 
-export const gameCardImages = {
-  "1":{
-    JPG:'/Gregg.jpg',
-    WEBP:'/Gregg.webp'
-  },
-  "2":{
-    JPG:'/Angus.jpg',
-    WEBP:'/Angus.webp'
-  },
-  "3":{
-    JPG:'/Bea.jpg',
-    WEBP:'/Bea.webp'
-  }
+// export const gameCardImages = {
+//   "1":{
+//     JPG:'/Gregg.jpg',
+//     WEBP:'/Gregg.webp'
+//   },
+//   "2":{
+//     JPG:'/Angus.jpg',
+//     WEBP:'/Angus.webp'
+//   },
+//   "3":{
+//     JPG:'/Bea.jpg',
+//     WEBP:'/Bea.webp'
+//   }
+// }
+
+export const gameCardEmojis ={
+  "1":'🍭',
+  "2":'🍫',
+  "3":'🍬',
 }
 
 export const emptyTokens = {

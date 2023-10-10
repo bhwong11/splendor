@@ -9,26 +9,14 @@ module.exports = {
       
       // that is animation class
       animation: {
-        fade: 'fadeOut 5s ease-in-out',
-        zoomIn:'zoomIn 5s ease-in-out'
+        wiggle: 'wiggle 1s ease-in-out infinite',
       },
 
       // that is actual animation
       keyframes: theme => ({
-        fadeOut: {
-          '0%': { backgroundColor: theme('colors.red.300') },
-          '100%': { backgroundColor: theme('colors.transparent') },
-        },
-        zoomIn :{
-          '0%' :{
-            transform: theme('scale-100')
-          },
-          '50%' :{
-            transform: theme('scale-100')
-          },
-          '100%': {
-            transform: theme('scale-0')
-          }
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
         }
       }),
     },
