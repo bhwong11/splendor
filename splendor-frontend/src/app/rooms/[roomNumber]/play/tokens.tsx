@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useSocketStore, useBoardStore,useUserStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
 import { useIsTurnPlayer } from "@/app/lib";
-import { SocketUser } from "@/app/lib";
 
 const Tokens = ({params})=>{
   const username = useUserStore(state=>state.username)
@@ -21,7 +20,6 @@ const Tokens = ({params})=>{
   })
 
   const setTokens = useBoardStore(state=>state.setTokens)
-  const setUserTokens = useUserStore(state=>state.setTokens)
   const setActionTaken = useUserStore(state=>state.setActionTaken)
 
   const turnAction = useUserStore(state=>state.turnAction)

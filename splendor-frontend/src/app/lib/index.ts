@@ -45,6 +45,15 @@ export interface SocketUser extends User{
   socketId:string,
 }
 
+export const tokenEmojiMap = {
+  white:'⚪',
+  blue: '🔵',
+  green:'🟢',
+  red:'🔴',
+  black:'⚫',
+  gold: '⭐'
+}
+
 export const emptyTokens = {
   white:0,
   blue:0,

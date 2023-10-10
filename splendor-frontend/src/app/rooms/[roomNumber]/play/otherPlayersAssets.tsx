@@ -3,6 +3,7 @@ import { useEffect,useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSocketStore, useUserStore, useBoardStore } from "@/zustand";
 import { determineVictoryPoints,SocketUser } from "@/app/lib";
+import Modal from "@/app/(components)/Modal";
 
 
 const OtherPlayerAssets = ({params})=>{
@@ -67,7 +68,9 @@ const OtherPlayerAssets = ({params})=>{
         </div>
         <div>
           {otherPlayerAssets?.map(playerAssets=>(
-          <p>assets: {JSON.stringify(playerAssets)}</p>
+            <>
+              <Modal playerAssets={playerAssets}/>
+            </>
           ))}
         </div>
       </div>

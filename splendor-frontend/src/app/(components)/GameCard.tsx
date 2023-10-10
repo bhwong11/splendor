@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useSocketStore, useBoardStore, useUserStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
 import { useCanBuyCard, useIsTurnPlayer } from "@/app/lib";
-import { Card, generateUserBoardTokensFromBuy, updateTokens, removeCardFromBoard } from "@/app/lib";
+import { Card, generateUserBoardTokensFromBuy, updateTokens, removeCardFromBoard, tokenEmojiMap } from "@/app/lib";
 
 type CardProps ={
   card:Card
@@ -35,6 +35,7 @@ const GameCard = ({
   const turnAction = useUserStore(state=>state.turnAction)
   const userTokens = useUserStore(state=>state.tokens)
   const [takenTurnCard,setTakenTurnCard] = useState(false)
+  const isNoble = !card.gem && card.id
   
   useEffect(()=>{
     setTakenTurnCard(false)
@@ -150,7 +151,7 @@ const GameCard = ({
 
   return (
     <div
-    className="card"
+    className="card p-3"
     key={card.id}
     onClick={()=>{
       if(staticCard) return
@@ -165,7 +166,16 @@ const GameCard = ({
       }
     }}
   >
-    {JSON.stringify(card)}
+    {/* {JSON.stringify(card)} */}
+    <p>id:{card.id}</p>
+    {card.gem && <h4>Gem: {card.gem}</h4>}
+    <h4>victory Points: {card.victoryPoints}</h4>
+    <p>Price:</p>
+    <div className="flex">
+      {Object.keys(card.price || {}).map((gem)=>(
+        <p className="pe-1">{tokenEmojiMap[gem]}: {card.price[gem]}</p>
+      ))}
+    </div>
   </div>)
 }
 
