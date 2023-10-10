@@ -45,7 +45,7 @@ export interface SocketUser extends User{
   socketId:string,
 }
 
-export const tokenEmojiMap = {
+export const gemEmojiMap = {
   white:'⚪',
   blue: '🔵',
   green:'🟢',

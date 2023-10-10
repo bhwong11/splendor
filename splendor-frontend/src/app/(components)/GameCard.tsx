@@ -10,7 +10,7 @@ import {
   generateUserBoardTokensFromBuy,
   updateTokens,
   removeCardFromBoard,
-  tokenEmojiMap,
+  gemEmojiMap,
   gameCardImages
 } from "@/app/lib";
 
@@ -193,7 +193,7 @@ const GameCard = ({
   >
     {/* {JSON.stringify(card)} */}
     <p>id:{card.id}</p>
-    {card.gem && <h4>Gem: {card.gem}</h4>}
+    {card.gem && <h4>Gem: {gemEmojiMap[card.gem]}</h4>}
     {gameCardImages[card.level] && 
     <div className="card__image-wrapper">
       <picture>
@@ -206,7 +206,7 @@ const GameCard = ({
     <p>Price:</p>
     <div className="flex">
       {Object.keys(card.price || {}).map((gem)=>(
-        <p className="pe-1">{tokenEmojiMap[gem]}: {card.price[gem]}</p>
+        <p className="pe-1">{gemEmojiMap[gem]}: {card.price[gem]}</p>
       ))}
     </div>
   </div>)
