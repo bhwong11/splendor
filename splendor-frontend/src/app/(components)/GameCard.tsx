@@ -10,9 +10,10 @@ import {
   generateUserBoardTokensFromBuy,
   updateTokens,
   removeCardFromBoard,
-  gemEmojiMap,
+  gemColorMap,
   gameCardImages
 } from "@/app/lib";
+import { notoEmoji } from '@/app/layout'
 
 type CardProps ={
   card:Card
@@ -193,7 +194,11 @@ const GameCard = ({
   >
     {/* {JSON.stringify(card)} */}
     <p>id:{card.id}</p>
-    {card.gem && <h4>Gem: {gemEmojiMap[card.gem]}</h4>}
+    {card.gem && (
+    <h4>
+      Gem: 
+      <span className={classNames(notoEmoji.className,gemColorMap[card.gem])}>💎</span>
+    </h4>)}
     {gameCardImages[card.level] && 
     <div className="card__image-wrapper">
       <picture>
@@ -204,9 +209,16 @@ const GameCard = ({
     </div>}
     <h4>victory Points: {card.victoryPoints}</h4>
     <p>Price:</p>
-    <div className="flex">
+    <div className="flex justify-between">
       {Object.keys(card.price || {}).map((gem)=>(
-        <p className="pe-1">{gemEmojiMap[gem]}: {card.price[gem]}</p>
+        <div className="pe-1">
+          <div className={classNames(notoEmoji.className,gemColorMap[gem])}>
+            💎
+          </div>
+          <div className={classNames("text-center")}>
+            {card.price[gem]}
+          </div>
+        </div>
       ))}
     </div>
   </div>)

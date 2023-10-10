@@ -45,13 +45,13 @@ export interface SocketUser extends User{
   socketId:string,
 }
 
-export const gemEmojiMap = {
-  white:'⚪',
-  blue: '🔵',
-  green:'🟢',
-  red:'🔴',
-  black:'⚫',
-  gold: '⭐'
+export const gemColorMap = {
+  white:'text-gray-500',
+  blue: 'text-blue-500',
+  green:'text-green-500',
+  red:'text-red-500',
+  black:'text-black-500',
+  gold: 'text-yellow-500'
 }
 
 export const gameCardImages = {
