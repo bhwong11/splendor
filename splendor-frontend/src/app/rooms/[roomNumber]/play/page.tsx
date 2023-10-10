@@ -41,7 +41,7 @@ const RoomPage = ({params})=>{
         setUsers(data?.users)
       })
       socket.on('load-error',data=>{
-        console.log('hit error!')
+        console.log('hit error!',data)
         setError(data.message ?? 'Error Occured, please reload the page')
       })
     }
@@ -78,6 +78,10 @@ const RoomPage = ({params})=>{
 
           <button onClick={(e)=>{
             e.preventDefault()
+            socket?.emit('leave-room',{
+              room:params.roomNumber,
+              username
+            })
             router.push('/')
           }}>leave room</button>
           <OtherPlayerAssets params={params}/>

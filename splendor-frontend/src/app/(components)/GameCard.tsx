@@ -172,7 +172,7 @@ const GameCard = ({
 
   return (
     <div
-    className={classNames("card p-3 bg-gradient-to-b",
+    className={classNames("card p-3 animate-fade bg-gradient-to-b",
       {[gradientMap[card.gem]]:card.gem},
       className
       )

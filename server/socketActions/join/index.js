@@ -85,6 +85,12 @@ const joinActions =async ({
         })
       }
     }
+    socket.on('leave-room',(obj)=>{
+      activeRooms[obj?.room].users = activeRooms[obj?.room]?.users.filter(
+        user=>user.username!==obj.username
+      )
+      io.sockets.in(obj?.room).emit('user-left',activeRooms[obj?.room])
+    })
     console.log('rooms',socket.rooms)
   })
 }

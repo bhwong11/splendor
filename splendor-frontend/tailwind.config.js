@@ -5,7 +5,33 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      
+      // that is animation class
+      animation: {
+        fade: 'fadeOut 5s ease-in-out',
+        zoomIn:'zoomIn 5s ease-in-out'
+      },
+
+      // that is actual animation
+      keyframes: theme => ({
+        fadeOut: {
+          '0%': { backgroundColor: theme('colors.red.300') },
+          '100%': { backgroundColor: theme('colors.transparent') },
+        },
+        zoomIn :{
+          '0%' :{
+            transform: theme('scale-100')
+          },
+          '50%' :{
+            transform: theme('scale-100')
+          },
+          '100%': {
+            transform: theme('scale-0')
+          }
+        }
+      }),
+    },
   },
   plugins: [],
 }
