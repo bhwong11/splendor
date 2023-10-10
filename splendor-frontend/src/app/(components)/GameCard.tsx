@@ -22,15 +22,6 @@ type CardProps ={
   className?: string
 }
 
-const gradientMap = {
-  white:'from-gray-300',
-  blue:'from-blue-300',
-  green:'from-green-300',
-  red:'from-red-300',
-  black:'from-gray-600',
-  gold: 'from-yellow-400'
-}
-
 
 const GameCard = ({
   card,
@@ -175,7 +166,7 @@ const GameCard = ({
     <div
     className={classNames("card p-3 bg-gradient-to-b",
       {
-        [gradientMap[card.gem]]:card.gem,
+        [gemColorMap[card.gem]?.gradient]:card.gem,
         'hover:animate-[wiggle_1s_ease-in-out_infinite]':!staticCard
       },
       className
@@ -200,13 +191,14 @@ const GameCard = ({
     {card.gem && (
     <h4>
       Gem: 
-      <span className={classNames(noto_emoji.className,gemColorMap[card.gem])}>💎</span>
+      <span className={classNames(noto_emoji.className,gemColorMap[card.gem].tokenColor)}>💎</span>
     </h4>)}
 
     {gameCardEmojis[card.level] && 
     <div className={classNames(
-      "card__emoji-wrapper text-8xl pt-2 text-green-900",
-      noto_emoji.className
+      "card__emoji-wrapper text-8xl pt-2",
+      noto_emoji.className,
+      gemColorMap[card.gem].mainEmoji
     )}>
       {gameCardEmojis[card.level]}
     </div>}
@@ -217,7 +209,7 @@ const GameCard = ({
     <div className="flex justify-between">
       {Object.keys(card.price || {}).map((gem)=>(
         <div className="pe-1">
-          <div className={classNames(noto_emoji.className,gemColorMap[gem])}>
+          <div className={classNames(noto_emoji.className,gemColorMap[gem].tokenColor)}>
             💎
           </div>
           <div className={classNames("text-center")}>

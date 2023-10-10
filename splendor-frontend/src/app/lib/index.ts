@@ -46,12 +46,36 @@ export interface SocketUser extends User{
 }
 
 export const gemColorMap = {
-  white:'text-gray-500',
-  blue: 'text-blue-500',
-  green:'text-green-500',
-  red:'text-red-500',
-  black:'text-black-500',
-  gold: 'text-yellow-500'
+  white:{
+    tokenColor:'text-gray-500',
+    gradient:'from-gray-200',
+    mainEmoji:'text-gray-500'
+  },
+  blue: {
+    tokenColor:'text-blue-500',
+    gradient:'from-blue-300',
+    mainEmoji:'text-blue-700'
+  },
+  green:{
+    tokenColor:'text-green-500',
+    gradient:'from-green-300',
+    mainEmoji:'text-green-700'
+  },
+  red:{
+    tokenColor:'text-red-500',
+    gradient:'from-red-300',
+    mainEmoji:'text-red-700'
+  },
+  black:{
+    tokenColor:'text-black-500',
+    gradient:'from-gray-500',
+    mainEmoji:'text-black-700'
+  },
+  gold: {
+    tokenColor:'text-yellow-500',
+    gradient:'from-yellow-300',
+    mainEmoji:'text-yellow-700'
+  }
 }
 
 // export const gameCardImages = {
