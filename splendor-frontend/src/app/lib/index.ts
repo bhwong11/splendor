@@ -191,7 +191,6 @@ export const updateTokens = (
   userTokensInput:Tokens, 
   boardTokensInput:Tokens
 ) =>{
-  // setUserTokens(userTokensInput)
   socket.emit('update-tokens',{
     room: roomNumber,
     username,
