@@ -1,6 +1,5 @@
 'use client';
 import { useEffect,useState } from "react";
-import { socketInitializeRoom } from "@/socket";
 import { useRouter } from "next/navigation";
 import { useSocketStore, useBoardStore,useUserStore } from "@/zustand";
 import { costCovered,emptyTokens } from "@/app/lib";
