@@ -2,6 +2,7 @@
 import { useEffect,useState } from "react";
 import { useSocketStore, useBoardStore, useUserStore } from "@/zustand";
 import GameCard from "@/app/(components)/GameCard";
+import { AnimationWrapper } from "animation-wrapper";
 
 const CardsGrid = ({params})=>{
   console.log(params.roomNumber)
@@ -18,6 +19,7 @@ const CardsGrid = ({params})=>{
 
   useEffect(()=>{
     if(socket){
+      //only on join/game start
       socket.on('game-board',data=>{
         console.log('game-board',data)
         setCardsLv1(data.cardsLv1)
@@ -35,14 +37,24 @@ const CardsGrid = ({params})=>{
         setCardsLv2(data.cardsLv2)
         setCardsLv3(data.cardsLv3)
         setCardsLv1Display(prev=>{
-          const newCards = data.cardsLv1.slice(data.cardsLv1.length-4,data.cardsLv1.length)
+          const newCards = data.cardsLv1
+            .slice(data.cardsLv1.length-4,data.cardsLv1.length)
+            .map(c=>({...c,show:true}))
 
           const indexOfOldCard = prev.findIndex(card=>card.id===data?.newCard.id)
           if(indexOfOldCard===-1){
             return newCards
           }
-          const prevCopy = [...prev]
-          prevCopy.splice(indexOfOldCard,1,newCards[0])
+          const prevCopy = [...prev.map(
+            (c,idx)=>{
+              if(idx===indexOfOldCard){
+                return ({...c,show:false})
+              }
+              return {...c,...(c.show!==undefined?{}:{show:true})}
+            }
+          ),{...newCards[0],show:true}]
+          console.log('ore',prevCopy)
+          // prevCopy.splice(indexOfOldCard,1,newCards[0])
           return prevCopy
         })
         setCardsLv2Display(prev=>{
@@ -104,12 +116,19 @@ const CardsGrid = ({params})=>{
           <div className="cards-lv2 flex">
             {cardsLv1Display
               .map(cardLv1=>(
-                <GameCard 
-                  key={`card-${cardLv1.id}`}
-                  card={cardLv1}
-                  staticCard={false}
-                  roomNumber={params.roomNumber}
-                />
+                <AnimationWrapper
+                  show={cardLv1.show===undefined?true:cardLv1.show}
+                  options={{ duration: 1500 }}
+                  from={{ opacity: 0, transform: "translateY(-100px)" }}
+                  to={{ opacity: 1, transform: "translateY(0)" }}
+                >
+                  <GameCard 
+                    key={`card-${cardLv1.id}`}
+                    card={cardLv1}
+                    staticCard={false}
+                    roomNumber={params.roomNumber}
+                  />
+                </AnimationWrapper>
             ))}
           </div>
       </div>)
