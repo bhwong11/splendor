@@ -61,7 +61,7 @@ const Nobles = ({params})=>{
       username && (
       <div>
           <h4>Nobles</h4>
-          <div className="flex">
+          <div className="flex justify-around">
             {nobles
               .map(noble=>(
                 <GameCard 
