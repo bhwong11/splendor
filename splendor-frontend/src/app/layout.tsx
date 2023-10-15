@@ -1,5 +1,5 @@
 import './globals.css'
-import { Inter,Noto_Emoji } from 'next/font/google'
+import { Inter,Noto_Emoji,Lemon } from 'next/font/google'
 import { Metadata } from 'next'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -8,6 +8,12 @@ export const noto_emoji = Noto_Emoji({
   weight: ['400', '500', '700'],
   style: ['normal'],
   subsets: ['emoji']
+})
+
+export const lemon = Lemon({
+  weight: ['400'],
+  style: ['normal'],
+  subsets: ['latin']
 })
 
 const metadata: Metadata = {

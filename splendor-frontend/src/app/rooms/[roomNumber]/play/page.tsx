@@ -51,10 +51,47 @@ const RoomPage = ({params})=>{
       username && (
       <div>
           {
-            error && <h1 className="error">error</h1>
+            error && 
+            <div>
+              <h1 className="error">error</h1>
+              <>Message:{error}</>
+            </div>
           }
           <h1>Room</h1>
           <h3>{params.roomNumber}</h3>
+
+          <div className="
+            sticky
+            top-0
+            right-0
+            bg-pink-300
+            rounded
+            p-3
+            border-4
+            border-pink-700
+            flex
+          ">
+            <button onClick={(e)=>{
+              e.preventDefault()
+              setVictor(null)
+              setGameStarted(true)
+              socket?.emit('start-game',{
+                room:params.roomNumber,
+                board:createGame()
+              })
+            }}>{gameStarted?'Reset':'Play'}</button>
+
+            <button onClick={(e)=>{
+              e.preventDefault()
+              socket?.emit('leave-room',{
+                room:params.roomNumber,
+                username
+              })
+              router.push('/')
+            }}>leave room</button>
+            <OtherPlayerAssets params={params}/>
+          </div>
+
           {users?.map(user=>(
             <div key={user.username}>
             <span>{user.username}</span>
@@ -66,25 +103,6 @@ const RoomPage = ({params})=>{
           <CardsGrid params={params}/>
           <Tokens params={params}/>
           <PlayerAssets params={params}/>
-          <button onClick={(e)=>{
-            e.preventDefault()
-            setVictor(null)
-            setGameStarted(true)
-            socket?.emit('start-game',{
-              room:params.roomNumber,
-              board:createGame()
-            })
-          }}>{gameStarted?'Reset':'Play'}</button>
-
-          <button onClick={(e)=>{
-            e.preventDefault()
-            socket?.emit('leave-room',{
-              room:params.roomNumber,
-              username
-            })
-            router.push('/')
-          }}>leave room</button>
-          <OtherPlayerAssets params={params}/>
       </div>)
   )
 }

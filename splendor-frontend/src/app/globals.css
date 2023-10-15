@@ -18,7 +18,7 @@
     @apply border-solid border-2;
   }
   button{
-    @apply bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded
+    @apply bg-white hover:bg-pink-500 text-pink-700 font-semibold hover:text-white py-2 px-4 border border-pink-500 hover:border-transparent rounded
     disabled:opacity-50 disabled:cursor-not-allowed
   }
 }
@@ -29,16 +29,11 @@
   .card{
     @apply max-w-xs 
     rounded shadow-lg flex-col 
-    border-solid border-2 border-black
+    border-solid border-4
     font-bold w-min;
     overflow-wrap: break-word;
     font-family: Optima, sans-serif;
   }
-  /* .card:hover{
-    animation-name: zoomOut;
-    animation:zoomOut .3s ease-in-out;
-    animation-iteration-count: 0;
-  } */
   .card__emoji-wrapper{
     max-width: 10rem;
     max-height: 10rem;

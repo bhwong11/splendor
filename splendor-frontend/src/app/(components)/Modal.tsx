@@ -14,8 +14,6 @@ const Modal = ({playerAssets}:ModalProps) => {
   return (
     <>
       <button
-        className="bg-blue-200 active:bg-blue-500"
-        type="button"
         onClick={() => setShowModal(true)}
       >
         current Assets: {playerAssets.username}

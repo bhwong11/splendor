@@ -116,7 +116,7 @@ const PlayerAssets = ({params})=>{
       <div>
           <h1>Player Assets</h1>
           <h4>turn:{turn}</h4>
-          <h4>turn action: {turnAction ?? "select action"}</h4>
+          <h4>turn action: {turnAction}</h4>
           <h4>turn player: {turnPlayer}</h4>
           <p>victoryPoints: {victoryPoints}</p>
           <div>

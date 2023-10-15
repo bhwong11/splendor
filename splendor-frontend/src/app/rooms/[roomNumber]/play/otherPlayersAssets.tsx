@@ -58,19 +58,11 @@ const OtherPlayerAssets = ({params})=>{
   return (
       username && (
       <div>
-        <div>
-          {otherPlayerVictoryPoints.map(player=>(
-            <div>
-              <p>player: {player.username}</p>
-              <p>Victory Points: {player.victoryPoints}</p>
-            </div>
-          ))}
-        </div>
-        <div>
+        <div className="flex">
           {otherPlayerAssets?.map(playerAssets=>(
-            <>
+            <div>
               <Modal playerAssets={playerAssets}/>
-            </>
+            </div>
           ))}
         </div>
       </div>

@@ -1,7 +1,7 @@
 export default [
   {
     id:0,
-    picture: "mine",
+    emoji: "🍰",
     victoryPoints:3,
     price:{
       white:0,
@@ -13,7 +13,7 @@ export default [
   },
   {
     id:1,
-    picture: "mine",
+    emoji: "🥮",
     victoryPoints:3,
     price:{
       white:3,
@@ -25,7 +25,7 @@ export default [
   },
   {
     id:2,
-    picture: "mine",
+    emoji: "🍯",
     victoryPoints:3,
     price:{
       white:4,
@@ -37,7 +37,7 @@ export default [
   },
   {
     id:3,
-    picture: "mine",
+    emoji: "🧁",
     victoryPoints:3,
     price:{
       white:4,
@@ -49,7 +49,7 @@ export default [
   },
   {
     id:4,
-    picture: "mine",
+    emoji: "🍧",
     victoryPoints:3,
     price:{
       white:0,
@@ -61,7 +61,7 @@ export default [
   },
   {
     id:5,
-    picture: "mine",
+    emoji: "🍦",
     victoryPoints:3,
     price:{
       white:0,
@@ -73,7 +73,7 @@ export default [
   },
   {
     id:6,
-    picture: "mine",
+    emoji: "🍩",
     victoryPoints:3,
     price:{
       white:3,
@@ -85,7 +85,7 @@ export default [
   },
   {
     id:7,
-    picture: "mine",
+    emoji: "🧋",
     victoryPoints:3,
     price:{
       white:0,
@@ -97,7 +97,7 @@ export default [
   },
   {
     id:8,
-    picture: "mine",
+    emoji: "🥞",
     victoryPoints:3,
     price:{
       white:3,
@@ -109,7 +109,7 @@ export default [
   },
   {
     id:9,
-    picture: "mine",
+    emoji: "🍮",
     victoryPoints:3,
     price:{
       white:0,

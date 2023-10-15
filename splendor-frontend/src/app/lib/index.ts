@@ -20,7 +20,8 @@ export type ActionType = 'reserve' | 'buy-card' | 'take-tokens'
 export interface Card{
   id:number,
   gem?:string,
-  picture: string,
+  picture?: string,
+  emoji?: string,
   level?:number,
   victoryPoints:number,
   price:{
@@ -49,32 +50,38 @@ export const gemColorMap = {
   white:{
     tokenColor:'text-gray-500',
     gradient:'from-gray-200',
-    mainEmoji:'text-gray-500'
+    textColor:'text-gray-500',
+    borderColor:'border-gray-500'
   },
   blue: {
     tokenColor:'text-blue-500',
     gradient:'from-blue-300',
-    mainEmoji:'text-blue-700'
+    textColor:'text-blue-700',
+    borderColor:'border-blue-500'
   },
   green:{
     tokenColor:'text-green-500',
     gradient:'from-green-300',
-    mainEmoji:'text-green-700'
+    textColor:'text-green-700',
+    borderColor:'border-green-700',
   },
   red:{
     tokenColor:'text-red-500',
     gradient:'from-red-300',
-    mainEmoji:'text-red-700'
+    textColor:'text-red-700',
+    borderColor:'border-red-700',
   },
   black:{
     tokenColor:'text-black',
     gradient:'from-gray-500',
-    mainEmoji:'text-black'
+    textColor:'text-black',
+    borderColor:'border-black',
   },
   gold: {
     tokenColor:'text-yellow-500',
     gradient:'from-yellow-300',
-    mainEmoji:'text-yellow-700'
+    textColor:'text-yellow-700',
+    borderColor:'border-yellow-700',
   }
 }
 

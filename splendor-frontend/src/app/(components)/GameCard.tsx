@@ -180,10 +180,14 @@ const GameCard = ({
     <div
     className={classNames("card p-3 bg-gradient-to-b",
       {
-        [gemColorMap[card.gem]?.gradient]:card.gem,
+        [gemColorMap[card.gem]?.gradient]:!!card.gem,
+        'from-pink-300':!card.gem,
         'hover:animate-[wiggle_1s_ease-in-out_infinite]':!staticCard,
         [`animate-[zoomOut_${duration}ms_ease-in-out]`]: !animationRun,
-        'animate-pulse':userCanBuyCard
+        [gemColorMap[card.gem]?.textColor]:!!card.gem,
+        [gemColorMap[card.gem]?.borderColor]:!!card.gem,
+        'text-pink-700':!card.gem,
+        'border-pink-700':!card.gem
       },
       className
       )
@@ -212,22 +216,24 @@ const GameCard = ({
       </span>
     </h4>)}
 
-    {gameCardEmojis[card.level] && 
-    <div className={classNames(
-      "card__emoji-wrapper text-8xl pt-2",
-      noto_emoji.className,
-      gemColorMap[card.gem].mainEmoji
-    )}>
-      {gameCardEmojis[card.level]}
-    </div>}
 
+    <div className={classNames(
+      "card__emoji-wrapper text-8xl py-2",
+      noto_emoji.className,
+      {
+        [gemColorMap[card.gem]?.textColor]:card.gem,
+        'animate-[wiggle_1s_ease-in-out_infinite]':userCanBuyCard && !staticCard,
+      }
+    )}>
+      {gameCardEmojis[card.level] || card.emoji}
+    </div>
 
     <h4>victory Points: {card.victoryPoints}</h4>
     <p>Price:</p>
     <div className="flex justify-between">
       {Object.keys(card.price || {}).map((gem)=>(
         <div className="pe-1">
-          <div className={classNames(noto_emoji.className,gemColorMap[gem].tokenColor)}>
+          <div className={classNames(noto_emoji.className,gemColorMap[gem].tokenColor,)}>
             💎
           </div>
           <div className={classNames("text-center")}>
