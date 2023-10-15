@@ -1,10 +1,11 @@
 'use client';
-import { useEffect,useState,memo } from "react";
+import { useEffect,useState,memo,useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useSocketStore, useBoardStore, useUserStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
 import { useCanBuyCard, useIsTurnPlayer } from "@/app/lib";
 import classNames from "classnames";
+import { CSSProperties } from "react";
 import { 
   Card,
   generateUserBoardTokensFromBuy,
@@ -20,6 +21,8 @@ type CardProps ={
   staticCard: boolean
   roomNumber: number
   className?: string
+  animationStyle?: CSSProperties
+  duration?: number
 }
 
 
@@ -27,7 +30,9 @@ const GameCard = ({
   card,
   staticCard=false,
   roomNumber,
-  className=''
+  className='',
+  animationStyle,
+  duration = 500
 }:CardProps)=>{
   const username = useUserStore(state=>state.username)
   const socket = useSocketStore(state=>state.socket)
@@ -56,7 +61,7 @@ const GameCard = ({
   },[turn])
 
   useEffect(()=>{
-   const animationRun = setTimeout(()=>setAnimationRun(true),1000)
+   const animationRun = setTimeout(()=>setAnimationRun(true),duration)
     return ()=>clearTimeout(animationRun);
   },[card.id])
 
@@ -168,6 +173,8 @@ const GameCard = ({
     })
     setTakenTurnCard(true)
   }
+  
+  const userCanBuyCard = canBuyCard(card) && isTurnPlayer && turnAction===actionTypes.BUY_CARD
 
   return (
     <div
@@ -175,7 +182,8 @@ const GameCard = ({
       {
         [gemColorMap[card.gem]?.gradient]:card.gem,
         'hover:animate-[wiggle_1s_ease-in-out_infinite]':!staticCard,
-        'animate-zoomOut': !animationRun,
+        [`animate-[zoomOut_${duration}ms_ease-in-out]`]: !animationRun,
+        'animate-pulse':userCanBuyCard
       },
       className
       )
@@ -199,7 +207,9 @@ const GameCard = ({
     {card.gem && (
     <h4>
       Gem: 
-      <span className={classNames(noto_emoji.className,gemColorMap[card.gem].tokenColor)}>💎</span>
+      <span className={classNames(noto_emoji.className,gemColorMap[card.gem].tokenColor)}>
+        💎
+      </span>
     </h4>)}
 
     {gameCardEmojis[card.level] && 
