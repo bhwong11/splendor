@@ -168,7 +168,7 @@ const PlayerAssets = ({params})=>{
           )}
           </div>
           <p>reserved cards:</p>
-          <div>
+          <div className="flex">
             {reservedCards?.map(card=>(
               <GameCard 
                 key={`card-${card.id}`}

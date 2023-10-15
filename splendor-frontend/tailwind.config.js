@@ -6,18 +6,24 @@ module.exports = {
   ],
   theme: {
     extend: {
-      
-      // that is animation class
       animation: {
         wiggle: 'wiggle 1s ease-in-out infinite',
+        zoomIn: 'zoomIn .3s ease-in-out forwards',
+        zoomOut: 'zoomOut .3s ease-in-out'
       },
-
-      // that is actual animation
       keyframes: theme => ({
         wiggle: {
           '0%, 100%': { transform: 'rotate(-3deg)' },
           '50%': { transform: 'rotate(3deg)' },
-        }
+        },
+        zoomIn: {
+          '0%': { transform: 'scale(1)' },
+          '100%': { transform: 'scale(0)', height:'0px',width:'0px' },
+        },
+        zoomOut: {
+          '0%': { transform: 'scale(0)' },
+          '100%': { transform: 'scale(1)' },
+        },
       }),
     },
   },

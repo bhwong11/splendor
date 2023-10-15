@@ -27,10 +27,18 @@
     @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
   }
   .card{
-    @apply max-w-xs rounded shadow-lg flex-col border-solid border-2 border-black font-bold;
+    @apply max-w-xs 
+    rounded shadow-lg flex-col 
+    border-solid border-2 border-black
+    font-bold w-min;
     overflow-wrap: break-word;
     font-family: Optima, sans-serif;
   }
+  /* .card:hover{
+    animation-name: zoomOut;
+    animation:zoomOut .3s ease-in-out;
+    animation-iteration-count: 0;
+  } */
   .card__emoji-wrapper{
     max-width: 10rem;
     max-height: 10rem;

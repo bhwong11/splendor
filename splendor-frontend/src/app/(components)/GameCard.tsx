@@ -47,11 +47,18 @@ const GameCard = ({
   const turnAction = useUserStore(state=>state.turnAction)
   const userTokens = useUserStore(state=>state.tokens)
   const [takenTurnCard,setTakenTurnCard] = useState(false)
+  const [animationRun,setAnimationRun] = useState(false)
+
   const isNoble = !card.gem && card.id
   
   useEffect(()=>{
     setTakenTurnCard(false)
   },[turn])
+
+  useEffect(()=>{
+   const animationRun = setTimeout(()=>setAnimationRun(true),1000)
+    return ()=>clearTimeout(animationRun);
+  },[card.id])
 
   //probably should break up these functions more
   const takeCard = (card:Card)=>{
@@ -167,7 +174,8 @@ const GameCard = ({
     className={classNames("card p-3 bg-gradient-to-b",
       {
         [gemColorMap[card.gem]?.gradient]:card.gem,
-        'hover:animate-[wiggle_1s_ease-in-out_infinite]':!staticCard
+        'hover:animate-[wiggle_1s_ease-in-out_infinite]':!staticCard,
+        'animate-zoomOut': !animationRun,
       },
       className
       )
@@ -226,5 +234,6 @@ export default memo(GameCard,(oldProps,newProps)=>{
     oldProps.card.id === newProps.card.id
     && oldProps.roomNumber === newProps.roomNumber
     && oldProps.staticCard === newProps.staticCard
+    && oldProps.className === newProps.className
   )
 })

@@ -67,9 +67,9 @@ export const gemColorMap = {
     mainEmoji:'text-red-700'
   },
   black:{
-    tokenColor:'text-black-500',
+    tokenColor:'text-black',
     gradient:'from-gray-500',
-    mainEmoji:'text-black-700'
+    mainEmoji:'text-black'
   },
   gold: {
     tokenColor:'text-yellow-500',
