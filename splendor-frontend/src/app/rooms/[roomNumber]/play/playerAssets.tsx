@@ -59,7 +59,7 @@ const PlayerAssets = ({params})=>{
         setTurnPlayer(data.turnPlayer.username)
       })
       socket.on('players-update',(users:SocketUser[])=>{
-        const currentUser = users.find(user=>user.username=username)
+        const currentUser = users.find(user=>user.username===username)
         console.log('player update cur',currentUser)
         setUserCards(currentUser.cards)
         setReservedCards(currentUser.reservedCards)
@@ -115,9 +115,9 @@ const PlayerAssets = ({params})=>{
       username && (
       <div>
           <h1>Player Assets</h1>
-          <h4>turn:{JSON.stringify(turn)}</h4>
-          <h4>turn action: {JSON.stringify(turnAction)}</h4>
-          <h4>turn player: {JSON.stringify(turnPlayer)}</h4>
+          <h4>turn:{turn}</h4>
+          <h4>turn action: {turnAction ?? "select action"}</h4>
+          <h4>turn player: {turnPlayer}</h4>
           <p>victoryPoints: {victoryPoints}</p>
           <div>
             {userTurnActions.map((action:Action)=>(

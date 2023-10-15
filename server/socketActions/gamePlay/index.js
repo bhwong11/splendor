@@ -51,7 +51,7 @@ const gameActions =async ({
     }
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
     if(obj?.addToUser){
-      user.cards.push(obj?.newCard)
+      user.cards=[...user.cards,obj?.newCard]
     }
     activeRooms[obj?.room].board = {
       ...activeRooms[obj?.room].board,
@@ -64,14 +64,14 @@ const gameActions =async ({
   })
 
   socket.on('reserve-card',(obj)=>{
-    console.log('reserve-card')
+    console.log('reserve-card',obj)
     if(!activeRooms[obj?.room]){
       io.to(socket.id).emit('load-error',{
         message:'room-does-not-exist'
       })
     }
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
-    user.reservedCards?.push(obj?.card)
+    user.reservedCards=[...user.reservedCards,obj.card]
     io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)
   })
 
@@ -79,7 +79,7 @@ const gameActions =async ({
     console.log('buy-reserve-card')
     const user = activeRooms[obj?.room]?.users?.find(user=>user.username===obj?.username)
     user.reservedCards= user.reservedCards.filter(c=>c.id!==obj.card.id)
-    user.cards.push(obj?.card)
+    user.cards=[...user.cards,obj?.newCard]
     io.sockets.in(obj?.room).emit('players-update',activeRooms[obj?.room]?.users)
   })
 
