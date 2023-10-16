@@ -58,7 +58,7 @@ export default function EnterRoom({
             onChange={e=>setRoomNumber(e.target.value)}
           />
         </>}
-        <button type="submit">
+        <button className="btn" type="submit">
           Enter Room update
         </button>
       </form>

@@ -9,6 +9,7 @@ import {
   SocketUser,
   determineVictoryPoints
  } from "@/app/lib";
+import classNames from "classnames";
 
 
 const PlayerAssets = ({params})=>{
@@ -33,6 +34,15 @@ const PlayerAssets = ({params})=>{
   const setReservedCards = useUserStore(state=>state.setReservedCards)
   const setUserNobles = useUserStore(state=>state.setNobles)
   const setUserTokens = useUserStore(state=>state.setTokens)
+  const [visibleAssets,setVisibleAssets]=useState<{
+    cards: boolean
+    nobles: boolean
+    reservedCards:boolean
+  }>({
+    cards:false,
+    nobles:false,
+    reservedCards:false
+  })
 
   const victoryPoints = determineVictoryPoints(user)
 
@@ -135,6 +145,7 @@ const PlayerAssets = ({params})=>{
           <div className="flex gap-1">
             {userTurnActions.map((action:Action)=>(
             <button 
+              className="btn"
               disabled={disabled}
               onClick={(e)=>{
                 e.preventDefault()
@@ -147,6 +158,7 @@ const PlayerAssets = ({params})=>{
             ))}
 
             <button 
+              className="btn"
               disabled={isTurnPlayer}
               onClick={(e)=>{
                 e.preventDefault()
@@ -156,42 +168,93 @@ const PlayerAssets = ({params})=>{
               pass turn
             </button>
 
-            <button onClick={(e)=>{
-              e.preventDefault()
-              clearUser()
+            <button
+              className="btn"
+              onClick={(e)=>{
+                e.preventDefault()
+                clearUser()
             }}>clear user</button>
           </div>
           <p>tokens: {JSON.stringify(tokens)}</p>
-          <p>nobles: {JSON.stringify(userNobles)}</p>
-          <p>cards:</p>
-          <div className="flex">
-            {Object.keys(userCardsByGem).map((gemColor)=>(
-              <div className="flex flex-col">
-                <h3>{gemColor}</h3>
-                {userCardsByGem[gemColor]?.map((card:Card)=>(
+          <div className="flex gap-1">
+            <button 
+              className={classNames("btn-link",{
+                "text-purple-700":visibleAssets['nobles'],
+                "text-pink-700":!visibleAssets['nobles']
+              })}
+              onClick={
+                ()=>setVisibleAssets(prev=>({...prev,nobles:!prev.nobles}))
+              }
+            >
+              nobles {visibleAssets['nobles']?"hide":"show"}
+            </button>
+            <button 
+              className={classNames("btn-link",{
+                "text-purple-700":visibleAssets['cards'],
+                "text-pink-700":!visibleAssets['cards']
+              })}
+              onClick={
+                ()=>setVisibleAssets(prev=>({...prev,cards:!prev.cards}))
+              }
+            >
+              cards {visibleAssets['cards']?"hide":"show"}
+            </button>
+            <button 
+              className={classNames("btn-link",{
+                "text-purple-700":visibleAssets['reservedCards'],
+                "text-pink-700":!visibleAssets['reservedCards']
+              })}
+              onClick={
+                ()=>setVisibleAssets(prev=>({...prev,reservedCards:!prev.reservedCards}))
+              }
+            >
+              reserved cards {visibleAssets['reservedCards']?"hide":"show"}
+            </button>
+          </div>
+
+          <div className="visible-assets">
+          {visibleAssets['nobles'] && (
+          <div>
+            <span>nobles:</span>
+            <>{JSON.stringify(userNobles)}</>
+          </div>
+          )}
+          { visibleAssets['reservedCards'] &&
+            (
+            <div>
+              <span>reserved cards:</span>
+              <div className="">
+                {reservedCards?.map(card=>(
                   <GameCard 
                     key={`card-${card.id}`}
                     card={card}
-                    staticCard={true}
+                    staticCard={false}
                     roomNumber={params.roomNumber}
                   />
                 ))}
               </div>
-            )
-          )}
+            </div>)}
+            { visibleAssets['cards'] && (
+            <div>
+              <span>cards:</span>
+              <div className="flex">
+                {Object.keys(userCardsByGem).map((gemColor)=>(
+                  <div className="flex flex-col">
+                    <h3>{gemColor}</h3>
+                    {userCardsByGem[gemColor]?.map((card:Card)=>(
+                      <GameCard 
+                        key={`card-${card.id}`}
+                        card={card}
+                        staticCard={true}
+                        roomNumber={params.roomNumber}
+                      />
+                    ))}
+                  </div>
+                )
+              )}
+            </div>
+            </div>)}
           </div>
-          <p>reserved cards:</p>
-          <div className="flex">
-            {reservedCards?.map(card=>(
-              <GameCard 
-                key={`card-${card.id}`}
-                card={card}
-                staticCard={false}
-                roomNumber={params.roomNumber}
-              />
-            ))}
-          </div>
-
       </div>)
   )
 }

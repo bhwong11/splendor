@@ -90,7 +90,7 @@ export default function CreatePost(){
   return(
     <>
     <h2>{randomRoomNumber}</h2>
-    <button onClick={()=>{
+    <button className="btn" onClick={()=>{
       getRandomRoom()
     }}>
       get Random room
@@ -112,7 +112,7 @@ export default function CreatePost(){
         onChange={e=>setRoomNumber(e.target.value)}
       />
     </div>
-    <button type="submit">
+    <button className="btn" type="submit">
       create
     </button>
     </form>
@@ -151,7 +151,7 @@ export default function CreatePost(){
         value={roomNumber}
         onChange={e=>setRoomNumber(e.target.value)}
       />
-      <button type="submit">
+      <button className="btn" type="submit">
         send
       </button>
     </form>
@@ -182,7 +182,7 @@ export default function CreatePost(){
         value={message}
         onChange={e=>setMessage(e.target.value)}
       />
-      <button type="submit">
+      <button className="btn" type="submit">
         send
       </button>
     </form>

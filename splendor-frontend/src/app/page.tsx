@@ -38,7 +38,7 @@ export default async function Home() {
           name="username"
           type="text"
         />
-        <button type="submit">
+        <button className="btn" type="submit">
           See Wins
         </button>
       </form>

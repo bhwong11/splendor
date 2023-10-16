@@ -86,17 +86,21 @@ const RoomPage = ({params})=>{
               <PlayerAssets params={params}/>
 
               <div className="flex gap-1 flex-wrap">
-                <button onClick={(e)=>{
-                  e.preventDefault()
-                  setVictor(null)
-                  setGameStarted(true)
-                  socket?.emit('start-game',{
-                    room:params.roomNumber,
-                    board:createGame()
-                  })
+                <button 
+                  className="btn"
+                  onClick={(e)=>{
+                    e.preventDefault()
+                    setVictor(null)
+                    setGameStarted(true)
+                    socket?.emit('start-game',{
+                      room:params.roomNumber,
+                      board:createGame()
+                    })
                 }}>{gameStarted?'Reset':'Play'}</button>
 
-                <button onClick={(e)=>{
+                <button 
+                  className="btn" 
+                  onClick={(e)=>{
                   e.preventDefault()
                   socket?.emit('leave-room',{
                     room:params.roomNumber,

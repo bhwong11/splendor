@@ -31,7 +31,7 @@ export default function CreateRoom(){
           onChange={e=>setRoomNumber(e.target.value)}
         />
       </div>
-      <button type="submit">
+      <button className="btn" type="submit">
         create
       </button>
       </form>

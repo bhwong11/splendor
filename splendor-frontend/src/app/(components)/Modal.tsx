@@ -17,6 +17,7 @@ const Modal = ({playerAssets}:ModalProps) => {
   return (
     <>
       <button
+        className="btn"
         onClick={() => setShowModal(true)}
       >
         {playerAssets.username===username?'your':playerAssets.username} Assets
@@ -29,7 +30,7 @@ const Modal = ({playerAssets}:ModalProps) => {
                 <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t ">
                   <h3 className="text-3xl font=semibold">Assets: {playerAssets.username}</h3>
                   <button
-                    className="bg-transparent hover:bg-transparent border-0 text-black float-right"
+                    className="btn bg-transparent hover:bg-transparent border-0 text-black float-right"
                     onClick={() => setShowModal(false)}
                   >
                     <span className="text-black opacity-7 h-6 w-6 text-xl block">

@@ -17,17 +17,17 @@
   input{
     @apply border-solid border-2;
   }
-  button{
-    @apply bg-white hover:bg-pink-500 text-pink-700 font-semibold hover:text-white py-2 px-4 border border-pink-500 hover:border-transparent rounded
-    disabled:opacity-50 disabled:cursor-not-allowed;
-  }
 }
 @layer components {
   .font-optima{
     font-family: Optima, sans-serif;
   }
-  .btn-blue {
-    @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
+  .btn{
+    @apply bg-white hover:bg-pink-500 text-pink-700 font-semibold hover:text-white py-2 px-4 border border-pink-500 hover:border-transparent rounded
+    disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-link{
+    @apply font-medium text-blue-600 dark:text-blue-500 hover:underline
   }
   .card{
     @apply max-w-xs 

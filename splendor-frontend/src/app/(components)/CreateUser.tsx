@@ -51,7 +51,7 @@ export default function CreateUser({
             onChange={e=>setRoomNumber(e.target.value)}
           />
         </>}
-        <button type="submit">
+        <button className="btn" type="submit">
           Enter Room
         </button>
       </form>
