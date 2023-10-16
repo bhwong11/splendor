@@ -21,8 +21,6 @@ type CardProps ={
   staticCard: boolean
   roomNumber: number
   className?: string
-  animationStyle?: CSSProperties
-  duration?: number
 }
 
 
@@ -30,9 +28,7 @@ const GameCard = ({
   card,
   staticCard=false,
   roomNumber,
-  className='',
-  animationStyle,
-  duration = 500
+  className=''
 }:CardProps)=>{
   const username = useUserStore(state=>state.username)
   const socket = useSocketStore(state=>state.socket)
@@ -61,7 +57,7 @@ const GameCard = ({
   },[turn])
 
   useEffect(()=>{
-   const animationRun = setTimeout(()=>setAnimationRun(true),duration)
+   const animationRun = setTimeout(()=>setAnimationRun(true),500)
     return ()=>clearTimeout(animationRun);
   },[card.id])
 
@@ -186,7 +182,7 @@ const GameCard = ({
       {
         [gemColorMap[card.gem]?.gradient]:!!card.gem,
         'hover:animate-[wiggle_1s_ease-in-out_infinite]':!staticCard,
-        [`animate-[zoomOut_${duration}ms_ease-in-out]`]: !animationRun,
+        'animate-[zoomOut_500ms_ease-in-out]': !animationRun,
         'animate-[wiggle_1s_ease-in-out_infinite]':userCanBuyCard && !staticCard,
         [gemColorMap[card.gem]?.textColor]:!!card.gem,
         [gemColorMap[card.gem]?.borderColor]:!!card.gem,
@@ -227,8 +223,10 @@ const GameCard = ({
       {gameCardEmojis[card.level] || card.emoji}
     </div>
 
-    <h4>victory Points: {card.victoryPoints}</h4>
-    <p>Price:</p>
+    <h4 className="text-center">victory Points: {card.victoryPoints}</h4>
+    <p className={classNames("text-center border-b-2",gemColorMap[gemColor].borderColor)}>
+      Price
+    </p>
     <div className="flex justify-between">
       {Object.keys(card.price || {}).map((gem)=>(
         <div className="pe-1">

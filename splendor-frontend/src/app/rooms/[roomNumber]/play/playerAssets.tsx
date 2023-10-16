@@ -114,12 +114,25 @@ const PlayerAssets = ({params})=>{
   return (
       username && (
       <div>
-          <h1>Player Assets</h1>
-          <h4>turn:{turn}</h4>
-          <h4>turn action: {turnAction}</h4>
-          <h4>turn player: {turnPlayer}</h4>
-          <p>victoryPoints: {victoryPoints}</p>
-          <div>
+          <div className="flex gap-1">
+            <div>
+              <span className="font-bold">turn:</span> 
+              {turn}
+            </div>
+            <div>
+              <span className="font-bold">turn action:</span> 
+              {turnAction ?? "none"}
+            </div>
+            <div>
+              <span className="font-bold">turn player:</span> 
+              {turnPlayer}
+            </div>
+            <div>
+              <span className="font-bold">victoryPoints:</span> 
+              {victoryPoints}
+            </div>
+          </div>
+          <div className="flex gap-1">
             {userTurnActions.map((action:Action)=>(
             <button 
               disabled={disabled}

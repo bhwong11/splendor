@@ -4,6 +4,9 @@ import { useRouter } from "next/navigation";
 import { useSocketStore, useBoardStore,useUserStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
 import { useIsTurnPlayer } from "@/app/lib";
+import classNames from "classnames";
+import { lemon, noto_emoji } from "@/app/layout";
+import { gemColorMap } from "@/app/lib";
 
 const Tokens = ({params})=>{
   const username = useUserStore(state=>state.username)
@@ -99,17 +102,23 @@ const Tokens = ({params})=>{
       username && (
       <div>
           <h4>Tokens</h4>
-          <div className="flex justify-around">
+          <div className="flex flex-wrap justify-evenly">
             {tokensArray?.map(token=>(
                 <div 
-                  className="card"
+                  className={classNames(
+                    gemColorMap[token.color].textColor,
+                    gemColorMap[token.color].borderColor,
+                    gemColorMap[token.color].gradient,
+                    "border-4 bg-gradient-to-b rounded p-3 mt-2 font-optima font-bold"
+                    )}
                   key={token.color}
                   onClick={()=>{
                     takeToken(token.color)
                   }}
                 >
                   <div>
-                    color:{token.color}
+                    <span className={lemon.className}>{token.color}&nbsp;</span>
+                    <span className={noto_emoji.className}>💎</span>
                   </div>
                   <div>
                     quantity:{token.quantity}

@@ -51,11 +51,17 @@ const RoomPage = ({params})=>{
 
   return (
       username && (
-      <div>
+      <div className="bg-yellow-100">
         <div>
+            <h1 className={classNames(lemon.className)}>
+              Room: {params.roomNumber}
+            </h1>
+            <Nobles params={params}/>
+            <CardsGrid params={params}/>
+            <Tokens params={params}/>
             <div className={classNames(
-              "sticky top-0 bg-pink-300 rounded p-3 border-4 border-pink-700"
-              )}>
+              "sticky bottom-0 bg-pink-100 rounded p-3 border-4 border-pink-500 w-full"
+            )}>
               {
                 error && 
                 <div className="text-red-700 rounded bg-red-200 p-3">
@@ -63,7 +69,9 @@ const RoomPage = ({params})=>{
                   <>{error}</>
                 </div>
               }
-              <h1 className={classNames(lemon.className)}>Room: {params.roomNumber}</h1>
+              <h1 className={classNames(lemon.className)}>
+                Player Assets
+              </h1>
               <div className="flex gap-1">
               <span>users online:</span>
                 {users?.map(user=>(
@@ -74,6 +82,9 @@ const RoomPage = ({params})=>{
                   </div>
                 ))}
               </div>
+
+              <PlayerAssets params={params}/>
+
               <div className="flex gap-1 flex-wrap">
                 <button onClick={(e)=>{
                   e.preventDefault()
@@ -98,10 +109,6 @@ const RoomPage = ({params})=>{
             </div>
 
             {victor && <h1>Game Over, Winner: {victor}</h1>}
-            <Nobles params={params}/>
-            <CardsGrid params={params}/>
-            <Tokens params={params}/>
-            <PlayerAssets params={params}/>
         </div>
       </div>)
   )
