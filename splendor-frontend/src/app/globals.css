@@ -27,7 +27,7 @@
     disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .btn-link{
-    @apply font-medium text-blue-600 dark:text-blue-500 hover:underline
+    @apply font-medium text-blue-600 dark:text-blue-500 underline hover:no-underline
   }
   .card{
     @apply max-w-xs 
