@@ -175,19 +175,21 @@ const GameCard = ({
   }
   
   const userCanBuyCard = canBuyCard(card) && isTurnPlayer && turnAction===actionTypes.BUY_CARD
+  const gemColor = card.gem ?? 'gold'
 
   return (
     <div
     className={classNames("card p-3 bg-gradient-to-b",
+      gemColorMap[gemColor]?.textColor,
+      gemColorMap[gemColor]?.borderColor,
+      gemColorMap[gemColor]?.gradient,
       {
         [gemColorMap[card.gem]?.gradient]:!!card.gem,
-        'from-pink-300':!card.gem,
         'hover:animate-[wiggle_1s_ease-in-out_infinite]':!staticCard,
         [`animate-[zoomOut_${duration}ms_ease-in-out]`]: !animationRun,
+        'animate-[wiggle_1s_ease-in-out_infinite]':userCanBuyCard && !staticCard,
         [gemColorMap[card.gem]?.textColor]:!!card.gem,
         [gemColorMap[card.gem]?.borderColor]:!!card.gem,
-        'text-pink-700':!card.gem,
-        'border-pink-700':!card.gem
       },
       className
       )
@@ -220,10 +222,7 @@ const GameCard = ({
     <div className={classNames(
       "card__emoji-wrapper text-8xl py-2",
       noto_emoji.className,
-      {
-        [gemColorMap[card.gem]?.textColor]:card.gem,
-        'animate-[wiggle_1s_ease-in-out_infinite]':userCanBuyCard && !staticCard,
-      }
+      gemColorMap[gemColor]?.textColor,
     )}>
       {gameCardEmojis[card.level] || card.emoji}
     </div>

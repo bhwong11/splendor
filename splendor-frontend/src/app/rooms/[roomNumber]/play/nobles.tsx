@@ -61,7 +61,7 @@ const Nobles = ({params})=>{
       username && (
       <div>
           <h4>Nobles</h4>
-          <div className="flex justify-around">
+          <div className="flex flex-wrap justify-around">
             {nobles
               .map(noble=>(
                 <GameCard 
@@ -69,6 +69,7 @@ const Nobles = ({params})=>{
                   card={noble}
                   staticCard={true}
                   roomNumber={params.roomNumber}
+                  className="mt-2"
                 />
               ))}
           </div>

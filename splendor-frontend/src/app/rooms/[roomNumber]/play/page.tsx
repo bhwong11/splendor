@@ -9,6 +9,8 @@ import Tokens from "./tokens";
 import PlayerAssets from "./playerAssets"
 import Nobles from "./nobles"
 import OtherPlayerAssets from "./otherPlayersAssets";
+import classNames from "classnames";
+import { lemon } from '@/app/layout'
 
 let socket: any;
 
@@ -50,59 +52,57 @@ const RoomPage = ({params})=>{
   return (
       username && (
       <div>
-          {
-            error && 
-            <div>
-              <h1 className="error">error</h1>
-              <>Message:{error}</>
+        <div>
+            <div className={classNames(
+              "sticky top-0 bg-pink-300 rounded p-3 border-4 border-pink-700"
+              )}>
+              {
+                error && 
+                <div className="text-red-700 rounded bg-red-200 p-3">
+                  <h1 className="error">error</h1>
+                  <>{error}</>
+                </div>
+              }
+              <h1 className={classNames(lemon.className)}>Room: {params.roomNumber}</h1>
+              <div className="flex gap-1">
+              <span>users online:</span>
+                {users?.map(user=>(
+                  <div className="flex items-center justify-center" key={user.username}>
+                  <div>{user.username}&nbsp;</div>
+                  {user.active?<div className="bg-green-500 border-2 p-1 rounded-full"/>
+                  :<div className="bg-transparent border-2 p-1 rounded-full"/>}
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-1 flex-wrap">
+                <button onClick={(e)=>{
+                  e.preventDefault()
+                  setVictor(null)
+                  setGameStarted(true)
+                  socket?.emit('start-game',{
+                    room:params.roomNumber,
+                    board:createGame()
+                  })
+                }}>{gameStarted?'Reset':'Play'}</button>
+
+                <button onClick={(e)=>{
+                  e.preventDefault()
+                  socket?.emit('leave-room',{
+                    room:params.roomNumber,
+                    username
+                  })
+                  router.push('/')
+                }}>leave room</button>
+                <OtherPlayerAssets params={params}/>
+              </div>
             </div>
-          }
-          <h1>Room</h1>
-          <h3>{params.roomNumber}</h3>
 
-          <div className="
-            sticky
-            top-0
-            right-0
-            bg-pink-300
-            rounded
-            p-3
-            border-4
-            border-pink-700
-            flex
-          ">
-            <button onClick={(e)=>{
-              e.preventDefault()
-              setVictor(null)
-              setGameStarted(true)
-              socket?.emit('start-game',{
-                room:params.roomNumber,
-                board:createGame()
-              })
-            }}>{gameStarted?'Reset':'Play'}</button>
-
-            <button onClick={(e)=>{
-              e.preventDefault()
-              socket?.emit('leave-room',{
-                room:params.roomNumber,
-                username
-              })
-              router.push('/')
-            }}>leave room</button>
-            <OtherPlayerAssets params={params}/>
-          </div>
-
-          {users?.map(user=>(
-            <div key={user.username}>
-            <span>{user.username}</span>
-            <span>{user.active?"ACTIVE":"NOT ACTIVE"}</span>
-            </div>
-          ))}
-          {victor && <h1>Game Over, Winner: {victor}</h1>}
-          <Nobles params={params}/>
-          <CardsGrid params={params}/>
-          <Tokens params={params}/>
-          <PlayerAssets params={params}/>
+            {victor && <h1>Game Over, Winner: {victor}</h1>}
+            <Nobles params={params}/>
+            <CardsGrid params={params}/>
+            <Tokens params={params}/>
+            <PlayerAssets params={params}/>
+        </div>
       </div>)
   )
 }

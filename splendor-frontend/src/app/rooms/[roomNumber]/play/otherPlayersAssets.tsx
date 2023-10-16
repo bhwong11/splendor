@@ -58,7 +58,7 @@ const OtherPlayerAssets = ({params})=>{
   return (
       username && (
       <div>
-        <div className="flex">
+        <div className="flex gap-1 flex-wrap">
           {otherPlayerAssets?.map(playerAssets=>(
             <div>
               <Modal playerAssets={playerAssets}/>

@@ -1,12 +1,15 @@
 import React, { useState, useMemo } from "react";
 import { SocketUser } from "../lib";
 import { determineVictoryPoints } from "@/app/lib";
+import { useUserStore } from "@/zustand";
 
 type ModalProps = {
   playerAssets:SocketUser
 }
 const Modal = ({playerAssets}:ModalProps) => {
   const [showModal, setShowModal] = useState(false);
+  const username = useUserStore(state=>state.username)
+
   const victoryPoints = useMemo(()=>determineVictoryPoints(playerAssets),[
     playerAssets.nobles.length,
     playerAssets.cards.length
@@ -16,7 +19,7 @@ const Modal = ({playerAssets}:ModalProps) => {
       <button
         onClick={() => setShowModal(true)}
       >
-        current Assets: {playerAssets.username}
+        {playerAssets.username===username?'your':playerAssets.username} Assets
       </button>
       {showModal ? (
         <>

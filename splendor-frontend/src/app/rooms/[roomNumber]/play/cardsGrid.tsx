@@ -73,12 +73,13 @@ const CardsGrid = ({params})=>{
   },[socket])
 
 
+  //could probably stop repeating here
   return (
       username && (
       <div className="flex flex-col">
           <h1 className="text-3xl font-bold underline">Card grid</h1>
           <h4>lv 3 cards</h4>
-          <div className="cards-lv3 flex justify-around">
+          <div className="cards-lv3 flex flex-wrap justify-around">
             {cardsLv3Display
               .map(cardLv3=>(
                 <GameCard 
@@ -86,11 +87,12 @@ const CardsGrid = ({params})=>{
                   card={cardLv3}
                   staticCard={false}
                   roomNumber={params.roomNumber}
+                  className="mt-2"
                 />
               ))}
           </div>
           <h4>lv 2 cards</h4>
-          <div className="cards-lv2 flex justify-around">
+          <div className="cards-lv2 flex flex-wrap justify-around">
             {cardsLv2Display
               .map(cardLv2=>(
                 <GameCard 
@@ -98,11 +100,12 @@ const CardsGrid = ({params})=>{
                   card={cardLv2}
                   staticCard={false}
                   roomNumber={params.roomNumber}
+                  className="mt-2"
                 />
             ))}
           </div>
           <h4>lv 1 cards</h4>
-          <div className="cards-lv1 flex justify-around">
+          <div className="cards-lv1 flex flex-wrap justify-around">
             {cardsLv1Display
               .map(cardLv1=>(
                   <GameCard 
@@ -110,6 +113,7 @@ const CardsGrid = ({params})=>{
                     card={cardLv1}
                     staticCard={false}
                     roomNumber={params.roomNumber}
+                    className="mt-2"
                   />
             ))}
           </div>
