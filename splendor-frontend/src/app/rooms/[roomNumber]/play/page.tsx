@@ -51,14 +51,14 @@ const RoomPage = ({params})=>{
 
   return (
       username && (
-      <div className="bg-yellow-100">
+      <div className="bg-yellow-100 min-h-screen">
         <div>
             <h1 className={classNames(lemon.className)}>
               Room: {params.roomNumber}
             </h1>
             <Nobles params={params}/>
             <CardsGrid params={params}/>
-            <Tokens params={params}/>
+            <Tokens params={params} className="mb-5"/>
             <div className={classNames(
               "sticky bottom-0 bg-pink-100 rounded p-3 border-4 border-pink-500 w-full"
             )}>

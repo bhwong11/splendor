@@ -8,7 +8,7 @@ import classNames from "classnames";
 import { lemon, noto_emoji } from "@/app/layout";
 import { gemColorMap } from "@/app/lib";
 
-const Tokens = ({params})=>{
+const Tokens = ({params,className})=>{
   const username = useUserStore(state=>state.username)
   const socket = useSocketStore(state=>state.socket)
   const isTurnPlayer = useIsTurnPlayer()
@@ -76,7 +76,6 @@ const Tokens = ({params})=>{
       || color === 'gold'
     ) return
 
-    console.log('taking token')
     setTaken(prev=>({
       ...prev,
       [color]:prev[color]+1
@@ -100,17 +99,18 @@ const Tokens = ({params})=>{
 
   return (
       username && (
-      <div>
+      <div className={className}>
           <h4>Tokens</h4>
           <div className="flex flex-wrap justify-evenly">
             {tokensArray?.map(token=>(
-                <div 
+                <div
                   className={classNames(
                     gemColorMap[token.color].textColor,
                     gemColorMap[token.color].borderColor,
                     gemColorMap[token.color].gradient,
-                    "border-4 bg-gradient-to-b rounded p-3 mt-2 font-optima font-bold"
-                    )}
+                    "border-4 bg-gradient-to-b rounded p-3 mt-2 font-optima font-bold",
+                    "flex flex-col items-center"
+                  )}
                   key={token.color}
                   onClick={()=>{
                     takeToken(token.color)
@@ -121,7 +121,7 @@ const Tokens = ({params})=>{
                     <span className={noto_emoji.className}>💎</span>
                   </div>
                   <div>
-                    quantity:{token.quantity}
+                    {token.quantity}
                   </div>
                 </div>
               ))}

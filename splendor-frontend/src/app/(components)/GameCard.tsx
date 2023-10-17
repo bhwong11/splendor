@@ -33,6 +33,7 @@ const GameCard = ({
   const username = useUserStore(state=>state.username)
   const socket = useSocketStore(state=>state.socket)
   const setActionTaken = useUserStore(state=>state.setActionTaken)
+  const actionTaken = useUserStore(state=>state.actionTaken)
   const userReservedCards = useUserStore(state=>state.reservedCards)
   const isReservedCard = userReservedCards.find(c=>card.id===c.id)
 
@@ -50,12 +51,6 @@ const GameCard = ({
   const [takenTurnCard,setTakenTurnCard] = useState(false)
   const [animationRun,setAnimationRun] = useState(false)
 
-  const isNoble = !card.gem && card.id
-  
-  useEffect(()=>{
-    setTakenTurnCard(false)
-  },[turn])
-
   useEffect(()=>{
    const animationRun = setTimeout(()=>setAnimationRun(true),500)
     return ()=>clearTimeout(animationRun);
@@ -69,7 +64,7 @@ const GameCard = ({
         !canBuy
         || !isTurnPlayer
         || turnAction!==actionTypes.BUY_CARD
-        || takenTurnCard
+        || actionTaken
       ) return
     
     const goldTokenCost = remainingCost(card)
@@ -102,7 +97,14 @@ const GameCard = ({
   }
 
   const reserveCard = (card:Card)=>{
-    if(boardTokens.gold<=0 || takenTurnCard) return
+    console.log('Resever',!isTurnPlayer,turnAction!==actionTypes.RESERVE,takenTurnCard)
+    if(
+        boardTokens.gold<=0
+        || !isTurnPlayer
+        || turnAction!==actionTypes.RESERVE
+        || actionTaken
+      ) return
+
     updateTokens(
       socket,
       username,
@@ -130,6 +132,7 @@ const GameCard = ({
       username,
       card
     })
+    console.log('reserve card')
     setTakenTurnCard(true)
     setActionTaken(true)
   }
@@ -183,7 +186,7 @@ const GameCard = ({
         [gemColorMap[card.gem]?.gradient]:!!card.gem,
         'hover:animate-[wiggle_1s_ease-in-out_infinite]':!staticCard,
         'animate-[zoomOut_500ms_ease-in-out]': !animationRun,
-        'animate-[wiggle_1s_ease-in-out_infinite]':userCanBuyCard && !staticCard,
+        'animate-[wiggle_1s_ease-in-out_infinite]':userCanBuyCard && !staticCard && !actionTaken,
         [gemColorMap[card.gem]?.textColor]:!!card.gem,
         [gemColorMap[card.gem]?.borderColor]:!!card.gem,
       },

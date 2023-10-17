@@ -7,13 +7,15 @@ import GameCard from "@/app/(components)/GameCard";
 import { 
   Card,
   SocketUser,
-  determineVictoryPoints
+  determineVictoryPoints,
+  gemColorMap
  } from "@/app/lib";
 import classNames from "classnames";
+import { lemon, noto_emoji } from "@/app/layout";
+import { emptyTokens } from "@/app/lib";
 
 
 const PlayerAssets = ({params})=>{
-  console.log(params.roomNumber)
   const socket = useSocketStore(state=>state.socket)
   const username = useUserStore(state=>state.username)
   const userCards = useUserStore(state=>state.cards)
@@ -46,6 +48,11 @@ const PlayerAssets = ({params})=>{
 
   const victoryPoints = determineVictoryPoints(user)
 
+  const cardGemMap = userCards.reduce((all,next)=>({
+      ...all,
+      ...(all[next.gem]?{[next.gem]:all[next.gem]+1}:{[next.gem]:1})
+    }),emptyTokens)
+
   const passTurn = ()=>{
     console.log('passing turn')
     socket.emit('next-turn',{
@@ -60,7 +67,6 @@ const PlayerAssets = ({params})=>{
     })
   }
 
-  const router = useRouter()
   useEffect(()=>{
     if(socket){
       socket.on('turn-update',data=>{
@@ -70,7 +76,6 @@ const PlayerAssets = ({params})=>{
       })
       socket.on('players-update',(users:SocketUser[])=>{
         const currentUser = users.find(user=>user.username===username)
-        console.log('player update cur',currentUser)
         setUserCards(currentUser.cards)
         setReservedCards(currentUser.reservedCards)
         setUserNobles(currentUser.nobles)
@@ -175,7 +180,35 @@ const PlayerAssets = ({params})=>{
                 clearUser()
             }}>clear user</button>
           </div>
-          <p>tokens: {JSON.stringify(tokens)}</p>
+
+          <div className="flex">
+            <span className={classNames(lemon.className)}>tokens: </span>
+            {Object.keys(tokens).map(color=>(
+            <div className={gemColorMap[color].textColor}>
+              <span className={classNames(noto_emoji.className)}>
+                &nbsp;💎:&nbsp;
+              </span>
+              <span className={classNames(lemon.className)}>
+                {tokens[color]}
+              </span>
+            </div>
+          ))}
+          </div>
+
+          <div className="flex">
+            <span className={classNames(lemon.className)}>Card Gems: </span>
+            {Object.keys(cardGemMap).map(color=>(
+            <div className={gemColorMap[color].textColor}>
+              <span className={classNames(noto_emoji.className)}>
+                &nbsp;💎:&nbsp;
+              </span>
+              <span className={classNames(lemon.className)}>
+                {cardGemMap[color]}
+              </span>
+            </div>
+          ))}
+          </div>
+
           <div className="flex gap-1">
             <button 
               className={classNames("btn-link",{
@@ -216,25 +249,21 @@ const PlayerAssets = ({params})=>{
           {visibleAssets['nobles'] && (
           <div>
             <span>nobles:</span>
-            <>{JSON.stringify(userNobles)}</>
-          </div>
-          )}
-          { visibleAssets['reservedCards'] &&
-            (
-            <div>
-              <span>reserved cards:</span>
-              <div className="">
-                {reservedCards?.map(card=>(
+              <div>
+              {userNobles.map(noble=>(
                   <GameCard 
-                    key={`card-${card.id}`}
-                    card={card}
-                    staticCard={false}
+                    key={`noble-${noble.id}`}
+                    card={noble}
+                    staticCard={true}
                     roomNumber={params.roomNumber}
+                    className="mt-2 mx-2"
                   />
                 ))}
-              </div>
-            </div>)}
-            { visibleAssets['cards'] && (
+                </div>
+          </div>
+          )}
+
+          { visibleAssets['cards'] && (
             <div>
               <span>cards:</span>
               <div className="flex">
@@ -247,6 +276,7 @@ const PlayerAssets = ({params})=>{
                         card={card}
                         staticCard={true}
                         roomNumber={params.roomNumber}
+                        className="mt-2"
                       />
                     ))}
                   </div>
@@ -254,6 +284,24 @@ const PlayerAssets = ({params})=>{
               )}
             </div>
             </div>)}
+
+          { visibleAssets['reservedCards'] &&
+            (
+            <div>
+              <span>reserved cards:</span>
+              <div className="flex">
+                {reservedCards?.map(card=>(
+                  <GameCard 
+                    key={`card-${card.id}`}
+                    card={card}
+                    staticCard={false}
+                    roomNumber={params.roomNumber}
+                    className="mt-2 mx-2"
+                  />
+                ))}
+              </div>
+            </div>)}
+
           </div>
       </div>)
   )

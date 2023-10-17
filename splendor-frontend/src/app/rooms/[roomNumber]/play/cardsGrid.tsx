@@ -4,7 +4,6 @@ import { useSocketStore, useBoardStore, useUserStore } from "@/zustand";
 import GameCard from "@/app/(components)/GameCard";
 
 const CardsGrid = ({params})=>{
-  console.log(params.roomNumber)
   const username = useUserStore(state=>state.username)
   const socket = useSocketStore(state=>state.socket)
   const setCardsLv1 = useBoardStore(state=>state.setCardsLv1)
