@@ -59,6 +59,7 @@ const RoomPage = ({params})=>{
             <Nobles params={params}/>
             <CardsGrid params={params}/>
             <Tokens params={params} className="mb-5"/>
+            
             <div className={classNames(
               "sticky bottom-0 bg-pink-100 rounded p-3 border-4 border-pink-500 w-full"
             )}>
@@ -69,46 +70,51 @@ const RoomPage = ({params})=>{
                   <>{error}</>
                 </div>
               }
-              <h1 className={classNames(lemon.className)}>
-                Player Assets
-              </h1>
-              <div className="flex gap-1">
-              <span>users online:</span>
-                {users?.map(user=>(
-                  <div className="flex items-center justify-center" key={user.username}>
-                  <div>{user.username}&nbsp;</div>
-                  {user.active?<div className="bg-green-500 border-2 p-1 rounded-full"/>
-                  :<div className="bg-transparent border-2 p-1 rounded-full"/>}
+              <div className="flex justify-between">
+                <div>
+                  <h1 className={classNames(lemon.className)}>
+                    Player Assets
+                  </h1>
+
+                  <PlayerAssets params={params}/>
+                  <OtherPlayerAssets params={params}/>
+                </div>
+                <div className="bg-blue-100 mt-2 p-2 border-2 border-blue-500 rounded">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex justify-end">users online:</div>
+                    {users?.map(user=>(
+                      <div className="flex items-center justify-end" key={user.username}>
+                      <div>{user.username}&nbsp;</div>
+                      {user.active?<div className="bg-green-500 border-2 p-1 rounded-full"/>
+                      :<div className="bg-transparent border-2 p-1 rounded-full"/>}
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                  <div className="flex flex-col gap-1 flex-wrap">
+                    <button 
+                      className="btn"
+                      onClick={(e)=>{
+                        e.preventDefault()
+                        setVictor(null)
+                        setGameStarted(true)
+                        socket?.emit('start-game',{
+                          room:params.roomNumber,
+                          board:createGame()
+                        })
+                    }}>{gameStarted?'Reset':'Play'}</button>
 
-              <PlayerAssets params={params}/>
-
-              <div className="flex gap-1 flex-wrap">
-                <button 
-                  className="btn"
-                  onClick={(e)=>{
-                    e.preventDefault()
-                    setVictor(null)
-                    setGameStarted(true)
-                    socket?.emit('start-game',{
-                      room:params.roomNumber,
-                      board:createGame()
-                    })
-                }}>{gameStarted?'Reset':'Play'}</button>
-
-                <button 
-                  className="btn" 
-                  onClick={(e)=>{
-                  e.preventDefault()
-                  socket?.emit('leave-room',{
-                    room:params.roomNumber,
-                    username
-                  })
-                  router.push('/')
-                }}>leave room</button>
-                <OtherPlayerAssets params={params}/>
+                    <button 
+                      className="btn" 
+                      onClick={(e)=>{
+                      e.preventDefault()
+                      socket?.emit('leave-room',{
+                        room:params.roomNumber,
+                        username
+                      })
+                      router.push('/')
+                    }}>leave room</button>
+                  </div>
+                </div>
               </div>
             </div>
 
