@@ -20,7 +20,9 @@ const Modal = ({playerAssets}:ModalProps) => {
         className="btn"
         onClick={() => setShowModal(true)}
       >
-        {playerAssets.username===username?'your':playerAssets.username} Assets
+        {playerAssets.username===username?
+        `${playerAssets.username} (your)`:
+        playerAssets.username} Assets
       </button>
       {showModal ? (
         <>

@@ -1,9 +1,10 @@
 'use client';
-import { useEffect,useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useSocketStore, useBoardStore,useUserStore } from "@/zustand";
 import { costCovered,emptyTokens } from "@/app/lib";
 import GameCard from "@/app/(components)/GameCard";
+import classNames from "classnames";
+import { lemon } from "@/app/layout";
 
 
 const Nobles = ({params})=>{
@@ -21,11 +22,9 @@ const Nobles = ({params})=>{
   const socket = useSocketStore(state=>state.socket)
   const setNobles = useBoardStore(state=>state.setNobles)
   const userNobles = useUserStore(state=>state.nobles)
-  const setUserNobles = useUserStore(state=>state.setNobles)
 
   const nobles = useBoardStore(state=>state.nobles)
   
-  const router = useRouter()
   useEffect(()=>{
     if(socket){
       socket.on('game-board',(data:any)=>{
@@ -60,8 +59,13 @@ const Nobles = ({params})=>{
   return (
       username && (
       <div>
-          <h4>Nobles</h4>
-          <div className="flex flex-wrap justify-around">
+          <h2 className={classNames(
+            lemon.className,
+            "text-center pt-5 pb-3 mb-2 border-b-2 border-black"
+          )}>
+            Nobles
+          </h2>
+          <div className="flex flex-wrap justify-around gap-5">
             {nobles
               .map(noble=>(
                 <GameCard 

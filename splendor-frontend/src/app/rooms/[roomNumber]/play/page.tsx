@@ -51,15 +51,18 @@ const RoomPage = ({params})=>{
 
   return (
       username && (
-      <div className="bg-yellow-100 min-h-screen">
-        <div>
-            <h1 className={classNames(lemon.className)}>
+      <div className="bg-yellow-100 min-h-screen flex flex-col items-center">
+        <div className="px-5">
+            <h1 className={classNames(lemon.className,"text-center")}>
               Room: {params.roomNumber}
             </h1>
+            {victor && <h1 className={classNames(lemon.className,'text-yellow-700')}>
+              Game Over, Winner: {victor}
+            </h1>}
             <Nobles params={params}/>
             <CardsGrid params={params}/>
-            <Tokens params={params} className="mb-5"/>
-            
+            <Tokens params={params} className="pb-5"/>
+        </div>
             <div className={classNames(
               "sticky bottom-0 bg-pink-100 rounded p-3 border-4 border-pink-500 w-full"
             )}>
@@ -81,7 +84,7 @@ const RoomPage = ({params})=>{
                 </div>
                 <div className="bg-blue-100 mt-2 p-2 border-2 border-blue-500 rounded">
                   <div className="flex flex-col gap-1">
-                    <div className="flex justify-end">users online:</div>
+                    <div className="flex justify-end font-bold">users online:</div>
                     {users?.map(user=>(
                       <div className="flex items-center justify-end" key={user.username}>
                       <div>{user.username}&nbsp;</div>
@@ -117,9 +120,6 @@ const RoomPage = ({params})=>{
                 </div>
               </div>
             </div>
-
-            {victor && <h1>Game Over, Winner: {victor}</h1>}
-        </div>
       </div>)
   )
 }

@@ -100,8 +100,13 @@ const Tokens = ({params,className})=>{
   return (
       username && (
       <div className={className}>
-          <h4>Tokens</h4>
-          <div className="flex flex-wrap justify-evenly">
+          <h2 className={classNames(
+            lemon.className,
+            "text-center pt-5 pb-3 mb-2 border-b-2 border-black"
+          )}>
+            Tokens
+          </h2>
+          <div className="flex flex-wrap justify-evenly gap-5">
             {tokensArray?.map(token=>(
                 <div
                   className={classNames(

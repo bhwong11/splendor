@@ -2,6 +2,8 @@
 import { useEffect,useState } from "react";
 import { useSocketStore, useBoardStore, useUserStore } from "@/zustand";
 import GameCard from "@/app/(components)/GameCard";
+import classNames from "classnames";
+import { lemon } from "@/app/layout";
 
 const CardsGrid = ({params})=>{
   const username = useUserStore(state=>state.username)
@@ -76,9 +78,19 @@ const CardsGrid = ({params})=>{
   return (
       username && (
       <div className="flex flex-col">
-          <h1 className="text-3xl font-bold underline">Card grid</h1>
-          <h4>lv 3 cards</h4>
-          <div className="cards-lv3 flex flex-wrap justify-around">
+          <h2 className={classNames(
+            lemon.className,
+            "text-center pt-5 pb-3 mb-2 border-b-2 border-black"
+          )}>
+            Cards
+          </h2>
+          <h2 className={classNames(
+            lemon.className,
+            "text-center pt-5 pb-3"
+          )}>
+            lv 3 cards
+          </h2>
+          <div className="cards-lv3 flex flex-wrap justify-around gap-5">
             {cardsLv3Display
               .map(cardLv3=>(
                 <GameCard 
@@ -90,8 +102,11 @@ const CardsGrid = ({params})=>{
                 />
               ))}
           </div>
-          <h4>lv 2 cards</h4>
-          <div className="cards-lv2 flex flex-wrap justify-around">
+          <h2 className={classNames(
+            lemon.className,
+            "text-center pt-5 pb-3"
+          )}>lv 2 cards</h2>
+          <div className="cards-lv2 flex flex-wrap justify-around gap-5">
             {cardsLv2Display
               .map(cardLv2=>(
                 <GameCard 
@@ -103,8 +118,11 @@ const CardsGrid = ({params})=>{
                 />
             ))}
           </div>
-          <h4>lv 1 cards</h4>
-          <div className="cards-lv1 flex flex-wrap justify-around">
+          <h2 className={classNames(
+            lemon.className,
+            "text-center pt-5 pb-3"
+          )}>lv 1 cards</h2>
+          <div className="cards-lv1 flex flex-wrap justify-around gap-5">
             {cardsLv1Display
               .map(cardLv1=>(
                   <GameCard 
