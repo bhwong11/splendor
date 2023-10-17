@@ -23,6 +23,8 @@ const RoomPage = ({params})=>{
   const [users,setUsers] = useState([])
   const [gameStarted,setGameStarted] = useState(false)
   const [error,setError]=useState<error | null>(null)
+  const [visibleMenu,setVisibleMenu]=useState(true)
+
   const username = useUserStore(state=>state.username)
   const victor = useBoardStore(state=>state.victor)
   const setVictor = useBoardStore(state=>state.setVictor)
@@ -63,7 +65,8 @@ const RoomPage = ({params})=>{
             <CardsGrid params={params}/>
             <Tokens params={params} className="pb-5"/>
         </div>
-            <div className={classNames(
+        {visibleMenu && (
+        <div className={classNames(
               "sticky bottom-0 bg-pink-100 rounded p-3 border-4 border-pink-500 w-full"
             )}>
               {
@@ -95,7 +98,12 @@ const RoomPage = ({params})=>{
                   </div>
                   <div className="flex flex-col gap-1 flex-wrap">
                     <button 
-                      className="btn"
+                      className={classNames(
+                        "btn",
+                        {
+                          "animate-pulse":!gameStarted
+                        }
+                      )}
                       onClick={(e)=>{
                         e.preventDefault()
                         setVictor(null)
@@ -116,10 +124,30 @@ const RoomPage = ({params})=>{
                       })
                       router.push('/')
                     }}>leave room</button>
+
+                    <button 
+                      className="btn" 
+                      onClick={(e)=>{
+                      e.preventDefault()
+                      setVisibleMenu(prev=>!prev)
+                    }}>hide menu</button>
+                     
                   </div>
                 </div>
               </div>
-            </div>
+            </div>)}
+            {!visibleMenu && (
+              <div className="sticky right-0 bottom-0 bg-pink-100 rounded p-3 border-4 border-pink-500">
+                <button 
+                  className="btn" 
+                  onClick={(e)=>{
+                  e.preventDefault()
+                  setVisibleMenu(prev=>!prev)
+                }}>
+                  show menu
+                </button>
+              </div>
+            )}
       </div>)
   )
 }

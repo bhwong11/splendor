@@ -211,7 +211,7 @@ const PlayerAssets = ({params})=>{
 
           <div className="flex gap-1 pb-2">
             <button 
-              className={classNames("btn-link",{
+              className={classNames("btn-link pr-2",{
                 "text-purple-700":visibleAssets['nobles'],
                 "text-pink-700":!visibleAssets['nobles']
               })}
@@ -222,7 +222,7 @@ const PlayerAssets = ({params})=>{
               nobles {visibleAssets['nobles']?"hide":"show"}
             </button>
             <button 
-              className={classNames("btn-link",{
+              className={classNames("btn-link pr-2",{
                 "text-purple-700":visibleAssets['cards'],
                 "text-pink-700":!visibleAssets['cards']
               })}
