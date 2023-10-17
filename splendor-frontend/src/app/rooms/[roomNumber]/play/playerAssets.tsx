@@ -129,7 +129,7 @@ const PlayerAssets = ({params})=>{
   return (
       username && (
       <div>
-          <div className="flex gap-1">
+          <div className="flex gap-1 pb-1">
             <div>
               <span className="font-bold">turn:</span> 
               {turn}
@@ -147,7 +147,7 @@ const PlayerAssets = ({params})=>{
               {victoryPoints}
             </div>
           </div>
-          <div className="flex gap-1">
+          <div className="flex gap-1 pb-2">
             {userTurnActions.map((action:Action)=>(
             <button 
               className="btn"
@@ -195,7 +195,7 @@ const PlayerAssets = ({params})=>{
           ))}
           </div>
 
-          <div className="flex">
+          <div className="flex pb-1">
             <span className={classNames(lemon.className)}>Card Gems: </span>
             {Object.keys(cardGemMap).map(color=>(
             <div className={gemColorMap[color].textColor}>
@@ -209,7 +209,7 @@ const PlayerAssets = ({params})=>{
           ))}
           </div>
 
-          <div className="flex gap-1">
+          <div className="flex gap-1 pb-2">
             <button 
               className={classNames("btn-link",{
                 "text-purple-700":visibleAssets['nobles'],
