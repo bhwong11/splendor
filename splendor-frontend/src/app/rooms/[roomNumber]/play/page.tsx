@@ -54,7 +54,7 @@ const RoomPage = ({params})=>{
   return (
       username && (
       <div className="bg-yellow-100 min-h-screen flex flex-col items-center">
-        <div className="px-5">
+        <div className="px-5 grow">
             <h1 className={classNames(lemon.className,"text-center")}>
               Room: {params.roomNumber}
             </h1>
