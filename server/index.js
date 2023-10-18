@@ -49,7 +49,7 @@ app.use("/api/rooms", rooms);
 app.use("/api/users", users);
 
 // Global error handling
-app.use((err, _req, res, next) => {
+app.use((err, _req, res) => {
   console.log('err',err)
   res.status(500).send("Uh oh! An unexpected error occured.")
 })
@@ -80,73 +80,8 @@ io.on('connection', async (socket) => {
     activeRooms
   })
 
-  // console.log('res',results)
-  // socket.on('join-room',async (obj)=>{
-  //   console.log('join room user',socket.id)
-  //   let roomInDB
-  //   try{
-  //     roomInDB = await RoomModel.findOne({roomNumber:obj?.room})
-  //   }catch(err){
-  //     console.log('error in room',err)
-  //   }
-  //   if(!roomInDB){
-  //     io.to(socket.id).emit('no-room',{
-  //       message:'room not found'
-  //     })
-  //   }
-
-  //   const existingUser = activeRooms[obj?.room]?.find(user=>user.username===obj.username)
-
-  //   if(existingUser){
-  //     io.to(socket.id).emit('user-already-exist',{
-  //       message:'user-already-exist'
-  //     })
-  //     return
-  //   }
-
-  //   if(obj?.room){
-  //     socket.join(obj?.room)
-  //     if(activeRooms[obj?.room]){
-  //       activeRooms[obj?.room].push({
-  //         username:obj?.username,
-  //         socketId:socket.id,
-  //         active:true
-  //       })
-  //     }else{
-  //       activeRooms[obj?.room] = []
-  //     }
-  //     io.sockets.in(obj?.room).emit('user-joined',activeRooms[obj?.room])
-  //   }
-  //   console.log('rooms',socket.rooms)
-  // })
-  // socket.on("send-message",(obj)=>{
-  //   console.log('send',obj)
-  //   // io.emit('receive-message',obj)
-  //   io.sockets.in('room-1').emit('receive-message',obj)
-  //   // socket.to("room-1").emit('receive-message',obj)
-  // })
-
-
-  // socket.on('disconnecting', () => {
-  //   console.log('disconnecting',socket.id);
-  //   console.log('disconnecting room',socket.rooms);
-  //   console.log(socket.rooms);
-  //   const [socketId,room]=socket.rooms
-  //   if(activeRooms[room]){
-  //     activeRooms[room]=activeRooms[room]?.map((user)=>(
-  //       user.socketId===socketId?{
-  //         ...user,
-  //         active:false
-  //       }:{
-  //         ...user
-  //       }
-  //     ))
-  //   }
-  //   io.sockets.in(room).emit('user-left',activeRooms[room])
-  // });
   socket.on('disconnect', () => {
     console.log('disconnecting ID',socket.id);
-    // io.sockets.in(obj?.room).emit('user-joined',obj)
   });
 });
 

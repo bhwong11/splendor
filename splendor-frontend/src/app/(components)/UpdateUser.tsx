@@ -4,10 +4,13 @@ import { useRouter } from "next/navigation";
 import { useEffect } from 'react'
 import { updateUser } from "@/api";
 import { useUserStore } from "@/zustand";
+import classNames from "classnames";
+import { lemon } from "../layout";
 
 
 export default function EnterRoom({
-  existingRoomNumber
+  existingRoomNumber,
+  className=""
 }){
   const [roomNumber,setRoomNumber] = useState('')
   const [username,setUsername] = useState('')
@@ -21,28 +24,29 @@ export default function EnterRoom({
 
 
   return(
-    <div>
+    <div className={className}>
+      <h3 className={classNames(lemon.className)}>update user</h3>
+      <form 
+        className="flex flex-col"
+        onSubmit={async (e)=>{
+          e.preventDefault();
+          console.log('updating user and added to room')
 
-      <h3>update user</h3>
-      <form onSubmit={async (e)=>{
-        e.preventDefault();
-        console.log('updating user and added to room')
-
-        //will it not set room number?
-        const updatedUser = await updateUser({
-          username,
-          roomNumber,
-          refresh:()=>router.refresh()
-        })
-        if(updatedUser.status!==200){
-          setError(updatedUser.message ?? 'error occured')
-          return
-        }
-        console.log('updated user',updatedUser)
-        updateUserName(updatedUser.username)
-        router.push(`/rooms/${roomNumber}/play`)
+          //will it not set room number?
+          const updatedUser = await updateUser({
+            username,
+            roomNumber,
+            refresh:()=>router.refresh()
+          })
+          if(updatedUser.status!==200){
+            setError(updatedUser.message ?? 'error occured')
+            return
+          }
+          console.log('updated user',updatedUser)
+          updateUserName(updatedUser.username)
+          router.push(`/rooms/${roomNumber}/play`)
       }}>
-        <label htmlFor="username">update user: username</label>
+        <label htmlFor="username">username:</label>
         <input 
           name="username"
           type="text"
@@ -51,7 +55,7 @@ export default function EnterRoom({
         />
         {!existingRoomNumber &&
         <>
-          <label htmlFor="roomNumber">roomNumber</label>
+          <label htmlFor="roomNumber" className="font-optima">roomNumber</label>
           <input 
             name="roomNumber"
             type="text"
@@ -60,7 +64,7 @@ export default function EnterRoom({
           />
         </>}
         {error && <div>{error}</div>}
-        <button className="btn" type="submit">
+        <button className="btn mt-2" type="submit" disabled={!username}>
           Enter Room update
         </button>
       </form>

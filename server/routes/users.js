@@ -51,7 +51,6 @@ router.get('/getAll', async (req, res) => {
 router.get('/getOne-id/:id', async (req, res) => {
   try{
     const userData = await UserModel.findById(req.params.id).populate("rooms")
-    console.log('userData',userData)
     if(!userData) return res.status(400).json({message: 'no user found'})
     res.json(userData._doc)
   }
@@ -66,7 +65,6 @@ router.get('/getOne/:username', async (req, res) => {
     const userData = await UserModel.findOne(
       {username:req.params.username}
     ).populate("rooms")
-    console.log('userData',userData)
     if(!userData) return res.status(400).json({message: 'no user found'})
     res.json(userData._doc)
   }

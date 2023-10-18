@@ -37,7 +37,7 @@ export default function CreateRoom(){
         />
       </div>
       {error && <div>{error}</div>}
-      <button className="btn" type="submit">
+      <button className="btn" type="submit" disabled={!roomNumber}>
         create
       </button>
       </form>

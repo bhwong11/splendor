@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createUser } from "@/api";
 import { useUserStore } from "@/zustand";
+import classNames from "classnames";
+import { lemon } from "../layout";
 
 export default function CreateUser({
-  existingRoomNumber
+  existingRoomNumber,
+  className=''
 }){
   const [roomNumber,setRoomNumber] = useState('')
   const [username,setUsername] = useState('')
@@ -17,26 +20,28 @@ export default function CreateUser({
   },[])
 
   return(
-    <div>
-      <h3>create user</h3>
-      <form onSubmit={async (e)=>{
-        e.preventDefault();
-        console.log('creating user and added to room')
+    <div className={className}>
+      <h3 className={classNames(lemon.className)}>create user</h3>
+      <form 
+        className="flex flex-col" 
+        onSubmit={async (e)=>{
+          e.preventDefault();
+          console.log('creating user and added to room')
 
-        const newUser = await createUser({
-          username,
-          roomNumber,
-          refresh:()=>router.refresh()
-        })
-        if(newUser.status!==200){
-          console.log(newUser.message)
-          setError(newUser.message ?? 'error occured')
-          return
-        }
-        updateUserName(newUser.username)
-        router.push(`/rooms/${roomNumber}/play`)
+          const newUser = await createUser({
+            username,
+            roomNumber,
+            refresh:()=>router.refresh()
+          })
+          if(newUser.status!==200){
+            console.log(newUser.message)
+            setError(newUser.message ?? 'error occured')
+            return
+          }
+          updateUserName(newUser.username)
+          router.push(`/rooms/${roomNumber}/play`)
       }}>
-        <label>new user: username</label>
+        <label htmlFor="username">username:</label>
         <input 
           name="username"
           type="text"
@@ -45,7 +50,7 @@ export default function CreateUser({
         />
         {!existingRoomNumber &&
         <>
-          <label>roomNumber</label>
+          <label className="font-optima">roomNumber</label>
           <input 
             name="roomNumber"
             type="text"
@@ -54,7 +59,7 @@ export default function CreateUser({
           />
         </>}
         {error && <div>{error}</div>}
-        <button className="btn" type="submit">
+        <button className="btn mt-2" type="submit" disabled={!username}>
           Enter Room
         </button>
       </form>
