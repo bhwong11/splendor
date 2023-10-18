@@ -1,11 +1,18 @@
 import express from "express";
-import UserModel from '../models/UserModel.js';
 import RoomModel from '../models/RoomModel.js';
 
 const router = express.Router();
 
 //NEW room/User routes
 router.post('/create', async (req, res) => {
+  const room = await RoomModel.findOne(
+    {roomNumber:req.body.roomNumber}
+  )
+
+  if(room){
+    return res.status(400).json({message: 'room exist'})
+  }
+
   const newRoom = new RoomModel({
     roomNumber: req.body.roomNumber,
   })
@@ -15,7 +22,7 @@ router.post('/create', async (req, res) => {
       res.status(200).json(room)
   }
   catch (error) {
-      res.status(400).json({message: error.message})
+      res.status(500).json({message: error.message})
   }
 })
 

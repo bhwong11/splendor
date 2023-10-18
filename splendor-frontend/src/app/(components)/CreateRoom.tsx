@@ -6,6 +6,7 @@ import { createRoom } from "@/api";
 
 export default function CreateRoom(){
   const [roomNumber,setRoomNumber] = useState('')
+  const [error,setError] = useState('')
   const router = useRouter()
 
 
@@ -19,6 +20,10 @@ export default function CreateRoom(){
           roomNumber,
           refresh:()=>router.refresh()
         })
+        if(newRoom.status!==200){
+          setError(newRoom.message ?? 'error occured')
+          return
+        }
         
         router.push(`/rooms/${newRoom.roomNumber}`)
       }}>
@@ -26,11 +31,12 @@ export default function CreateRoom(){
         <label>room number</label>
         <input 
           name="number"
-          type="text"
+          type="number"
           value={roomNumber}
           onChange={e=>setRoomNumber(e.target.value)}
         />
       </div>
+      {error && <div>{error}</div>}
       <button className="btn" type="submit">
         create
       </button>

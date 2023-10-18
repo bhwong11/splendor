@@ -130,7 +130,9 @@ const updateUser = async ({
 })=>{
   if(!userId && !username) return
   //put this in helper func
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/update/${
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${
+    userId?"update-id":"update"
+  }/${
     userId || username
   }`,{
     method: 'PATCH',

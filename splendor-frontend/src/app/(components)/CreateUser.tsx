@@ -9,6 +9,7 @@ export default function CreateUser({
 }){
   const [roomNumber,setRoomNumber] = useState('')
   const [username,setUsername] = useState('')
+  const [error,setError] = useState('')
   const router = useRouter()
   const updateUserName = useUserStore(state=>state.setUsername)
   useEffect(()=>{
@@ -29,6 +30,7 @@ export default function CreateUser({
         })
         if(newUser.status!==200){
           console.log(newUser.message)
+          setError(newUser.message ?? 'error occured')
           return
         }
         updateUserName(newUser.username)
@@ -51,6 +53,7 @@ export default function CreateUser({
             onChange={e=>setRoomNumber(e.target.value)}
           />
         </>}
+        {error && <div>{error}</div>}
         <button className="btn" type="submit">
           Enter Room
         </button>

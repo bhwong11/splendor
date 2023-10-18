@@ -1,6 +1,9 @@
 import { getUser } from "@/api"
 const UserScorePage = async ({params})=>{
   const user = await getUser({username:params.username,revalidateSeconds:1800})
+  if(user.status!==200){
+    return <div>No User found</div>
+  }
 
   return (
       <div>

@@ -103,8 +103,11 @@ router.patch('/update/:username', async (req, res) => {
     const updatedData = req.body;
     const options = { new: true };
     const room = await RoomModel.findOne({roomNumber:req.body?.roomNumber})
-    if(!room && req.body.roomNumber){
-      return res.status(400).json({message:'room not found'})
+    const existingUser = await UserModel.findOne(
+      {username:req.params.username}
+    )
+    if(!existingUser){
+      return res.status(400).json({message:'user not found'})
     }
 
     const result = await UserModel.findOneAndUpdate(

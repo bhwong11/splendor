@@ -11,6 +11,7 @@ export default function EnterRoom({
 }){
   const [roomNumber,setRoomNumber] = useState('')
   const [username,setUsername] = useState('')
+  const [error,setError] = useState('')
   const router = useRouter()
   useEffect(()=>{
     setRoomNumber(existingRoomNumber)
@@ -34,7 +35,7 @@ export default function EnterRoom({
           refresh:()=>router.refresh()
         })
         if(updatedUser.status!==200){
-          console.log(updatedUser.message)
+          setError(updatedUser.message ?? 'error occured')
           return
         }
         console.log('updated user',updatedUser)
@@ -58,6 +59,7 @@ export default function EnterRoom({
             onChange={e=>setRoomNumber(e.target.value)}
           />
         </>}
+        {error && <div>{error}</div>}
         <button className="btn" type="submit">
           Enter Room update
         </button>

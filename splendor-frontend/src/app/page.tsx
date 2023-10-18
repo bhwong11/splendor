@@ -16,7 +16,7 @@ const getAllRooms = async ()=>{
 
 export default async function Home() {
   const allRooms = await getAllRooms()
-  async function goToScorePage(formData) {
+  const goToScorePage = async (formData)=>  {
     'use server'
     redirect(`/${formData.get('username')}`)
   }
