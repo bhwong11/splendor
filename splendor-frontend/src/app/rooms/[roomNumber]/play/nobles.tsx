@@ -34,7 +34,6 @@ const Nobles = ({params})=>{
         )
       })
       socket.on('noble-change',(data:any)=>{
-        // setUserNobles(data.userNobles)
         setNobles(data.nobles)
       })
     }
