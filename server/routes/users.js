@@ -14,6 +14,14 @@ router.post('/create', async (req, res) => {
         return res.status(400).json({message: 'room not found'})
       }
 
+      const user = await UserModel.findOne(
+        {username:req.body.username }
+      )
+
+      if(user){
+        return res.status(400).json({message: 'user already exist'})
+      }
+
       const newUser = new UserModel({
         username:req.body.username,
         rooms: [room._id]

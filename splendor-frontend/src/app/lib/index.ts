@@ -85,21 +85,6 @@ export const gemColorMap = {
   }
 }
 
-// export const gameCardImages = {
-//   "1":{
-//     JPG:'/Gregg.jpg',
-//     WEBP:'/Gregg.webp'
-//   },
-//   "2":{
-//     JPG:'/Angus.jpg',
-//     WEBP:'/Angus.webp'
-//   },
-//   "3":{
-//     JPG:'/Bea.jpg',
-//     WEBP:'/Bea.webp'
-//   }
-// }
-
 export const gameCardEmojis ={
   "1":'🍭',
   "2":'🍫',
@@ -245,3 +230,18 @@ export const determineVictoryPoints = (player:User):number=>{
   return player.cards.reduce((all,card)=>all+card.victoryPoints,0)
   + player.nobles.reduce((all,noble)=>all+noble.victoryPoints,0)
 }
+
+export const createCardGemMap = (cards:Card[])=>cards.reduce((all,next)=>({
+  ...all,
+  ...(all[next.gem]?{[next.gem]:all[next.gem]+1}:{[next.gem]:1})
+}),emptyTokens)
+
+
+export const createCardsByGem = (cards:Card[])=>cards.reduce((all,card)=>{
+  if(all[card.gem]){
+    all[card.gem].push(card)
+    return all
+  }
+  all[card.gem] = [card]
+  return all
+},{})

@@ -3,7 +3,7 @@ import { useEffect,useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSocketStore, useUserStore, useBoardStore } from "@/zustand";
 import { determineVictoryPoints,SocketUser } from "@/app/lib";
-import Modal from "@/app/(components)/Modal";
+import Modal from "@/app/(components)/AssetsModal";
 
 
 const OtherPlayerAssets = ({params})=>{
@@ -61,7 +61,7 @@ const OtherPlayerAssets = ({params})=>{
         <div className="flex gap-1 flex-wrap">
           {otherPlayerAssets?.map(playerAssets=>(
             <div>
-              <Modal playerAssets={playerAssets}/>
+              <Modal playerAssets={playerAssets} roomNumber={params.roomNumber}/>
             </div>
           ))}
         </div>

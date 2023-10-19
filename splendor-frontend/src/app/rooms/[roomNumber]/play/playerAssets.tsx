@@ -1,6 +1,5 @@
 'use client';
-import { useEffect,useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect,useState,useMemo } from "react";
 import { useSocketStore, useUserStore, useBoardStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
 import GameCard from "@/app/(components)/GameCard";
@@ -8,11 +7,12 @@ import {
   Card,
   SocketUser,
   determineVictoryPoints,
-  gemColorMap
+  gemColorMap,
+  createCardsByGem,
+  createCardGemMap
  } from "@/app/lib";
 import classNames from "classnames";
 import { lemon, noto_emoji } from "@/app/layout";
-import { emptyTokens } from "@/app/lib";
 
 
 const PlayerAssets = ({params})=>{
@@ -48,10 +48,9 @@ const PlayerAssets = ({params})=>{
 
   const victoryPoints = determineVictoryPoints(user)
 
-  const cardGemMap = userCards.reduce((all,next)=>({
-      ...all,
-      ...(all[next.gem]?{[next.gem]:all[next.gem]+1}:{[next.gem]:1})
-    }),emptyTokens)
+  const cardGemMap = useMemo(()=>createCardGemMap(userCards),[userCards.length])
+
+  const userCardsByGem = useMemo(()=>createCardsByGem(userCards),[userCards.length])
 
   const passTurn = ()=>{
     console.log('passing turn')
@@ -88,15 +87,6 @@ const PlayerAssets = ({params})=>{
     setTurnAction(null)
     setActionTaken(false)
   },[turn])
-
-  const userCardsByGem = userCards.reduce((all,card)=>{
-    if(all[card.gem]){
-      all[card.gem].push(card)
-      return all
-    }
-    all[card.gem] = [card]
-    return all
-  },{})
 
   interface Action{
     name:string,
