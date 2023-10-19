@@ -162,7 +162,7 @@ const Modal = ({playerAssets,roomNumber}:ModalProps) => {
                     { visibleAssets['cards'] && (
                       <div>
                         <span>cards:</span>
-                        <div className="flex">
+                        <div className="flex gap-2">
                           {Object.keys(cardsByGemMap).map((gemColor)=>(
                             <div className="flex flex-col">
                               <h3>{gemColor}</h3>

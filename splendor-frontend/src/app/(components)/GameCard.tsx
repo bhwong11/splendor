@@ -32,12 +32,12 @@ const GameCard = ({
   const socket = useSocketStore(state=>state.socket)
   const setActionTaken = useUserStore(state=>state.setActionTaken)
   const actionTaken = useUserStore(state=>state.actionTaken)
+  const userCards = useUserStore(state=>state.cards)
   const userReservedCards = useUserStore(state=>state.reservedCards)
   const isReservedCard = userReservedCards.find(c=>card.id===c.id)
 
   const {canBuyCard,remainingCost,userCardsValueMap} = useCanBuyCard()
   const isTurnPlayer = useIsTurnPlayer()
-  const turn = useBoardStore(state=>state.turn)
 
   const cardsLv1 = useBoardStore(state=>state.cardsLv1)
   const cardsLv2 = useBoardStore(state=>state.cardsLv2)
@@ -48,6 +48,14 @@ const GameCard = ({
   const userTokens = useUserStore(state=>state.tokens)
   const [takenTurnCard,setTakenTurnCard] = useState(false)
   const [animationRun,setAnimationRun] = useState(false)
+
+  const userTokensSerialized = JSON.stringify(userTokens)
+  const userCardsSerialized = JSON.stringify(userCards.sort())
+  const canBuy = useMemo(()=>canBuyCard(card),[
+    card.id,
+    userTokensSerialized,
+    userCardsSerialized
+  ])
 
   useEffect(()=>{
    const animationRun = setTimeout(()=>setAnimationRun(true),500)
@@ -171,7 +179,7 @@ const GameCard = ({
     setTakenTurnCard(true)
   }
   
-  const userCanBuyCard = canBuyCard(card) && isTurnPlayer && turnAction===actionTypes.BUY_CARD
+  const userCanBuyCard = canBuy && isTurnPlayer && turnAction===actionTypes.BUY_CARD
   const gemColor = card.gem ?? 'gold'
 
   return (
