@@ -54,6 +54,7 @@ export default function EnterRoom({
           type="text"
           value={username}
           onChange={e=>setUsername(e.target.value)}
+          required
         />
         {!existingRoomNumber &&
         <>
@@ -65,10 +66,11 @@ export default function EnterRoom({
             type="text"
             value={roomNumber}
             onChange={e=>setRoomNumber(e.target.value)}
+            required
           />
         </>}
         {error && <div>{error}</div>}
-        <button className="btn mt-2" type="submit" disabled={!username}>
+        <button className="btn mt-2" type="submit">
           Enter Room update
         </button>
       </form>

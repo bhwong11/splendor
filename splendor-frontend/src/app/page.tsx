@@ -1,9 +1,8 @@
-// import styles from './page.module.css'
-import CreatePost from './posts/[id]/createPost'
 import CreateRoom from './(components)/CreateRoom'
 import EnterRoom from './(components)/EnterRoom'
 import { redirect } from 'next/navigation'
-
+import classNames from "classnames";
+import { lemon } from './layout';
 
 const getAllRooms = async ()=>{
   const res = await fetch(
@@ -29,16 +28,19 @@ export default async function Home() {
           <p>room number{room.roomNumber}</p>
         ))}
       </div>
-      {/* <CreatePost/> */}
       <CreateRoom/>
       <EnterRoom/>
-      <form action={goToScorePage}>
-        <label htmlFor="username">See Wins: username</label>
-        <input 
+      <h3 className={classNames(lemon.className)}>See Wins</h3>
+      <form className="flex flex-col" action={goToScorePage}>
+        <label htmlFor="username" className="font-optima font-bold">
+          username:
+        </label>
+        <input
           name="username"
           type="text"
+          required
         />
-        <button className="btn" type="submit">
+        <button className="btn mt-2" type="submit">
           See Wins
         </button>
       </form>

@@ -16,21 +16,21 @@ export default function CreateRoom(){
     <div>
       <h2 className={classNames(lemon.className)}>Create Room</h2>
       <form 
-      className="flex flex-col"
-      onSubmit={async (e)=>{
-        e.preventDefault()
-        console.log('create room')
-        const newRoom = await createRoom({
-          roomNumber,
-          refresh:()=>router.refresh()
-        })
-        if(newRoom.status!==200){
-          setError(newRoom.message ?? 'error occured')
-          return
-        }
-        
-        router.push(`/rooms/${newRoom.roomNumber}`)
-      }}>
+        className="flex flex-col"
+        onSubmit={async (e)=>{
+          e.preventDefault()
+          const newRoom = await createRoom({
+            roomNumber,
+            refresh:()=>router.refresh()
+          })
+          if(newRoom.status!==200){
+            setError(newRoom.message ?? 'error occured')
+            return
+          }
+          
+          router.push(`/rooms/${newRoom.roomNumber}`)
+        }}
+      >
       <div className="flex flex-col">
         <label htmlFor="room-number" className="font-optima font-bold">room number</label>
         <input 
@@ -38,10 +38,11 @@ export default function CreateRoom(){
           type="number"
           value={roomNumber}
           onChange={e=>setRoomNumber(e.target.value)}
+          required
         />
       </div>
       {error && <div>{error}</div>}
-      <button className="btn mt-2" type="submit" disabled={!roomNumber}>
+      <button className="btn mt-2" type="submit">
         create
       </button>
       </form>
