@@ -46,7 +46,9 @@ export default function EnterRoom({
           updateUserName(updatedUser.username)
           router.push(`/rooms/${roomNumber}/play`)
       }}>
-        <label htmlFor="username">username:</label>
+        <label htmlFor="username" className="font-optima font-bold">
+          username:
+        </label>
         <input 
           name="username"
           type="text"
@@ -55,7 +57,9 @@ export default function EnterRoom({
         />
         {!existingRoomNumber &&
         <>
-          <label htmlFor="roomNumber" className="font-optima">roomNumber</label>
+          <label htmlFor="roomNumber" className="font-optima font-bold">
+            roomNumber:
+          </label>
           <input 
             name="roomNumber"
             type="text"

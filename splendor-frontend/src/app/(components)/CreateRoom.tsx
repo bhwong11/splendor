@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createRoom } from "@/api";
+import classNames from "classnames";
+import { lemon } from "../layout";
 
 
 export default function CreateRoom(){
@@ -12,8 +14,10 @@ export default function CreateRoom(){
 
   return(
     <div>
-      <h2>Create Room</h2>
-      <form onSubmit={async (e)=>{
+      <h2 className={classNames(lemon.className)}>Create Room</h2>
+      <form 
+      className="flex flex-col"
+      onSubmit={async (e)=>{
         e.preventDefault()
         console.log('create room')
         const newRoom = await createRoom({
@@ -27,17 +31,17 @@ export default function CreateRoom(){
         
         router.push(`/rooms/${newRoom.roomNumber}`)
       }}>
-      <div>
-        <label>room number</label>
+      <div className="flex flex-col">
+        <label htmlFor="room-number" className="font-optima font-bold">room number</label>
         <input 
-          name="number"
+          name="room-number"
           type="number"
           value={roomNumber}
           onChange={e=>setRoomNumber(e.target.value)}
         />
       </div>
       {error && <div>{error}</div>}
-      <button className="btn" type="submit" disabled={!roomNumber}>
+      <button className="btn mt-2" type="submit" disabled={!roomNumber}>
         create
       </button>
       </form>

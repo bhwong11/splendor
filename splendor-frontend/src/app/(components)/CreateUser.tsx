@@ -26,8 +26,6 @@ export default function CreateUser({
         className="flex flex-col" 
         onSubmit={async (e)=>{
           e.preventDefault();
-          console.log('creating user and added to room')
-
           const newUser = await createUser({
             username,
             roomNumber,
@@ -41,7 +39,9 @@ export default function CreateUser({
           updateUserName(newUser.username)
           router.push(`/rooms/${roomNumber}/play`)
       }}>
-        <label htmlFor="username">username:</label>
+        <label htmlFor="username" className="font-optima font-bold">
+          username:
+        </label>
         <input 
           name="username"
           type="text"
@@ -50,7 +50,9 @@ export default function CreateUser({
         />
         {!existingRoomNumber &&
         <>
-          <label className="font-optima">roomNumber</label>
+          <label htmlFor="roomNumber" className="font-optima font-bold">
+            roomNumber:
+          </label>
           <input 
             name="roomNumber"
             type="text"

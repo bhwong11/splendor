@@ -1,11 +1,8 @@
 'use client';
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useEffect } from 'react'
-import { io } from "socket.io-client";
-import { createUser, updateUser } from "@/api";
 import CreateUser from "./CreateUser";
 import UpdateUser from "./UpdateUser"
+import classNames from "classnames";
+import { lemon } from "../layout";
 
 
 export default function EnterRoom({
@@ -15,7 +12,7 @@ export default function EnterRoom({
 }){
   return(
     <div>
-      <h2>Enter</h2>
+      <h2 className={classNames(lemon.className)}>Enter Room</h2>
       <CreateUser existingRoomNumber={existingRoomNumber}/>
       <UpdateUser existingRoomNumber={existingRoomNumber}/>
     </div>
