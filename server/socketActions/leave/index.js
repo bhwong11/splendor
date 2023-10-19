@@ -1,5 +1,3 @@
-import RoomModel from "../../models/RoomModel.js"
-
 const leaveActions =async ({
   io,
   socket,
