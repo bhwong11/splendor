@@ -5,7 +5,6 @@ import { lemon,noto_emoji } from "@/app/layout"
 
 
 const RoomPage = async ({params})=>{
-  console.log(params.roomNumber)
   const room = await getRoom({roomNumber:params.roomNumber,revalidateSeconds:3600})
 
   return (
@@ -16,9 +15,9 @@ const RoomPage = async ({params})=>{
         pt-5
         border-4
         rounded-lg
-        border-pink-700
+        border-cyan-500
         bg-gradient-to-b
-        from-pink-200
+        from-cyan-200
         to-white
         h-screen
       ">
