@@ -1,11 +1,9 @@
 'use client';
 import { useEffect,useState,memo,useMemo } from "react";
-import { useRouter } from "next/navigation";
 import { useSocketStore, useBoardStore, useUserStore } from "@/zustand";
 import { actionTypes } from "@/zustand";
 import { useCanBuyCard, useIsTurnPlayer } from "@/app/lib";
 import classNames from "classnames";
-import { CSSProperties } from "react";
 import { 
   Card,
   generateUserBoardTokensFromBuy,

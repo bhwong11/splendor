@@ -3,6 +3,8 @@ import EnterRoom from './(components)/EnterRoom'
 import { redirect } from 'next/navigation'
 import classNames from "classnames";
 import { lemon, noto_emoji } from './layout';
+import AllRoomsWrapper from './(components)/AllRoomsWrapper';
+import AllRooms from './(components)/AllRooms';
 
 const getAllRooms = async ()=>{
   const res = await fetch(
@@ -54,11 +56,7 @@ export default async function Home() {
             See Wins
           </button>
         </form>
-        <div>
-          {allRooms?.map(room=>(
-            <p>room number{room.roomNumber}</p>
-          ))}
-        </div>
+        <AllRooms/>
       </div>
     </main>
   )
