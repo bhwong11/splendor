@@ -3,20 +3,9 @@ import EnterRoom from './(components)/EnterRoom'
 import { redirect } from 'next/navigation'
 import classNames from "classnames";
 import { lemon, noto_emoji } from './layout';
-import AllRoomsWrapper from './(components)/AllRoomsWrapper';
 import AllRooms from './(components)/AllRooms';
 
-const getAllRooms = async ()=>{
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/rooms/getAll`,
-    {cache:'no-store'}
-  )
-  const allRooms = await res.json()
-  return allRooms
-}
-
 export default async function Home() {
-  const allRooms = await getAllRooms()
   const goToScorePage = async (formData)=>  {
     'use server'
     redirect(`/${formData.get('username')}`)

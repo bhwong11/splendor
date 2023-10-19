@@ -49,7 +49,7 @@ export default function CreateUser({
           onChange={e=>setUsername(e.target.value)}
           required
         />
-        {!existingRoomNumber &&
+        {(!existingRoomNumber && existingRoomNumber!==0) &&
         <>
           <label htmlFor="roomNumber" className="font-optima font-bold">
             roomNumber:
