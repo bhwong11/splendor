@@ -149,7 +149,7 @@ const updateUser = async ({
   console.log('res',res)
   refresh()
   const updatedUser = await res.json()
-  console.log('update User!!',updatedUser)
+  console.log('update User',updatedUser)
   return {
     status:res.status,
     ...updatedUser
