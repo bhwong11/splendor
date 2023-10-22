@@ -1,15 +1,12 @@
 import express from "express";
 import cors from "cors";
 import "express-async-errors";
-import posts from "./routes/posts.js";
 import rooms from "./routes/rooms.js";
 import users from "./routes/users.js";
 import dotenv from "dotenv";
 import http from "http";
 import { Server } from "socket.io"
-import db from "./db/conn.js";
 import mongoose from "mongoose";
-import RoomModel from "./models/RoomModel.js";
 import joinActions from "./socketActions/join/index.js";
 import leaveActions from "./socketActions/leave/index.js";
 import turnActions from "./socketActions/turns/index.js";
@@ -44,7 +41,6 @@ app.use(cors());
 app.use(express.json());
 
 // Load the /posts routes
-app.use("/api/posts", posts);
 app.use("/api/rooms", rooms);
 app.use("/api/users", users);
 

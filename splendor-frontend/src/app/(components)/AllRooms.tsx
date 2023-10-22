@@ -9,6 +9,7 @@ const getAllRooms = async ()=>{
 
 const AllRooms = async ()=>{
     const allRooms = await getAllRooms()
+    console.log('alll',allRooms)
     return (
       <div className="mt-5">
         <h2 className="pb-2">all rooms</h2>
