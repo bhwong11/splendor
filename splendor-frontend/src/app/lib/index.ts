@@ -4,7 +4,7 @@ import cardsLv3 from "@/gameData/cardsLv3";
 import nobles from "@/gameData/nobles";
 import tokens from "@/gameData/tokens";
 import { useBoardStore, useUserStore } from "@/zustand";
-import cloneDeep from 'lodash/clonedeep';
+import {cloneDeep} from 'lodash';
 
 export interface Tokens{
   white:number,
