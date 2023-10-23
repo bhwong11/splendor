@@ -140,6 +140,7 @@ const PlayerAssets = ({params})=>{
           <div className="flex gap-1 flex-wrap pb-2">
             {userTurnActions.map((action:Action)=>(
             <button 
+              key={`action-${action.type}`}
               className="btn"
               disabled={disabled}
               onClick={(e)=>{
@@ -174,7 +175,7 @@ const PlayerAssets = ({params})=>{
           <div className="flex flex-wrap">
             <span className={classNames(lemon.className)}>tokens: </span>
             {Object.keys(tokens).map(color=>(
-            <div className={gemColorMap[color].textColor}>
+            <div className={gemColorMap[color].textColor} key={`tokens-${color}`}>
               <span className={classNames(noto_emoji.className)}>
                 &nbsp;💎:&nbsp;
               </span>
@@ -188,7 +189,7 @@ const PlayerAssets = ({params})=>{
           <div className="flex flex-wrap pb-1">
             <span className={classNames(lemon.className)}>Card Gems: </span>
             {Object.keys(cardGemMap).map(color=>(
-            <div className={gemColorMap[color].textColor}>
+            <div className={gemColorMap[color].textColor} key={`card-gems-${color}`}>
               <span className={classNames(noto_emoji.className)}>
                 &nbsp;💎:&nbsp;
               </span>
@@ -258,7 +259,7 @@ const PlayerAssets = ({params})=>{
               <span>cards:</span>
               <div className="flex gap-2">
                 {Object.keys(userCardsByGem).map((gemColor)=>(
-                  <div className="flex flex-col">
+                  <div className="flex flex-col"  key={`user-cards-${gemColor}`}>
                     <h3>{gemColor}</h3>
                     {userCardsByGem[gemColor]?.map((card:Card)=>(
                       <GameCard 
