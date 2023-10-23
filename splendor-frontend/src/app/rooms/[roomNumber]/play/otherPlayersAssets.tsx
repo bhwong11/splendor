@@ -60,7 +60,7 @@ const OtherPlayerAssets = ({params})=>{
       <div>
         <div className="flex gap-1 flex-wrap">
           {otherPlayerAssets?.map(playerAssets=>(
-            <div>
+            <div key={`player-assets-${playerAssets.username}`}>
               <Modal playerAssets={playerAssets} roomNumber={params.roomNumber}/>
             </div>
           ))}
