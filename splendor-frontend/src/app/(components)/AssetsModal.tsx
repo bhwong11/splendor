@@ -78,7 +78,7 @@ const Modal = ({playerAssets,roomNumber}:ModalProps) => {
                   <div className="flex flex-wrap">
                     <span className={classNames(lemon.className)}>tokens: </span>
                     {Object.keys(playerAssets.tokens).map(color=>(
-                    <div className={gemColorMap[color].textColor}>
+                    <div className={gemColorMap[color].textColor} key={`tokens-${color}`}>
                       <span className={classNames(noto_emoji.className)}>
                         &nbsp;💎:&nbsp;
                       </span>
@@ -92,7 +92,7 @@ const Modal = ({playerAssets,roomNumber}:ModalProps) => {
                   <div className="flex flex-wrap pb-1">
                     <span className={classNames(lemon.className)}>Card Gems: </span>
                     {Object.keys(cardGemMap).map(color=>(
-                    <div className={gemColorMap[color].textColor}>
+                    <div className={gemColorMap[color].textColor}  key={`cards-gem-${color}`}>
                       <span className={classNames(noto_emoji.className)}>
                         &nbsp;💎:&nbsp;
                       </span>
@@ -164,7 +164,7 @@ const Modal = ({playerAssets,roomNumber}:ModalProps) => {
                         <span>cards:</span>
                         <div className="flex gap-2">
                           {Object.keys(cardsByGemMap).map((gemColor)=>(
-                            <div className="flex flex-col">
+                            <div className="flex flex-col" key={`cards-gem-${gemColor}`}>
                               <h3>{gemColor}</h3>
                               {cardsByGemMap[gemColor]?.map((card:Card)=>(
                                 <GameCard 

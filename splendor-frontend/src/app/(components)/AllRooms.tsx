@@ -15,7 +15,7 @@ const AllRooms = async ()=>{
         <h2 className="pb-2">all rooms</h2>
         <div className="all-rooms h-24 overflow-y-scroll border-2 border-cyan-500 p-2 rounded">
           {allRooms?.map(room=>(
-            <p><a href={`/rooms/${room.roomNumber}/`} className="btn-link">
+            <p key={`room-${room.roomNumber}`}><a href={`/rooms/${room.roomNumber}/`} className="btn-link">
               room number: {room.roomNumber}
             </a></p>
           ))}

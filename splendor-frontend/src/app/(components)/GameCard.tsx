@@ -238,7 +238,7 @@ const GameCard = ({
     </p>
     <div className="flex justify-between">
       {Object.keys(card.price || {}).map((gem)=>(
-        <div className="pe-1">
+        <div className="pe-1"  key={`gem-${gem}`}>
           <div className={classNames(noto_emoji.className,gemColorMap[gem].tokenColor,)}>
             💎
           </div>
