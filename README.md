@@ -1,6 +1,8 @@
 # splendor
 based on board game [splendor](https://boardgamegeek.com/boardgame/148228/splendor)
 
+live link: https://splendor-new.vercel.app/
+
 # Start frontend
 ```
 cd splendor-frontend
